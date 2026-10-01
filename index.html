@@ -1204,9 +1204,14 @@ function drawBm(){const bm=(S&&S.c.bm)||[];$$('.bmk').forEach(b=>{const on=bm.in
   L.innerHTML=list.length?'':'<p class="bm-empty">책장 오른쪽 위의 <b>리본</b>을 누르면 책갈피가 꽂혀요. 다시 보고 싶은 장에 꽂아 두세요.</p>';
   list.forEach(([k,i])=>{const b=document.createElement('button');b.type='button';b.innerHTML=`<span><b>${esc(pages[i].dataset.name)}</b></span><span>${i}</span>`;b.onclick=()=>go(i,1);L.appendChild(b)})}
 $$('.bmk').forEach(b=>b.onclick=e=>{e.stopPropagation();if(!S)return;const bm=S.c.bm=S.c.bm||[];const k=b.dataset.key,j=bm.indexOf(k);j<0?bm.push(k):bm.splice(j,1);save();drawBm();if(j<0){b.classList.remove('drop');void b.offsetWidth;b.classList.add('drop')}});
-let px=null,py=0;$('#book').addEventListener('pointerdown',e=>{if(e.target.closest('input,textarea,select,#clock,#map,.carousel,.rainbox')){px=null;return}px=e.clientX;py=e.clientY});
-$('#book').addEventListener('pointerup',e=>{if(px==null||cur===0)return;const dx=e.clientX-px,dy=e.clientY-py;px=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(cur+(dx<0?1:-1),dx<0?1:-1)});
-$('#book').addEventListener('pointercancel',()=>{px=null});
+/* 넘기기 제스처: 휴대폰은 터치로, 컴퓨터는 마우스로 */
+const swipeBlocked=t=>{if(t.closest('.carousel,.modal'))return true;const f=document.activeElement;return !!(f&&f.matches&&f.matches('input,textarea,select')&&(t===f||f.contains(t)))};
+let sx=null,sy=0,st=0;
+$('#book').addEventListener('touchstart',e=>{if(e.touches.length!==1||swipeBlocked(e.target)){sx=null;return}sx=e.touches[0].clientX;sy=e.touches[0].clientY;st=Date.now()},{passive:true});
+$('#book').addEventListener('touchend',e=>{if(sx==null||cur===0)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=null;if(Date.now()-st>900)return;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){const f=document.activeElement;if(f&&f.blur&&f.matches('input,textarea'))f.blur();go(cur+(dx<0?1:-1),dx<0?1:-1)}},{passive:true});
+$('#book').addEventListener('touchcancel',()=>{sx=null},{passive:true});
+let px=null,py=0;$('#book').addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('input,textarea,select,#clock,#map,.carousel,.rainbox')){px=null;return}px=e.clientX;py=e.clientY});
+$('#book').addEventListener('pointerup',e=>{if(e.pointerType!=='mouse'||px==null||cur===0)return;const dx=e.clientX-px,dy=e.clientY-py;px=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(cur+(dx<0?1:-1),dx<0?1:-1)});
 addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,textarea,select,[contenteditable]'))return;if(!$('#modal').hidden||e.altKey||e.ctrlKey||e.metaKey)return;
   const fwd=['ArrowRight','PageDown'].includes(e.key),back=['ArrowLeft','PageUp'].includes(e.key);if(!fwd&&!back)return;
   if(cur===0){if(fwd&&me){e.preventDefault();go(1,1)}return}e.preventDefault();fwd?go(cur+1,1):go(cur-1,-1)});
