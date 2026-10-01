@@ -278,7 +278,7 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
   .page[data-key="lunch"] .lead{display:none}
   .clue[hidden]{display:flex!important}
   .flip .in{transform:none!important}.flip .f{display:none!important}.flip .b{transform:none!important;position:static!important;height:100%}
-  #toFleet,.routes,#routeMsg,#sortGo,#planGo,.rctl,#sail,.rainbox canvas{display:none!important}
+  #rainAll,#toFleet,.routes,#routeMsg,#sortGo,#planGo,.rctl,#sail,.rainbox canvas{display:none!important}
   .rainbox{height:auto!important;background:#fff!important}.rtext{position:static!important;color:var(--ink)!important;font-size:.82rem!important;line-height:1.6!important}.rtext .rs{opacity:1!important}.rtext .d{color:var(--tide)!important}
   .paper textarea.hand{min-height:300px}
   .print-only{display:block!important}
@@ -341,7 +341,8 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
 .rtext .rs.on{opacity:1}
 .rtext .rs.mark{background:rgba(236,154,114,.35)}
 .rtext .rs.last{display:block;margin-top:10px;color:#ec9a72}
-.rctl{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rctl{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:6px}
+.rctl .btn{padding:8px 4px;font-size:.84rem}
 .rctl .btn[aria-pressed="true"]{background:var(--tide);border-color:var(--tide);color:#fff}
 .paper{border:1px solid var(--rule);border-radius:10px;padding:12px 14px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--rule) 31px,var(--rule) 32px),color-mix(in srgb,var(--sun) 6%,var(--paper));display:flex;flex-direction:column;gap:6px}
 .paper textarea.hand{min-height:220px;background:none}
@@ -500,6 +501,8 @@ h2 .kicker{display:block;margin-bottom:2px}
 @keyframes bmdrop{from{height:20px}}
 .bmh{display:flex;align-items:center;gap:6px}.bmh svg{width:11px;height:18px;fill:var(--seal)}
 .bm-empty{font-size:.84rem;color:var(--ink-soft);padding:6px 2px}.bm-empty b{color:var(--seal)}
+.page,.page *{touch-action:pan-y}
+.page .carousel,.page .carousel *{touch-action:pan-x pan-y}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -1021,6 +1024,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <div class="rctl">
     <button type="button" class="btn" id="rainSnd" aria-pressed="false">빗소리 켜기</button>
     <button type="button" class="btn fill" id="rainNext">다음 줄 ›</button>
+    <button type="button" class="btn" id="rainAll">한번에 보기</button>
   </div>
   <p class="gloss oneline">면·열: 셋째·둘째 아들 · 내: 냇물 · 백일: 밝은 해</p>
 </section>
@@ -1206,10 +1210,13 @@ function drawBm(){const bm=(S&&S.c.bm)||[];$$('.bmk').forEach(b=>{const on=bm.in
 $$('.bmk').forEach(b=>b.onclick=e=>{e.stopPropagation();if(!S)return;const bm=S.c.bm=S.c.bm||[];const k=b.dataset.key,j=bm.indexOf(k);j<0?bm.push(k):bm.splice(j,1);save();drawBm();if(j<0){b.classList.remove('drop');void b.offsetWidth;b.classList.add('drop')}});
 /* 넘기기 제스처: 휴대폰은 터치로, 컴퓨터는 마우스로 */
 const swipeBlocked=t=>{if(t.closest('.carousel,.modal'))return true;const f=document.activeElement;return !!(f&&f.matches&&f.matches('input,textarea,select')&&(t===f||f.contains(t)))};
-let sx=null,sy=0,st=0;
-$('#book').addEventListener('touchstart',e=>{if(e.touches.length!==1||swipeBlocked(e.target)){sx=null;return}sx=e.touches[0].clientX;sy=e.touches[0].clientY;st=Date.now()},{passive:true});
-$('#book').addEventListener('touchend',e=>{if(sx==null||cur===0)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=null;if(Date.now()-st>900)return;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){const f=document.activeElement;if(f&&f.blur&&f.matches('input,textarea'))f.blur();go(cur+(dx<0?1:-1),dx<0?1:-1)}},{passive:true});
-$('#book').addEventListener('touchcancel',()=>{sx=null},{passive:true});
+let sx=null,sy=0,st=0,lx=0,ly=0;
+function swipeEnd(){if(sx==null||cur===0){sx=null;return}const dx=lx-sx,dy=ly-sy;sx=null;if(Date.now()-st>1200)return;
+  if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.1){const f=document.activeElement;if(f&&f.blur&&f.matches&&f.matches('input,textarea'))f.blur();go(cur+(dx<0?1:-1),dx<0?1:-1)}}
+document.addEventListener('touchstart',e=>{if(e.touches.length!==1||!e.target.closest('#book')||swipeBlocked(e.target)){sx=null;return}sx=lx=e.touches[0].clientX;sy=ly=e.touches[0].clientY;st=Date.now()},{passive:true,capture:true});
+document.addEventListener('touchmove',e=>{if(sx==null)return;if(e.touches.length!==1){sx=null;return}lx=e.touches[0].clientX;ly=e.touches[0].clientY},{passive:true,capture:true});
+document.addEventListener('touchend',e=>{if(sx==null)return;const t=e.changedTouches[0];if(t){lx=t.clientX;ly=t.clientY}swipeEnd()},{passive:true,capture:true});
+document.addEventListener('touchcancel',swipeEnd,{passive:true,capture:true});
 let px=null,py=0;$('#book').addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('input,textarea,select,#clock,#map,.carousel,.rainbox')){px=null;return}px=e.clientX;py=e.clientY});
 $('#book').addEventListener('pointerup',e=>{if(e.pointerType!=='mouse'||px==null||cur===0)return;const dx=e.clientX-px,dy=e.clientY-py;px=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(cur+(dx<0?1:-1),dx<0?1:-1)});
 addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,textarea,select,[contenteditable]'))return;if(!$('#modal').hidden||e.altKey||e.ctrlKey||e.metaKey)return;
@@ -1379,15 +1386,19 @@ function restoreMap(){const r=S.c.route;$$('[data-route]').forEach(b=>b.setAttri
 /* ===== 정유년 10월 14일: 빗소리 읽기 ===== */
 const RAIN=['새벽 2시경에 꿈을 꾸었는데 내가 말을 타고 언덕 위로 가다가 말이 발을 헛디뎌 내 가운데 떨어졌으나 쓰러지지는 않고 막내아들 면이 끌어안고 있는 것 같은 형상을 하면서 깨었는데 이 무슨 징조인지 모르겠다.','(중략)','저녁에 어떤 사람이 천안으로부터 와서 집안 편지를 전했는데 개봉도 하기 전에 뼈와 살이 먼저 떨리고 심기가 혼란해졌다.','대강 겉봉을 뜯고 열의 편지를 보니 겉면에 통곡 두 자가 씌어 있어 면이 전사한 것을 알고 깨닫지 못하는 사이에 간담이 떨어져 목놓아 통곡했다.','하늘이 어질지 못함이 어찌 이와 같은가. 간담이 타고 찢어졌다.','내가 죽고 네가 사는 것이 이치에 떳떳함이거늘 네가 죽고 내가 사니 이런 어긋난 이치가 어디 있는가.','천지가 캄캄하고 백일이 빛이 변했다.','아아, 내 아들아. 나를 버리고 어디로 갔느냐.','영특한 기질이 범속하지 않기로 하늘이 세상에 머물러 있지 않게 하는가. 내가 지은 죄로 화가 너의 몸에 미쳤는가.','이제 내가 세상에 있은들 장차 누구에게 의지하란 말인가.','너를 따라 같이 죽어 지하에서 같이 지내고 같이 울고 싶건만 너의 형, 너의 누이, 너의 어미가 의지할 곳이 없으므로 아직은 참고 목숨을 이어 가기는 하지마는 마음은 죽고 형상만 남아서 소리쳐 울 따름이다.','하룻밤을 지내기가 1년 같았다.','이날 밤 10시경에 비가 내렸다.'];
 let typeT=null,typeFin=null;
-function drawRain(typeLast){if(typeT){clearInterval(typeT);typeT=null}const t=$('#rtext');const n=S.c.rainN||1;const still=matchMedia('(prefers-reduced-motion: reduce)').matches;const ty=typeLast&&!still?n-1:-1;
+function drawRain(typeLast){if(typeT){clearTimeout(typeT);typeT=null}const t=$('#rtext');const n=S.c.rainN||1;const still=matchMedia('(prefers-reduced-motion: reduce)').matches;const ty=typeLast&&!still?n-1:-1;
   t.innerHTML='<span class="d">정유년 10월 14일 신미 · 난중일기</span>'+RAIN.map((x,i)=>`<span class="rs${i<n?' on':''}${i===RAIN.length-1?' last':''}${(S.c.rainMark||[]).includes(i)?' mark':''}${i===ty?' typing':''}" data-i="${i}">${i===ty?'':esc(x)+' '}</span>`).join('');
   $$('.rs',t).forEach(sp=>sp.onclick=()=>{if(sp.classList.contains('typing')){typeFin&&typeFin();return}const i=+sp.dataset.i;if(!sp.classList.contains('on'))return;const m=S.c.rainMark=S.c.rainMark||[];const k=m.indexOf(i);k<0?m.push(i):m.splice(k,1);save();sp.classList.toggle('mark')});
   const nb=$('#rainNext');const done=()=>{nb.textContent=n>=RAIN.length?'마음에 남는 문장을 눌러 표시해요':'다음 줄 ›';nb.disabled=n>=RAIN.length};
   if(ty<0){done();return}
   const sp=t.querySelector('.rs.typing'),full=RAIN[ty]+' ',chars=[...full];let k=0;const caret=document.createElement('i');caret.className='caret';sp.appendChild(caret);nb.textContent='쓰는 중…';
   const follow=()=>{const want=sp.offsetTop+sp.offsetHeight-t.clientHeight+24;if(want>t.scrollTop)t.scrollTop=want};
-  typeFin=()=>{if(typeT){clearInterval(typeT);typeT=null}sp.textContent=full;sp.classList.remove('typing');follow();typeFin=null;done()};
-  typeT=setInterval(()=>{if(k>=chars.length){typeFin();return}caret.before(chars[k]);k++;if(k%6===0)follow()},ty===RAIN.length-1?110:55)}
+  typeFin=()=>{if(typeT){clearTimeout(typeT);typeT=null}sp.textContent=full;sp.classList.remove('typing');follow();typeFin=null;done()};
+  const base=ty===RAIN.length-1?260:140;
+  const step=()=>{if(k>=chars.length){typeFin();return}const ch=chars[k];caret.before(ch);k++;if(k%4===0)follow();
+    typeT=setTimeout(step,ch==='.'||ch==='?'?base+650:ch===','?base+320:ch===' '?base*0.6:base)};
+  typeT=setTimeout(step,500)}
+$('#rainAll').onclick=()=>{if(typeT){clearTimeout(typeT);typeT=null}typeFin=null;S.c.rainN=RAIN.length;save();drawRain();rainLevel(.5)};
 $('#rainNext').onclick=()=>{if(typeFin){typeFin();return}S.c.rainN=Math.min(RAIN.length,(S.c.rainN||1)+1);save();drawRain(true);if(S.c.rainN===RAIN.length)rainLevel(.5)};
 let actx=null,rainG=null,rainSrcs=[],rainRAF=null;
 function rainLevel(v){if(rainG&&actx)rainG.gain.linearRampToValueAtTime(v,actx.currentTime+2)}
