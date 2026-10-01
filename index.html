@@ -251,7 +251,7 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
   .stage,.book{position:static!important;transform:none!important;width:auto!important;height:auto!important;overflow:visible!important}
   html,body{height:auto!important;overflow:visible!important}
   .page,.page[hidden]{display:flex!important;position:static!important;width:380px!important;height:auto!important;min-height:537px;zoom:1.4705;box-shadow:none;border-radius:0;overflow:visible!important;break-after:page;page-break-after:always;animation:none!important;transform:none!important;filter:none!important}
-  .pfoot,.homebtn,#lt-me,.popbtn,#modal,#oxGo,.voy-t{display:none!important}
+  .bmk,.bmh,#bmlist,.pfoot,.homebtn,#lt-me,.popbtn,#modal,#oxGo,.voy-t{display:none!important}
   [data-key="ship"] .twoship{display:none!important}
   .oxr{padding:4px 8px!important;font-size:.8rem!important}.oxr .mk{width:20px;height:20px}
   .page[data-key="siege"] .grow textarea{min-height:44px!important}
@@ -492,6 +492,14 @@ h2 .kicker{display:block;margin-bottom:2px}
 .rc-empty{font-size:.86rem;color:#626588;text-align:center;padding:12px 0}
 .rc-foot{font-size:.66rem;color:#9a9cb5;text-align:center;padding:8px;border-top:1px dashed #e4e2ec}
 .toast.bad{color:var(--no)}
+.folio{padding-right:44px!important;overflow:visible}
+.bmk{position:absolute;right:12px;top:0;width:20px;height:34px;border:0;padding:0;background:none;cursor:pointer;z-index:5}
+.bmk svg{width:20px;height:34px;display:block;fill:rgba(255,255,255,.18);stroke:rgba(255,255,255,.75);stroke-width:1.2;transition:height .25s}
+.bmk.on svg{fill:var(--seal);stroke:var(--seal);height:48px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.bmk.drop svg{animation:bmdrop .35s cubic-bezier(.3,1.5,.5,1)}
+@keyframes bmdrop{from{height:20px}}
+.bmh{display:flex;align-items:center;gap:6px}.bmh svg{width:11px;height:18px;fill:var(--seal)}
+.bm-empty{font-size:.84rem;color:var(--ink-soft);padding:6px 2px}.bm-empty b{color:var(--seal)}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -557,11 +565,13 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 
 <section class="page" data-name="차례" data-key="toc">
   <div class="folio"><span><b>나의 일기장</b></span><span id="whoLine"></span></div>
-  <div class="guide"><img src="img/ship.webp" alt="" width="44" height="66"><div class="bub">책장 <b>모서리</b>를 누르거나 <b>옆으로 밀면</b> 다음 장으로 넘어가. 왼쪽 위 책 단추는 표지로!</div></div>
+  <div class="guide"><img src="img/ship.webp" alt="" width="44" height="66"><div class="bub">책장 <b>모서리</b>를 누르거나 <b>옆으로 밀면</b> 다음 장으로 넘어가. 왼쪽 위 책 단추는 <b>표지</b>로, 오른쪽 위 <b>리본</b>은 책갈피!</div></div>
   <h2>나의 도장판</h2>
   <div class="board" id="board"></div>
   <h3>차례</h3>
   <div class="toc" id="toc"></div>
+  <h3 class="bmh"><svg viewBox="0 0 18 30" aria-hidden="true"><path d="M1 0h16v28l-8-6-8 6z"/></svg> 내 책갈피</h3>
+  <div class="toc" id="bmlist"></div>
 </section>
 
 <section class="page" data-name="출근 Road 업무 Log" data-key="day1">
@@ -1108,7 +1118,7 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const HOME='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3.5c2-1 4-1 6 .5v10c-2-1.5-4-1.5-6-.5zM14 3.5c-2-1-4-1-6 .5v10c2-1.5 4-1.5 6-.5z"/></svg>';
 $$('.page').forEach((pg,idx)=>{if(pg.classList.contains('cover'))return;const fo=pg.querySelector(':scope>.folio');const pc=document.createElement('div');pc.className='pc';
   [...pg.children].forEach(c=>{if(c!==fo)pc.appendChild(c)});pg.appendChild(pc);
-  if(fo){const b=document.createElement('button');b.type='button';b.className='homebtn';b.setAttribute('aria-label','표지로 가기');b.title='표지로';b.innerHTML=HOME;fo.firstElementChild.prepend(b)}
+  if(fo){const b=document.createElement('button');b.type='button';b.className='homebtn';b.setAttribute('aria-label','표지로 가기');b.title='표지로';b.innerHTML=HOME;fo.firstElementChild.prepend(b);const r=document.createElement('button');r.type='button';r.className='bmk';r.dataset.key=pg.dataset.key;r.setAttribute('aria-label','책갈피 꽂기');r.title='책갈피';r.innerHTML='<svg viewBox="0 0 18 30"><path d="M1 0h16v28l-8-6-8 6z"/></svg>';fo.appendChild(r)}
   const tas=pc.querySelectorAll('textarea.hand');const first=pc.firstElementChild;
   if(first&&first.matches('.baekhero,.hope,.voy'))pc.classList.add('hero');
   else if(tas.length){const box=tas[tas.length-1].closest('.field,.paper');if(box&&box.parentElement===pc&&box===pc.lastElementChild){box.classList.add('grow')}else pc.classList.add('center')}
@@ -1181,13 +1191,19 @@ pages.forEach((pg,k)=>{const f=pg.querySelector(':scope>.pfoot');if(!f)return;f.
   const hb=pg.querySelector('.homebtn');if(hb)hb.onclick=()=>go(0,-1)});
 function coverMode(){const L=$('#login');L.classList.toggle('in',!!me);if(me)$('#meName').textContent=(me.team?me.team+' ':'')+me.nick}
 function go(i,dir){i=Math.max(0,Math.min(total,i));if(i>0&&!me)i=0;if(busy)return;const old=pages[cur],p=pages[i];
-  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'&&!S.c.rainSeen){S.c.rainSeen=1;save();setTimeout(()=>drawRain(true),400)}if(p.dataset.key==='toc')drawBoard();if(i===0)coverMode();
+  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'&&!S.c.rainSeen){S.c.rainSeen=1;save();setTimeout(()=>drawRain(true),400)}if(p.dataset.key==='toc'){drawBoard();drawBm()}if(i===0)coverMode();
   p.scrollTop=0;const anim=dir&&old!==p&&!old.hidden;
   if(!anim){pages.forEach((q,k)=>q.hidden=k!==i)}
   else{busy=true;p.hidden=false;if(dir>0){old.style.zIndex=3;p.style.zIndex=2;p.classList.add('under');old.classList.add('flip-out')}else{p.style.zIndex=3;old.style.zIndex=2;p.classList.add('flip-in')}
     setTimeout(()=>{old.hidden=true;old.classList.remove('flip-out');p.classList.remove('flip-in','under');old.style.zIndex='';p.style.zIndex='';busy=false},620)}
   cur=i;if(S&&i>0){S.lastPage=i;save()}}
 const byKey=k=>pages.findIndex(p=>p.dataset.key===k);
+/* ===== 책갈피 ===== */
+function drawBm(){const bm=(S&&S.c.bm)||[];$$('.bmk').forEach(b=>{const on=bm.includes(b.dataset.key);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'책갈피 빼기':'책갈피 꽂기')});
+  const L=$('#bmlist');if(!L)return;const list=bm.map(k=>[k,byKey(k)]).filter(x=>x[1]>0).sort((a,b)=>a[1]-b[1]);
+  L.innerHTML=list.length?'':'<p class="bm-empty">책장 오른쪽 위의 <b>리본</b>을 누르면 책갈피가 꽂혀요. 다시 보고 싶은 장에 꽂아 두세요.</p>';
+  list.forEach(([k,i])=>{const b=document.createElement('button');b.type='button';b.innerHTML=`<span><b>${esc(pages[i].dataset.name)}</b></span><span>${i}</span>`;b.onclick=()=>go(i,1);L.appendChild(b)})}
+$$('.bmk').forEach(b=>b.onclick=e=>{e.stopPropagation();if(!S)return;const bm=S.c.bm=S.c.bm||[];const k=b.dataset.key,j=bm.indexOf(k);j<0?bm.push(k):bm.splice(j,1);save();drawBm();if(j<0){b.classList.remove('drop');void b.offsetWidth;b.classList.add('drop')}});
 let px=null,py=0;$('#book').addEventListener('pointerdown',e=>{if(e.target.closest('input,textarea,select,#clock,#map,.carousel,.rainbox')){px=null;return}px=e.clientX;py=e.clientY});
 $('#book').addEventListener('pointerup',e=>{if(px==null||cur===0)return;const dx=e.clientX-px,dy=e.clientY-py;px=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(cur+(dx<0?1:-1),dx<0?1:-1)});
 $('#book').addEventListener('pointercancel',()=>{px=null});
@@ -1291,7 +1307,7 @@ function bindChips(){$$('[data-multi]').forEach(g=>{const k=g.dataset.multi;S.c[
 function restoreQuiz(){$$('.entry[data-quiz]').forEach(en=>{const r=S.q[en.dataset.quiz];const bl=$$('.blank',en),m=en.querySelector('.qmsg');bl.forEach((b,k)=>{b.value=(r&&r.v&&r.v[k])||'';b.classList.remove('ok','no');b.readOnly=false});m.className='qmsg';m.textContent='';
   if(r&&r.ok){bl.forEach(b=>{b.classList.add('ok');b.readOnly=true});m.className='qmsg ok';m.textContent='정답! 장군의 일기를 제대로 읽었어요.'}})}
 function hydrate(){restoreQuiz();bindTexts();bindChips();selS=null;$('#ceH').textContent='시계에서 시간을 눌러요';$('#ceIn').value='';$('#ceIn').disabled=true;drawClock();drawPick();commonState();drawSijo();drawSort();drawFlips();drawPlan();restoreMap();drawOX();$('#oxMsg').textContent='';drawRain();drawFleet();drawVoy();drawHope();$('#fromName').textContent=(me.team?me.team+' ':'')+me.nick;const sm=$('#sortMsg'),pm=$('#planMsg');sm.textContent='';pm.textContent='';$$('[data-stamp]').forEach(el=>drawStamp(el));drawBoard();
-  $('#padUrl').value=LS.get('rl.pad',PAD_DEFAULT)}
+  $('#padUrl').value=LS.get('rl.pad',PAD_DEFAULT);drawBm()}
 
 
 /* ===== 둘째 날: 판옥선 vs 거북선 ===== */
