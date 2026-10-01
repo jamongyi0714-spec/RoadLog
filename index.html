@@ -31,20 +31,49 @@
 *{box-sizing:border-box}
 html{font-size:14px}
 html,body{min-height:100%}
-body{word-break:keep-all;overflow-wrap:anywhere;background:var(--desk);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.6;padding:10px 8px 76px}
-.stage{margin:0 auto;position:relative;overflow:hidden;max-width:100%}
-.book{width:380px;height:537px;transform-origin:top left;position:absolute;left:0;top:0;perspective:1400px}
+html,body{height:100%;overflow:hidden}
+body{word-break:keep-all;overflow-wrap:anywhere;background:var(--desk);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.6;padding:12px 0 0}
+html.m body{padding:0}
+.stage{margin:0 auto;position:relative;max-width:100%}
+.book{transform-origin:top left;position:absolute;left:0;top:0;perspective:2000px}
 .page{background:var(--paper);border-radius:3px 12px 12px 3px;box-shadow:inset 10px 0 12px -10px rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.08),0 10px 24px -14px rgba(20,30,60,.35);
-  padding:18px 16px 18px 22px;display:flex;flex-direction:column;gap:12px;position:relative;transform-origin:left center;
-  width:380px;height:537px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+  padding:18px 16px 18px 22px;display:flex;flex-direction:column;gap:12px;position:absolute;inset:0;transform-origin:left center;
+  overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;touch-action:pan-y;backface-visibility:hidden}
+html.m .page{border-radius:0 6px 6px 0}
 .page::-webkit-scrollbar{display:none}
 .page>*{flex-shrink:0}
 .page::before{display:none;content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(90deg,rgba(0,0,0,.10),transparent);border-radius:4px 0 0 4px;pointer-events:none}
-.page.turn{animation:turn .38s ease-out}
-.page.back{animation:back .38s ease-out}
-@keyframes turn{from{transform:rotateY(-14deg) translateX(18px);opacity:.55}to{transform:none;opacity:1}}
-@keyframes back{from{transform:rotateY(10deg) translateX(-14px);opacity:.55}to{transform:none;opacity:1}}
-@media (prefers-reduced-motion:reduce){.page.turn,.page.back{animation:none}}
+.page.flip-out{animation:flipOut .6s cubic-bezier(.45,.05,.35,1) forwards;overflow:hidden}
+.page.flip-in{animation:flipIn .6s cubic-bezier(.45,.05,.35,1) forwards;overflow:hidden}
+.page.under::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,24,50,.28),rgba(20,24,50,0) 60%);animation:shade .6s ease forwards;pointer-events:none;z-index:9}
+@keyframes flipOut{0%{transform:rotateY(0);box-shadow:0 10px 24px -14px rgba(20,30,60,.35);filter:brightness(1)}100%{transform:rotateY(-98deg);box-shadow:-30px 10px 40px rgba(20,30,60,.35);filter:brightness(.75)}}
+@keyframes flipIn{0%{transform:rotateY(-98deg);filter:brightness(.75)}100%{transform:rotateY(0);filter:brightness(1)}}
+@keyframes shade{0%{opacity:1}100%{opacity:0}}
+.pc{flex:1 0 auto;display:flex;flex-direction:column;gap:12px;min-height:0}
+.pc>*{flex-shrink:0}
+.pc.center>:first-child{margin-top:auto}.pc.center>:last-child{margin-bottom:auto}
+.pc.hero>:first-child{flex:1 0 auto;max-height:58%;min-height:180px}
+.pc.hero>:last-child{margin-bottom:auto}
+.grow{flex:1 1 auto!important;display:flex;flex-direction:column;gap:4px}
+.grow textarea{flex:1 1 auto;min-height:110px!important}
+.pfoot{position:sticky;bottom:-18px;margin:0 -16px -18px -22px;height:40px;display:grid;grid-template-columns:44px 1fr 44px;align-items:end;z-index:4;pointer-events:none;flex-shrink:0}
+.pfoot>*{pointer-events:auto}
+.pnum{justify-self:center;margin-bottom:8px;font:inherit;font-size:.72rem;letter-spacing:.1em;color:var(--ink-soft);background:color-mix(in srgb,var(--paper) 85%,transparent);border:0;border-radius:99px;padding:2px 10px;cursor:pointer;font-variant-numeric:tabular-nums}
+.ear{width:44px;height:40px;border:0;padding:0;cursor:pointer;background:none;position:relative}
+.ear::before{content:"";position:absolute;bottom:0;width:30px;height:30px;transition:width .2s,height .2s}
+.ear.nx::before{right:0;background:linear-gradient(135deg,transparent 50%,color-mix(in srgb,var(--ink) 18%,var(--paper)) 50%);border-radius:0 0 6px 0;box-shadow:-2px -2px 4px rgba(0,0,0,.08)}
+.ear.pv::before{left:0;background:linear-gradient(225deg,transparent 50%,color-mix(in srgb,var(--ink) 12%,var(--paper)) 50%);border-radius:0 0 0 3px}
+.ear:hover::before,.ear:focus-visible::before{width:38px;height:38px}
+.ear[hidden]{display:block!important;visibility:hidden}
+.homebtn{width:26px;height:26px;margin-right:6px;border-radius:7px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;display:inline-grid;place-items:center;cursor:pointer;vertical-align:-6px;padding:0}
+.homebtn svg{width:15px;height:15px}
+.extra{border:1.5px solid var(--tide);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;font-size:.92rem;line-height:1.6;background:var(--tide-soft)}
+.ex-k{font-size:.78rem;font-weight:700;color:var(--tide);letter-spacing:.04em}
+#login .meline{font-family:var(--f-diary);font-size:1.15rem;text-align:center}
+#login .meline b{color:var(--seal)}
+#login:not(.in) #lt-me{display:none}
+#login.in .tabs2,#login.in #lt-new,#login.in #lt-old,#login.in #guest{display:none!important}
+@media (prefers-reduced-motion:reduce){.page.flip-out,.page.flip-in,.page.under::after{animation-duration:.01s}}
 .folio{position:sticky;top:-18px;z-index:3;display:flex;flex-wrap:wrap;gap:2px 10px;justify-content:space-between;align-items:flex-end;font-size:.76rem;letter-spacing:.04em;color:#fff;
   margin:-18px -16px -2px -22px;padding:20px 16px 7px 22px;border-radius:3px 12px 0 0;min-height:50px;
   background:linear-gradient(to bottom,rgba(35,38,74,0) 30%,rgba(35,38,74,.55)),url("img/sea.webp") 58% 62%/cover;text-shadow:0 1px 3px rgba(20,20,50,.6)}
@@ -220,7 +249,21 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
   html,body{background:#fff!important;padding:0!important;margin:0}
   nav.pager,.qrow .btn,.cnav,.linkbtn,details.set,#logout,.acts,.toast,#login,.clockedit,.redo,.page[data-key="send"],#pickGo,#pickMsg,.qmsg{display:none!important}
   .stage,.book{position:static!important;transform:none!important;width:auto!important;height:auto!important;overflow:visible!important}
-  .page,.page[hidden]{display:flex!important;zoom:1.4705;box-shadow:none;border-radius:0;overflow:hidden;break-after:page;page-break-after:always;animation:none!important}
+  html,body{height:auto!important;overflow:visible!important}
+  .page,.page[hidden]{display:flex!important;position:static!important;width:380px!important;height:auto!important;min-height:537px;zoom:1.4705;box-shadow:none;border-radius:0;overflow:visible!important;break-after:page;page-break-after:always;animation:none!important;transform:none!important;filter:none!important}
+  .pfoot,.homebtn,#lt-me{display:none!important}
+  .pc.center>:first-child{margin-top:0}.pc.center>:last-child,.pc.hero>*{margin-bottom:0}
+  .grow textarea{min-height:90px!important}
+  [data-key="toc"] .guide{display:none!important}
+  .txt.sm{font-size:.82rem!important;line-height:1.6!important}
+  [data-key="gwonjun"] .names,[data-key="gwonjun"] .clue,[data-key="gwonjun"] .clue[hidden]{display:none!important}
+  .carousel .entry .txt{font-size:.8rem!important;line-height:1.5!important}
+  #t-dream{min-height:60px!important}
+  .sigh{font-size:1.05rem}
+  [data-key="gyoseo"] .grow textarea{min-height:50px!important}
+  .rainbox{min-height:0!important;flex:none!important}[data-key="rain"] .lead{display:none}.rtext{font-size:.76rem!important;line-height:1.55!important;padding:6px 8px!important}
+  [data-key="lunch"] .common{gap:4px}
+  .extra{background:#fff}
   .page.cover{background:var(--cover)}
   .page[data-key="send"],.page[data-key="send"][hidden]{display:none!important}
   .carousel{flex-direction:column;overflow:visible;gap:6px}
@@ -373,6 +416,12 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
 .entry.epi .txt{font-size:1.08rem!important;line-height:1.9!important}
 .entry.epi b{color:var(--seal);font-weight:700}
 h2 .kicker{display:block;margin-bottom:2px}
+.cover .hero{flex:1 1 150px;height:auto!important;max-height:46%;min-height:132px}
+.voy{min-height:200px;height:auto!important}
+.baekhero{align-content:end}
+.rainbox{flex:1 1 262px!important;min-height:262px}
+[data-key="clock"] .clockwrap svg{max-width:min(320px,38vh)}
+[data-key="plan"] #map{max-height:min(240px,26vh)!important}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -430,6 +479,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
       <button class="btn fill" id="oGo" type="button">이어 쓰기</button>
       <button class="linkbtn danger" id="oDel" type="button">이 일기장 지우기</button>
     </div>
+    <div id="lt-me" class="who"><p class="meline"><b id="meName"></b>의 일기장</p><button class="btn fill" id="meGo" type="button">일기장 펼치기 ›</button><button class="linkbtn" id="meOut" type="button">다른 친구로 바꾸기</button></div>
     <div class="err" id="lErr" role="status" style="min-height:0"></div>
     <button class="linkbtn" id="guest" type="button">가입 없이 둘러보기 ›</button>
   </div>
@@ -437,6 +487,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 
 <section class="page" data-name="차례" data-key="toc">
   <div class="folio"><span><b>나의 일기장</b></span><span id="whoLine"></span></div>
+  <div class="guide"><img src="img/ship.webp" alt="" width="44" height="66"><div class="bub">책장 <b>모서리</b>를 누르거나 <b>옆으로 밀면</b> 다음 장으로 넘어가. 왼쪽 위 책 단추는 표지로!</div></div>
   <h2>나의 도장판</h2>
   <div class="board" id="board"></div>
   <h3>차례</h3>
@@ -563,32 +614,23 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <textarea class="hand" id="t-win" data-k="win" placeholder="거북선이 먼저 대장선으로 돌진해 왜장을 쓰러뜨렸다."></textarea></div>
 </section>
 
-<section class="page" data-name="같은 인물 · 기록 1" data-key="gwonjun">
+<section class="page" data-name="같은 인물 · 두 기록" data-key="gwonjun">
   <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>당포성지 · 5/6차시</span></div>
-<div class="guide"><img src="img/ship.webp" alt="" width="44" height="66"><div class="bub">두 기록에 <b>같은 사람</b>이 숨어 있어. 잘 읽어 봐!</div></div>
   <h2>두 기록에 같은 인물이 있다?</h2>
-  <div class="entry gyejang">
+  <div class="entry gyejang tight">
     <div class="date">기록 ① 장계 · 당포 해전 보고</div>
-    <p class="txt">중위장 권준이 돌입하여 왜장을 쏘아 맞추자 활시위 소리와 함께 고꾸라져 떨어지거늘, 사도첨사 김완과 군관인 흥양보인 진무성이 그 왜장의 머리를 베니 적도들이 겁내어 도망쳤습니다.</p>
+    <p class="txt sm">중위장 권준이 돌입하여 왜장을 쏘아 맞추자 활시위 소리와 함께 고꾸라져 떨어지거늘, 사도첨사 김완과 군관인 흥양보인 진무성이 그 왜장의 머리를 베니 적도들이 겁내어 도망쳤습니다.</p>
   </div>
-</section>
-
-<section class="page" data-name="같은 인물 · 기록 2" data-key="gwonjun2">
-  <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>당포성지 · 5/6차시</span></div>
-  <div class="entry">
+  <div class="entry tight">
     <div class="date">기록 ② 갑오년 2월 16일 <small>난중일기</small></div>
-    <p class="txt">암행어사 유몽인의 장계 초안을 보았다. 임실현감 이몽상, 무장현감 이충길, 영암군수 김성헌, 낙안군수 신호는 파면하고, 순천부사는 탐관오리의 으뜸으로 논하였다. 담양·진원·나주·창평 등의 수령은 악행을 덮어 주고 칭찬하여 아뢰었다. 임금의 귀를 속임이 이 지경에 이르렀다. 나랏일이 이러하니 평정될 리가 만무하다. 지붕만 쳐다볼 뿐이다.</p>
+    <p class="txt sm">암행어사 유몽인의 장계 초안을 보았다. 임실현감 이몽상, 무장현감 이충길, 영암군수 김성헌, 낙안군수 신호는 파면하고, 순천부사는 탐관오리의 으뜸으로 논하였다. 담양·진원·나주·창평 등의 수령은 악행을 덮어 주고 칭찬하여 아뢰었다. 임금의 귀를 속임이 이 지경에 이르렀다. (후략)</p>
   </div>
-</section>
-
-<section class="page" data-name="같은 인물 · 찾기" data-key="who">
-  <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>당포성지 · 5/6차시</span></div>
-  <h2>같은 사람을 찾아라</h2>
   <div class="names">
-    <div class="grp"><span class="lbl">기록 ① 장계 속 인물</span><div class="chips" data-pick="a"></div></div>
-    <div class="grp"><span class="lbl">기록 ② 일기 속 인물</span><div class="chips" data-pick="b"></div></div>
+    <div class="grp"><span class="lbl">기록 ① 속 인물</span><div class="chips" data-pick="a"></div></div>
+    <div class="grp"><span class="lbl">기록 ② 속 인물</span><div class="chips" data-pick="b"></div></div>
     <div class="qrow"><button class="btn fill" id="pickGo" type="button">같은 사람이다!</button><span class="qmsg" id="pickMsg" role="status">위아래에서 한 명씩 골라요.</span></div>
   </div>
+  <p class="print-only poem">같은 사람은? 기록 ① ____________ = 기록 ② ____________</p>
   <div class="clue" id="clue" hidden>
     <div class="date">단서 카드 · 당포 해전 장계의 장수 명단</div>
     <p class="poem">중위장 <span class="gap">?</span> 권준</p>
@@ -604,6 +646,11 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 <section class="page" data-name="같은 인물 · 토론" data-key="debate">
   <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>당포성지 · 5/6차시</span></div>
   <p class="q sm"><b>역사 토론</b> 왜 같은 인물을 다르게 기록했을까? 나는 권준을 어떻게 보나요?</p>
+  <div class="extra">
+    <span class="ex-k">추가 자료 · 갑오년 2월 16일 일기의 뒷부분</span>
+    <p><b>당시는 전쟁 중</b>이었어요. 이순신은 같은 날 일기 뒷부분에, 남쪽 지방의 종잡을 수 없는 말만 듣고 나라를 그르치는 간사한 말이 진회가 악무목을 모함한 짓과 다를 바 없다며 통탄했어요.</p>
+    <p class="gloss">진회: 송나라의 간신 · 악무목: 진회의 모함으로 죽은 충신 악비</p>
+  </div>
   <div class="chips" data-one="side">
     <button type="button" class="chip" data-v="당포의 히든카드">당포의 히든카드</button>
     <button type="button" class="chip" data-v="탐관오리의 으뜸">탐관오리의 으뜸</button>
@@ -611,13 +658,6 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   </div>
   <div class="field"><label for="t-debate">나의 생각 정리</label>
     <textarea class="hand" id="t-debate" data-k="debate" placeholder="전쟁 중이라 군량미를 모으느라 백성들에게 미움을 샀을 것 같다."></textarea></div>
-  <details class="hint">
-    <summary>힌트: 그날 일기의 뒷부분</summary>
-    <div class="in">
-      <p><b>당시는 전쟁 중</b>이었어요. 이순신은 같은 날 일기 뒷부분에, 남쪽 지방의 종잡을 수 없는 말만 듣고 나라를 그르치는 간사한 말이 진회가 악무목을 모함한 짓과 다를 바 없다며 통탄했어요.</p>
-      <p class="gloss">진회: 송나라의 간신 · 악무목: 진회의 모함으로 죽은 충신 악비</p>
-    </div>
-  </details>
 </section>
 
 <section class="page" data-name="이순신 공원 · 승리 전략" data-key="park">
@@ -750,9 +790,9 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <div class="field"><label for="t-trap">나의 설명</label><textarea class="hand" id="t-trap" data-k="trap" placeholder="양지암취와 좁은 바다 때문에 왜선이 빠져나갈 길이 없었다."></textarea></div>
 </section>
 
-<section class="page day2" data-name="첫 승 · 양지암취" data-key="yangji">
-  <div class="folio"><span><b>백의 Road(路) 비망 Log(錄)</b></span><span>옥포대첩기념공원 · 양지암취</span></div>
-  <h2>조선 수군이 숨어 지나간 곳</h2>
+<section class="page day2" data-name="첫 승 · 옥포해전" data-key="yangji">
+  <div class="folio"><span><b>백의 Road(路) 비망 Log(錄)</b></span><span>옥포대첩기념공원 · 옥포해전</span></div>
+  <h2>첫 승의 바다, 옥포</h2>
   <div class="stamp" data-stamp="yangji"></div>
   <div class="info"><b>옥포 해전</b><span>임진년 5월 7일, 조선 수군은 옥포에서 왜선 26척을 깨뜨리며 첫 승리를 거두었어요.</span><span>‘취(嘴)’는 새의 부리처럼 바다로 뾰족하게 튀어나온 땅을 말해요.</span></div>
 </section>
@@ -980,16 +1020,22 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 
 </div></div>
 
-<nav class="pager" id="pager" hidden>
-  <button class="btn" id="prev" type="button" aria-label="이전 장">‹ 이전</button>
-  <button class="pg" id="pgInfo" type="button" aria-label="차례로 가기"></button>
-  <button class="btn fill" id="next" type="button" aria-label="다음 장">다음 ›</button>
-</nav>
+
 
 <script>
 (function(){
 const $=s=>document.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* ===== 쪽 구조: 본문 묶기 · 쪽 번호 · 표지 버튼 ===== */
+const HOME='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3.5c2-1 4-1 6 .5v10c-2-1.5-4-1.5-6-.5zM14 3.5c-2-1-4-1-6 .5v10c2-1.5 4-1.5 6-.5z"/></svg>';
+$$('.page').forEach((pg,idx)=>{if(pg.classList.contains('cover'))return;const fo=pg.querySelector(':scope>.folio');const pc=document.createElement('div');pc.className='pc';
+  [...pg.children].forEach(c=>{if(c!==fo)pc.appendChild(c)});pg.appendChild(pc);
+  if(fo){const b=document.createElement('button');b.type='button';b.className='homebtn';b.setAttribute('aria-label','표지로 가기');b.title='표지로';b.innerHTML=HOME;fo.firstElementChild.prepend(b)}
+  const tas=pc.querySelectorAll('textarea.hand');const first=pc.firstElementChild;
+  if(first&&first.matches('.baekhero,.hope,.voy'))pc.classList.add('hero');
+  else if(tas.length){const box=tas[tas.length-1].closest('.field,.paper');if(box&&box.parentElement===pc&&box===pc.lastElementChild){box.classList.add('grow')}else pc.classList.add('center')}
+  else pc.classList.add('center');
+  const f=document.createElement('div');f.className='pfoot';f.innerHTML='<button type="button" class="ear pv" aria-label="이전 장"></button><button type="button" class="pnum" aria-label="차례로 가기"></button><button type="button" class="ear nx" aria-label="다음 장"></button>';pg.appendChild(f)});
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const PAD_DEFAULT='https://padlet.com/jamongyi/2026-road-log-s0242jsgojojd287pxdm';
 
@@ -1007,7 +1053,7 @@ const STAMPS={
  dangpo:{t:'당포성지에서 본 섬',p:'당포성지',h:'바다와 섬이 함께 보이도록 찍어요.',s:['당포','성지'],page:'terrain'},
  cheonja:{t:'천자총통을 찾아라',p:'이순신 공원',h:'천자총통을 찾아 인증샷을 찍어요.',s:['천자','총통'],page:'park2'},
  gobuk:{t:'거북선을 찾아라',p:'통영 강구항',h:'거북선과 함께 찍어요.',s:['거북','선'],page:'role'},
- yangji:{t:'양지암취',p:'옥포대첩기념공원',h:'바다로 튀어나온 양지암취가 보이게 찍어요.',s:['양지','암취'],page:'yangji'},
+ yangji:{t:'옥포해전',p:'옥포대첩기념공원',h:'첫 승의 바다, 옥포 앞바다가 보이게 찍어요.',s:['옥포','해전'],page:'yangji'},
  baeklunch:{t:'장군의 점심',p:'둘째 날 점심',h:'친구들과 함께 먹는 점심을 찍어요.',s:['장군','점심'],page:'yeonpo2'},
  chil:{t:'칠천량의 바다',p:'칠천량해전공원',h:'칠천량 바다가 보이게 찍어요.',s:['칠천','량'],page:'chilsea'}
 };
@@ -1017,7 +1063,7 @@ const SIJIN=[['자시','23~1시'],['축시','1~3시'],['인시','3~5시'],['묘�
 let me=null, S=null;
 const profiles=()=>LS.get('rl.profiles',[]);
 function hash(s){let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)}
-function loadMe(p){me=p;S=LS.get('rl.data.'+p.id,{t:{},q:{},c:{},clock:{},sijo:[[],[],[]],box:[]});S.t=S.t||{};S.q=S.q||{};S.c=S.c||{};S.clock=S.clock||{};S.sijo=S.sijo||[[],[],[]];S.box=S.box||[];LS.set('rl.last',p.id);hydrate();go(1,1)}
+function loadMe(p){me=p;S=LS.get('rl.data.'+p.id,{t:{},q:{},c:{},clock:{},sijo:[[],[],[]],box:[]});S.t=S.t||{};S.q=S.q||{};S.c=S.c||{};S.clock=S.clock||{};S.sijo=S.sijo||[[],[],[]];S.box=S.box||[];LS.set('rl.last',p.id);hydrate();go(S.lastPage>0?S.lastPage:1,1)}
 function save(){if(me)LS.set('rl.data.'+me.id,S)}
 $$('.tabs2 button').forEach(b=>b.onclick=()=>{$$('.tabs2 button').forEach(x=>x.setAttribute('aria-selected',x===b));$('#lt-new').hidden=b.dataset.lt!=='new';$('#lt-old').hidden=b.dataset.lt!=='old';$('#lErr').textContent=''});
 let oldPick=null,delArm=0;
@@ -1043,22 +1089,32 @@ $('#oGo').onclick=()=>{const p=profiles().find(x=>x.id===oldPick);if(!p)return $
 $('#guest').onclick=()=>loadMe({id:'guest',nick:'둘러보기',team:'',guest:1});
 $('#logout').onclick=()=>{me=null;S=null;$('#nPin').value='';$('#oPin').value='';oldPick=LS.get('rl.last',null);drawOld();if(profiles().some(p=>!p.guest))$$('.tabs2 button')[1].click();go(0,-1)};
 
-/* ===== A5 한 면 맞추기 ===== */
-function fit(){const st=$('#stage'),bk=$('#book');const pH=$('#pager').hidden?0:$('#pager').offsetHeight;const aw=Math.min(innerWidth-16,760),ah=innerHeight-pH-20-(parseFloat(getComputedStyle(document.documentElement).paddingTop)||0)-(parseFloat(getComputedStyle(document.documentElement).paddingBottom)||0);
-  const sc=Math.max(.5,Math.min(aw/380,ah/537));bk.style.transform=`scale(${sc})`;st.style.width=380*sc+'px';st.style.height=537*sc+'px'}
+/* ===== 화면 맞추기: 휴대폰은 꽉 차게, 큰 화면은 책 한 쪽 ===== */
+function fit(){const st=$('#stage'),bk=$('#book'),m=innerWidth<640;document.documentElement.classList.toggle('m',m);
+  const cs=getComputedStyle(document.documentElement),pt=parseFloat(cs.paddingTop)||0,pb=parseFloat(cs.paddingBottom)||0;let W,H,sc;
+  if(m){W=innerWidth;H=innerHeight-pt-pb;sc=1}else{W=400;H=760;sc=Math.max(.6,Math.min(1.25,(innerHeight-pt-pb-24)/H,(innerWidth-24)/W))}
+  bk.style.width=W+'px';bk.style.height=H+'px';bk.style.transform=sc===1?'none':`scale(${sc})`;st.style.width=W*sc+'px';st.style.height=H*sc+'px'}
 addEventListener('resize',fit);
-/* ===== 페이지 넘기기 ===== */
-const pages=$$('.page');let cur=0;
-function go(i,dir){i=Math.max(0,Math.min(pages.length-1,i));if(i>0&&!me)i=0;
-  pages.forEach((p,k)=>p.hidden=k!==i);const p=pages[i];p.classList.remove('turn','back');void p.offsetWidth;if(dir)p.classList.add(dir>0?'turn':'back');
-  if(p.dataset.key==='rain'){if(!rainRAF)rainDraw()}else{rainOff()}if(p.dataset.key==='voyage')drawVoy();
-  cur=i;$('#pager').hidden=i===0;$('#prev').disabled=i<=1;$('#next').disabled=i===pages.length-1;
-  $('#pgInfo').innerHTML=`<b>${esc(p.dataset.name)}</b>${i} / ${pages.length-1}`;
-  if(p.dataset.key==='send')buildOut();if(p.dataset.key==='toc')drawBoard();p.scrollTop=0;window.scrollTo({top:0});fit()}
-$('#prev').onclick=()=>go(cur-1,-1);$('#next').onclick=()=>go(cur+1,1);$('#pgInfo').onclick=()=>go(1,-1);
+/* ===== 책장 넘기기 ===== */
+const pages=$$('.page');let cur=0,busy=false;const total=pages.length-1;
+pages.forEach((pg,k)=>{const f=pg.querySelector(':scope>.pfoot');if(!f)return;f.querySelector('.pnum').textContent=k;const pv=f.querySelector('.pv'),nx=f.querySelector('.nx');pv.hidden=k<=1;nx.hidden=k>=total;
+  pv.onclick=()=>go(cur-1,-1);nx.onclick=()=>go(cur+1,1);f.querySelector('.pnum').onclick=()=>go(1,-1);
+  const hb=pg.querySelector('.homebtn');if(hb)hb.onclick=()=>go(0,-1)});
+function coverMode(){const L=$('#login');L.classList.toggle('in',!!me);if(me)$('#meName').textContent=(me.team?me.team+' ':'')+me.nick}
+function go(i,dir){i=Math.max(0,Math.min(total,i));if(i>0&&!me)i=0;if(busy)return;const old=pages[cur],p=pages[i];
+  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send')buildOut();if(p.dataset.key==='toc')drawBoard();if(i===0)coverMode();
+  p.scrollTop=0;const anim=dir&&old!==p&&!old.hidden;
+  if(!anim){pages.forEach((q,k)=>q.hidden=k!==i)}
+  else{busy=true;p.hidden=false;if(dir>0){old.style.zIndex=3;p.style.zIndex=2;p.classList.add('under');old.classList.add('flip-out')}else{p.style.zIndex=3;old.style.zIndex=2;p.classList.add('flip-in')}
+    setTimeout(()=>{old.hidden=true;old.classList.remove('flip-out');p.classList.remove('flip-in','under');old.style.zIndex='';p.style.zIndex='';busy=false},620)}
+  cur=i;if(S&&i>0){S.lastPage=i;save()}}
 const byKey=k=>pages.findIndex(p=>p.dataset.key===k);
-let tx=null,ty=0;document.addEventListener('touchstart',e=>{if(e.target.closest('input,textarea,#clock,.chips,.carousel')){tx=null;return}tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
-document.addEventListener('touchend',e=>{if(tx==null||cur===0)return;const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6)go(cur+(dx<0?1:-1),dx<0?1:-1);tx=null},{passive:true});
+let px=null,py=0;$('#book').addEventListener('pointerdown',e=>{if(e.target.closest('input,textarea,select,#clock,#map,.carousel,.rainbox')){px=null;return}px=e.clientX;py=e.clientY});
+$('#book').addEventListener('pointerup',e=>{if(px==null||cur===0)return;const dx=e.clientX-px,dy=e.clientY-py;px=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(cur+(dx<0?1:-1),dx<0?1:-1)});
+$('#book').addEventListener('pointercancel',()=>{px=null});
+addEventListener('keydown',e=>{if(e.target.closest('input,textarea,select')||cur===0)return;if(e.key==='ArrowRight')go(cur+1,1);if(e.key==='ArrowLeft')go(cur-1,-1)});
+$('#meGo').onclick=()=>go(S&&S.lastPage>0?S.lastPage:1,1);
+$('#meOut').onclick=()=>$('#logout').click();
 
 /* ===== 차례 ===== */
 const toc=$('#toc');[['삼도수군통제사의 일터를 걷고 기록하다.','출근 Road(路) 업무 Log(錄)','day1'],['첫 승의 바다에서 모든 것을 잃고, 그래도 다시!','백의 Road(路) 비망 Log(錄)','d2']].forEach(([t,sub,k])=>{const b=document.createElement('button');b.type='button';b.className='ch';if(!k)b.disabled=true;
@@ -1130,7 +1186,7 @@ const NA=['권준','김완','진무성'],NB=['유몽인','이몽상','이충길'
 function drawPick(){[['a',NA],['b',NB]].forEach(([g,ns])=>{const box=$(`[data-pick="${g}"]`);box.innerHTML='';ns.forEach(n=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=n;b.setAttribute('aria-pressed',S.c['pick'+g]===n);b.onclick=()=>{S.c['pick'+g]=n;save();drawPick()};box.appendChild(b)})});
   $('#clue').hidden=!S.c.found;$('#reveal').hidden=!S.c.rank;
   const rp=$('#rankPick');rp.innerHTML='';['사도첨사','순천부사','낙안군수'].forEach(r=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=r;b.setAttribute('aria-pressed',S.c.rank?r==='순천부사':S.c.rankTry===r);
-    b.onclick=()=>{if(S.c.rank)return;S.c.rankTry=r;if(r==='순천부사'){S.c.rank=1;save();drawPick();cheer('who')}else{save();drawPick();const rm=$('#rankMsg');rm.className='qmsg';rm.textContent=r==='사도첨사'?'사도첨사는 왜장의 머리를 벤 김완의 벼슬이에요. 다시 골라 봐요.':'낙안군수는 일기에서 파면된 신호의 벼슬이에요. 다시 골라 봐요.'}};rp.appendChild(b)});
+    b.onclick=()=>{if(S.c.rank)return;S.c.rankTry=r;if(r==='순천부사'){S.c.rank=1;save();drawPick();cheer('gwonjun')}else{save();drawPick();const rm=$('#rankMsg');rm.className='qmsg';rm.textContent=r==='사도첨사'?'사도첨사는 왜장의 머리를 벤 김완의 벼슬이에요. 다시 골라 봐요.':'낙안군수는 일기에서 파면된 신호의 벼슬이에요. 다시 골라 봐요.'}};rp.appendChild(b)});
   $('#clue .gap').textContent=S.c.rank?'순천부사':'?';const rm=$('#rankMsg');if(S.c.rank){rm.className='qmsg ok';rm.textContent='확인 완료! 추리가 맞았어요.'}else if(!S.c.rankTry)rm.textContent=''}
 $('#pickGo').onclick=()=>{const a=S.c.picka,b=S.c.pickb,m=$('#pickMsg');if(!a||!b){m.className='qmsg';m.textContent='위아래에서 한 명씩 골라요.';return}
   if(!(a==='권준'&&b==='순천부사')){S.c.found=0;S.c.rank=0;S.c.rankTry=null;save();drawPick()}
@@ -1274,7 +1330,7 @@ $('#copy').onclick=()=>{const ta=$('#out'),t=$('#toast');navigator.clipboard.wri
 
 /* ===== 시작 ===== */
 const want=(h=>pages.some(p=>p.dataset.key===h)?h:null)((location.hash||'').slice(1));
-go(0);
+fit();go(0);
 if(want){
   // 현장 QR로 들어오면: 로그인 후 해당 장으로
   const orig=loadMe;loadMe=function(p){orig(p);go(byKey(want),1)};}
