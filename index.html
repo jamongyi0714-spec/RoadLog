@@ -507,6 +507,7 @@ h2 .kicker{display:block;margin-bottom:2px}
 .rreset:hover{background:rgba(236,154,114,.35)}
 .guestrow{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
 #lt-me .linkbtn.danger{align-self:center}
+.cover .credit{position:relative;z-index:1;text-align:center;font-size:.66rem;color:var(--cover-ink);opacity:.6;margin-top:-4px}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -568,6 +569,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <div class="err" id="lErr" role="status" style="min-height:0"></div>
     <div class="guestrow"><button class="linkbtn" id="guest" type="button">가입 없이 둘러보기 ›</button><button class="linkbtn danger" id="gDel2" type="button" hidden>둘러보기 기록 지우기</button></div>
   </div>
+  <p class="credit">일러스트: Canva</p>
 </section>
 
 <section class="page" data-name="차례" data-key="toc">
@@ -1465,7 +1467,7 @@ async function buildCard(d){setPad();const el=$('#rcard'+d);const who=(me.team?m
    <div class="rc-who"><span>${esc(who)}</span><span>${now.getFullYear()}. ${now.getMonth()+1}. ${now.getDate()}.</span></div>
    <div class="rc-stamps">${ph.map(([k,src])=>`<div class="rc-st${src?' on':''}">${src?`<img src="${src}" alt="">`:''}<span class="rc-seal">${STAMPS[k].s[0]}<br>${STAMPS[k].s[1]}</span><small>${esc(STAMPS[k].t)}</small></div>`).join('')}</div>
    <div class="rc-body">${items.length?items.map(([h,v,c])=>`<div class="rc-sec ${c}"><span>${esc(h)}</span><p>${esc(v).replace(/\n/g,'<br>')}</p></div>`).join(''):'<p class="rc-empty">아직 적은 기록이 없어요. 앞 장으로 돌아가 채워 보세요.</p>'}</div>
-   <div class="rc-foot">2026 | Road(路) Log(錄) 난중일기 · 또路錄</div>`}
+   <div class="rc-foot">2026 | Road(路) Log(錄) 난중일기 · 또路錄 · 일러스트: Canva</div>`}
 async function saveCard(d){const t=$('#toast'+d);t.className='toast';t.textContent='이미지를 만들고 있어요…';
   try{if(!window.html2canvas)throw new Error('lib');await buildCard(d);const src=$('#rcard'+d);const box=document.createElement('div');box.style.cssText='position:fixed;left:-10000px;top:0;width:360px;background:#fff';const cl=src.cloneNode(true);cl.id='';box.appendChild(cl);document.body.appendChild(box);
     await document.fonts.ready;const cv=await html2canvas(cl,{scale:2,backgroundColor:'#fdfbf7',useCORS:true,logging:false});box.remove();
