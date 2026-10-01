@@ -251,7 +251,7 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
   .stage,.book{position:static!important;transform:none!important;width:auto!important;height:auto!important;overflow:visible!important}
   html,body{height:auto!important;overflow:visible!important}
   .page,.page[hidden]{display:flex!important;position:static!important;width:380px!important;height:auto!important;min-height:537px;zoom:1.4705;box-shadow:none;border-radius:0;overflow:visible!important;break-after:page;page-break-after:always;animation:none!important;transform:none!important;filter:none!important}
-  .pfoot,.homebtn,#lt-me{display:none!important}
+  .pfoot,.homebtn,#lt-me,.popbtn,#modal,#oxGo,.voy-t{display:none!important}
   .pc.center>:first-child{margin-top:0}.pc.center>:last-child,.pc.hero>*{margin-bottom:0}
   .grow textarea{min-height:90px!important}
   [data-key="toc"] .guide{display:none!important}
@@ -422,6 +422,43 @@ h2 .kicker{display:block;margin-bottom:2px}
 .rainbox{flex:1 1 262px!important;min-height:262px}
 [data-key="clock"] .clockwrap svg{max-width:min(320px,38vh)}
 [data-key="plan"] #map{max-height:min(240px,26vh)!important}
+/* round 2 */
+.twoship{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px}
+.sp{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;border-radius:12px;padding:8px 6px;min-width:0}
+.sp.pan{background:var(--tide-soft)}.sp.gob{background:var(--seal-soft)}
+.sp svg{width:96px;height:56px}.sp img{height:62px;width:auto}
+.sp b{font-family:var(--f-diary);font-size:1.05rem}.sp.pan b{color:var(--tide)}.sp.gob b{color:var(--seal)}
+.sp span{font-size:.74rem;color:var(--ink-soft);line-height:1.35}
+.vs{font-family:var(--f-diary);font-weight:700;color:var(--ink-soft);font-size:.9rem}
+.sorthead span:nth-child(2){color:var(--tide);font-weight:700}.sorthead span:nth-child(3){color:var(--seal);font-weight:700}
+.srow:nth-of-type(even){background:color-mix(in srgb,var(--tide-soft) 40%,var(--paper))}
+.dot[data-v="판"][aria-pressed="true"]{background:var(--tide);border-color:var(--tide)}
+.dot[data-v="거"][aria-pressed="true"]{background:var(--seal);border-color:var(--seal)}
+.popbtn{font:inherit;font-size:.9rem;display:flex;align-items:center;justify-content:center;gap:6px;border:1.5px dashed var(--tide);border-radius:10px;padding:9px;background:var(--tide-soft);color:var(--tide);font-weight:700;cursor:pointer}
+.popbtn::before{content:"✉";font-weight:400}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(18,20,42,.55);display:grid;place-items:center;padding:20px;animation:mfade .2s ease}
+.modal[hidden]{display:none!important}
+.mbox{position:relative;background:var(--paper);color:var(--ink);border-radius:16px;max-width:360px;width:100%;padding:22px 20px 18px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:10px;border-top:5px solid var(--seal);animation:mpop .25s cubic-bezier(.3,1.4,.5,1)}
+.mbox h3{font-family:var(--f-diary);font-size:1.15rem;color:var(--seal);margin:0}
+.mbox .poem{font-size:1.02rem;line-height:1.8}
+.mtip{font-size:.9rem;background:var(--tide-soft);border-radius:8px;padding:8px 10px}
+.mx{position:absolute;top:8px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:var(--rule);color:var(--ink);font-size:1.3rem;line-height:1;cursor:pointer}
+@keyframes mfade{from{opacity:0}}@keyframes mpop{from{transform:scale(.85);opacity:0}}
+.ox{display:flex;flex-direction:column;gap:6px}
+.oxr{font:inherit;text-align:left;display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center;border:1.5px solid var(--rule);border-radius:10px;padding:8px 10px;background:var(--paper);color:var(--ink);cursor:pointer;font-size:.9rem;line-height:1.45}
+.oxr .mk{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:1rem;color:var(--seal);font-weight:700}
+.oxr.on{border-color:var(--cover)}.oxr.on .mk{border-color:var(--seal);background:var(--seal-soft)}
+.oxr.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 8%,var(--paper))}.oxr.bad{border-color:var(--no);background:color-mix(in srgb,var(--no) 8%,var(--paper))}
+.oxr small{display:block;color:var(--no);font-size:.78rem;margin-top:2px}
+.voy-t{position:absolute;left:0;right:0;top:44%;text-align:center;font-family:var(--f-diary);font-size:1.2rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5);z-index:1}
+.voyships span{transform:translate(-50%,-100%)}
+.voyships em{font-style:normal}
+@media (prefers-reduced-motion:no-preference){.voyships span{animation:bob2 3.4s ease-in-out infinite alternate}@keyframes bob2{to{transform:translate(-50%,calc(-100% - 4px)) rotate(-2deg)}}}
+.roster{border:1.5px solid var(--rule);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.roster ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px 8px}
+.roster li{font-family:var(--f-hand);font-size:1.2rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.roster li b{font-family:var(--f-ui);font-weight:400;font-size:.66rem;color:var(--ink-soft);margin-right:4px}
+.roster li.empty{color:var(--rule)}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -611,7 +648,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <div class="info"><b>장계 속 당포</b><span>왜적 300여 명 가운데 반은 성 안에, 나머지는 성 밖 험한 곳을 차지하고 조총을 쏘았어요. 적은 높은 곳, 조선 수군은 낮은 바다에 있었어요.</span></div>
   <p class="q sm"><b>렌즈 질문</b> 지형이 불리한 곳에서 조선 수군은 어떻게 이겼을까?</p>
   <div class="field"><label for="t-win">나의 생각</label>
-    <textarea class="hand" id="t-win" data-k="win" placeholder="거북선이 먼저 대장선으로 돌진해 왜장을 쓰러뜨렸다."></textarea></div>
+    <textarea class="hand" id="t-win" data-k="win"></textarea></div>
 </section>
 
 <section class="page" data-name="같은 인물 · 두 기록" data-key="gwonjun">
@@ -657,7 +694,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <button type="button" class="chip" data-v="둘 다일 수 있다">둘 다일 수 있다</button>
   </div>
   <div class="field"><label for="t-debate">나의 생각 정리</label>
-    <textarea class="hand" id="t-debate" data-k="debate" placeholder="전쟁 중이라 군량미를 모으느라 백성들에게 미움을 샀을 것 같다."></textarea></div>
+    <textarea class="hand" id="t-debate" data-k="debate"></textarea></div>
 </section>
 
 <section class="page" data-name="이순신 공원 · 승리 전략" data-key="park">
@@ -668,9 +705,9 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <span class="play"><svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z"/></svg></span>
     <span>도움 영상 보기<small>한산 대첩의 그날 (유튜브에서 열려요)</small></span>
   </a>
-  <p class="strat">내가 생각하는 한산 대첩의 승리 전략은 <input id="t-strat" data-k="strat" aria-label="한산 대첩의 승리 전략" placeholder="적을 넓은 바다로 끌어내기" maxlength="30"> 이다!</p>
+  <p class="strat">내가 생각하는 한산 대첩의 승리 전략은 <input id="t-strat" data-k="strat" aria-label="한산 대첩의 승리 전략" maxlength="30"> 이다!</p>
   <div class="field"><label for="t-hansan">그렇게 생각한 까닭</label>
-    <textarea class="hand" id="t-hansan" data-k="hansan" placeholder="판옥선이 쫓기는 척하며 적을 한산도 앞바다로 끌어냈다."></textarea></div>
+    <textarea class="hand" id="t-hansan" data-k="hansan"></textarea></div>
 </section>
 
 <section class="page" data-name="이순신 공원 · 도장" data-key="park2">
@@ -692,7 +729,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <p class="src">일성호가: 한 곡조 피리 소리 · 애를 끊다: 창자가 끊어질 듯 슬프다</p>
   </div>
   <div class="field"><label for="t-ae">장군은 왜 피리 소리에 ‘애를 끊는다’고 했을까?</label>
-    <textarea class="hand" id="t-ae" data-k="ae" placeholder="전쟁이 길어지고 가족이 걱정되어 마음이 아팠을 것 같다."></textarea></div>
+    <textarea class="hand" id="t-ae" data-k="ae"></textarea></div>
 </section>
 
 <section class="page" data-name="별지 · 시조 쓰기" data-key="sijo2">
@@ -730,17 +767,23 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 </section>
 
 <section class="page day2" data-name="판옥선과 거북선" data-key="ship">
-  <div class="folio"><span><b>백의 Road(路) 비망 Log(錄)</b></span><span>통영 강구항 · 구조 비교</span></div>
+  <div class="folio"><span><b>백의 Road(路) 비망 Log(錄)</b></span><span>통영 강구항 · 군선 구조 비교</span></div>
+  <div class="kicker">군선 구조 비교</div>
   <h2>판옥선일까, 거북선일까?</h2>
+  <div class="twoship">
+    <div class="sp pan"><svg viewBox="0 0 120 70" aria-hidden="true"><path d="M8 40h104l-10 16H20z" fill="#9a6435" stroke="#3b2a1c" stroke-width="1.6"/><rect x="24" y="28" width="72" height="12" fill="#c9a274" stroke="#3b2a1c" stroke-width="1.4"/><rect x="34" y="18" width="52" height="10" fill="#e8d6b3" stroke="#3b2a1c" stroke-width="1.4"/><g stroke="#3b2a1c" stroke-width="1.4"><path d="M30 56l-6 10M44 56l-6 10M58 56l-6 10M72 56l-6 10M86 56l-6 10"/></g><path d="M60 18V2" stroke="#3b2a1c" stroke-width="1.6"/><path d="M60 3l14 5-14 5z" fill="#cf4637"/><g fill="#23264a"><circle cx="34" cy="34" r="2"/><circle cx="50" cy="34" r="2"/><circle cx="66" cy="34" r="2"/><circle cx="82" cy="34" r="2"/></g></svg><b>판옥선</b><span>널빤지로 지은 2층 집 같은 배</span></div>
+    <div class="vs">VS</div>
+    <div class="sp gob"><img src="img/ship.webp" alt="" width="64" height="96"><b>거북선</b><span>판옥선에 지붕을 씌운 돌격선</span></div>
+  </div>
   <div class="sort" id="sort"></div>
-  <div class="qrow"><button type="button" class="btn" id="sortGo">확인</button><span class="qmsg" id="sortMsg" role="status"></span></div>
+  <div class="qrow"><button type="button" class="btn fill" id="sortGo">확인</button><span class="qmsg" id="sortMsg" role="status"></span></div>
 </section>
 
 <section class="page day2" data-name="배의 구조와 역할" data-key="role">
   <div class="folio"><span><b>백의 Road(路) 비망 Log(錄)</b></span><span>통영 강구항 · 역할 추론</span></div>
   <h2>구조로 추론하는 수군의 역할</h2>
   <div class="field"><label for="t-pan">판옥선은 어떤 역할을 했을까?</label><input class="hand" id="t-pan" data-k="pan" placeholder="많은 군사와 총통을 싣고 싸운 주력선"></div>
-  <div class="field"><label for="t-gob">거북선은 어떤 역할을 했을까?</label><input class="hand" id="t-gob" data-k="gob" placeholder="지붕 덕분에 적진으로 먼저 돌격"></div>
+  <div class="field"><label for="t-gob">거북선은 어떤 역할을 했을까?</label><input class="hand" id="t-gob" data-k="gob"></div>
   <div class="stamp" data-stamp="gobuk"></div>
 </section>
 
@@ -769,7 +812,8 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     </div>
     <p class="qmsg" id="routeMsg" role="status"></p>
   </div>
-  <details class="hint"><summary>길잡이 장수의 조언</summary><div class="in"><p class="poem">어영담은 바닷가에서 자라나 뱃길에 매우 익숙하고 영남과 호남의 물길 사정과 섬들의 형세를 또렷하고 상세히 알고 있습니다.</p><p class="gloss">『임진장초』, 어영담을 조방장으로 임명해 주시기를 청하는 장계 중</p></div></details>
+  <button type="button" class="popbtn" data-pop="tpl-guide">길잡이 장수의 조언 보기</button>
+  <template id="tpl-guide"><h3>길잡이 장수의 조언</h3><p class="poem">어영담은 바닷가에서 자라나 뱃길에 매우 익숙하고 영남과 호남의 물길 사정과 섬들의 형세를 또렷하고 상세히 알고 있습니다.</p><p class="gloss">『임진장초』, 어영담을 조방장으로 임명해 주시기를 청하는 장계 중</p><p class="mtip">물길을 잘 아는 장수가 있다면, 적의 눈에 띄지 않는 길도 찾을 수 있겠죠?</p></template>
 </section>
 
 
@@ -780,14 +824,10 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <div class="date">장계 · 옥포파왜병장</div>
     <p class="txt">동서에서 마주 포위하고 포를 쏘고 화살을 쏘기를 바람과 우레 같이 하였습니다.</p>
   </div>
-  <span class="lbl">까닭을 모두 골라요</span>
-  <div class="chips" data-multi="trap">
-    <button type="button" class="chip" data-v="옥포 앞바다는 폭 약 1.8km의 좁은 바다">좁은 바다(약 1.8km)</button>
-    <button type="button" class="chip" data-v="양지암취가 바깥 바다로 나가는 길을 가림">양지암취가 길을 막음</button>
-    <button type="button" class="chip" data-v="조선 수군이 동서에서 포위함">동서에서 포위</button>
-    <button type="button" class="chip" data-v="왜군이 상륙해 있다가 급히 배에 오름">급히 배에 오름</button>
-  </div>
-  <div class="field"><label for="t-trap">나의 설명</label><textarea class="hand" id="t-trap" data-k="trap" placeholder="양지암취와 좁은 바다 때문에 왜선이 빠져나갈 길이 없었다."></textarea></div>
+  <span class="lbl">앞에서 배운 것을 떠올려, 알맞은 까닭에 모두 ○ 하세요.</span>
+  <div class="ox" id="ox"></div>
+  <div class="qrow"><button type="button" class="btn fill" id="oxGo">확인</button><span class="qmsg" id="oxMsg" role="status"></span></div>
+  <div class="field"><label for="t-trap">왜선이 갇힌 까닭을 내 말로 정리하면?</label><textarea class="hand" id="t-trap" data-k="trap"></textarea></div>
 </section>
 
 <section class="page day2" data-name="첫 승 · 옥포해전" data-key="yangji">
@@ -840,7 +880,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <p class="txt">비가 내리다 개다 했다. 아침에 초계 군수가 <input class="blank" data-a="연포" aria-label="빈칸" autocomplete="off">국(무·두부·다시마·고기 등을 넣고 끓인 맑은 장국)을 마련해 와서 권했다. 오만한 기색이 많이 있고, 그의 처사가 예절 없음을 어떻게 말하랴.</p>
   </div>
   <div class="field"><label for="t-yp">장군은 어떤 마음으로 이 국을 드셨을까?</label>
-    <textarea class="hand" id="t-yp" data-k="yp" placeholder="어머니 생각에 국이 목으로 잘 넘어가지 않았을 것 같다."></textarea></div>
+    <textarea class="hand" id="t-yp" data-k="yp"></textarea></div>
 </section>
 
 <section class="page day2" data-name="장군의 점심 · 도장" data-key="yeonpo2">
@@ -883,7 +923,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <button type="button" class="chip" data-v="좁은 칠천량에서 밤을 보냄">좁은 칠천량에서 밤을 보냄</button>
     <button type="button" class="chip" data-v="적의 야간 기습">적의 야간 기습</button>
   </div>
-  <div class="field"><label for="t-mis">가장 결정적인 실수는? 그 까닭은?</label><textarea class="hand" id="t-mis" data-k="mis" placeholder="지친 군사들을 쉬게 하지 못한 채 싸움에 나선 것이다."></textarea></div>
+  <div class="field"><label for="t-mis">가장 결정적인 실수는? 그 까닭은?</label><textarea class="hand" id="t-mis" data-k="mis"></textarea></div>
   <div class="field"><label for="t-ifme">내가 통제사였다면?</label><input class="hand" id="t-ifme" data-k="ifme" placeholder="물러나 군사들을 먼저 쉬게 했을 것이다."></div>
 </section>
 
@@ -971,8 +1011,8 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 
 <section class="page day2  end" data-name="다시, 길 위에서" data-key="voyage">
   <div class="folio"><span><b>백의 Road(路) 비망 Log(錄)</b></span><span>출정을 마치고! · 나의 함대</span></div>
-  <div class="voy" id="voy"><div class="voyships" id="voyships"></div></div>
-  <h2>오늘의 Road Log를 접으며</h2>
+  <div class="voy" id="voy"><span class="voy-t">나의 12척, 출항!</span><div class="voyships" id="voyships"></div></div>
+  <div class="roster"><span class="ex-k">나의 함대 명부</span><ol id="roster"></ol></div>
   <p class="lead">430년 전 장군이 걸었던 길 위에 오늘 우리의 발자국을 더했어요. 언젠가 넘어지는 날이 오면, 오늘 이름 붙인 12척의 배를 떠올려 보세요.</p>
   <p class="poem close">그래도 다시. 또(또) 길(路)을 걷고 기록(錄)하며.</p>
 </section>
@@ -1022,6 +1062,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 
 
 
+<div class="modal" id="modal" hidden><div class="mbox" role="dialog" aria-modal="true"><button type="button" class="mx" aria-label="닫기">×</button><div class="mbody" id="mbody"></div></div></div>
 <script>
 (function(){
 const $=s=>document.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -1063,7 +1104,8 @@ const SIJIN=[['자시','23~1시'],['축시','1~3시'],['인시','3~5시'],['묘�
 let me=null, S=null;
 const profiles=()=>LS.get('rl.profiles',[]);
 function hash(s){let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)}
-function loadMe(p){me=p;S=LS.get('rl.data.'+p.id,{t:{},q:{},c:{},clock:{},sijo:[[],[],[]],box:[]});S.t=S.t||{};S.q=S.q||{};S.c=S.c||{};S.clock=S.clock||{};S.sijo=S.sijo||[[],[],[]];S.box=S.box||[];LS.set('rl.last',p.id);hydrate();go(S.lastPage>0?S.lastPage:1,1)}
+function loadMe(p){me=p;S=LS.get('rl.data.'+p.id,{t:{},q:{},c:{},clock:{},sijo:[[],[],[]],box:[]});S.t=S.t||{};S.q=S.q||{};S.c=S.c||{};S.clock=S.clock||{};S.sijo=S.sijo||[[],[],[]];S.box=S.box||[];LS.set('rl.last',p.id);hydrate();const tk=pendingKey;pendingKey=null;go(tk&&byKey(tk)>0?byKey(tk):(S.lastPage>0?S.lastPage:1),1)}
+let pendingKey=null;
 function save(){if(me)LS.set('rl.data.'+me.id,S)}
 $$('.tabs2 button').forEach(b=>b.onclick=()=>{$$('.tabs2 button').forEach(x=>x.setAttribute('aria-selected',x===b));$('#lt-new').hidden=b.dataset.lt!=='new';$('#lt-old').hidden=b.dataset.lt!=='old';$('#lErr').textContent=''});
 let oldPick=null,delArm=0;
@@ -1211,7 +1253,7 @@ function bindChips(){$$('[data-multi]').forEach(g=>{const k=g.dataset.multi;S.c[
   $$('[data-one]').forEach(g=>{const k=g.dataset.one;$$('.chip',g).forEach(b=>{b.setAttribute('aria-pressed',S.c[k]===b.dataset.v);b.onclick=()=>{S.c[k]=b.dataset.v;save();$$('.chip',g).forEach(x=>x.setAttribute('aria-pressed',x===b))}})})}
 function restoreQuiz(){$$('.entry[data-quiz]').forEach(en=>{const r=S.q[en.dataset.quiz];const bl=$$('.blank',en),m=en.querySelector('.qmsg');bl.forEach((b,k)=>{b.value=(r&&r.v&&r.v[k])||'';b.classList.remove('ok','no');b.readOnly=false});m.className='qmsg';m.textContent='';
   if(r&&r.ok){bl.forEach(b=>{b.classList.add('ok');b.readOnly=true});m.className='qmsg ok';m.textContent='정답! 장군의 일기를 제대로 읽었어요.'}})}
-function hydrate(){restoreQuiz();bindTexts();bindChips();selS=null;$('#ceH').textContent='시계에서 시간을 눌러요';$('#ceIn').value='';$('#ceIn').disabled=true;drawClock();drawPick();commonState();drawSijo();drawSort();drawFlips();drawPlan();restoreMap();drawRain();drawFleet();drawVoy();drawHope();$('#fromName').textContent=(me.team?me.team+' ':'')+me.nick;const sm=$('#sortMsg'),pm=$('#planMsg');sm.textContent='';pm.textContent='';$$('[data-stamp]').forEach(el=>drawStamp(el));drawBoard();
+function hydrate(){restoreQuiz();bindTexts();bindChips();selS=null;$('#ceH').textContent='시계에서 시간을 눌러요';$('#ceIn').value='';$('#ceIn').disabled=true;drawClock();drawPick();commonState();drawSijo();drawSort();drawFlips();drawPlan();restoreMap();drawOX();$('#oxMsg').textContent='';drawRain();drawFleet();drawVoy();drawHope();$('#fromName').textContent=(me.team?me.team+' ':'')+me.nick;const sm=$('#sortMsg'),pm=$('#planMsg');sm.textContent='';pm.textContent='';$$('[data-stamp]').forEach(el=>drawStamp(el));drawBoard();
   $('#padUrl').value=LS.get('rl.pad',PAD_DEFAULT)}
 
 
@@ -1223,8 +1265,14 @@ function drawSort(){const box=$('#sort');box.innerHTML='<div class="sorthead"><s
   $$('.dot',r).forEach(b=>b.onclick=()=>{S.c.sort[i]=b.dataset.v;S.c.sortChk=0;save();drawSort()});box.appendChild(r)})}
 $('#sortGo').onclick=()=>{const n=SHIP.filter(([t,a],i)=>S.c.sort[i]===a).length,m=$('#sortMsg');S.c.sortChk=1;S.c.sortN=n;save();drawSort();
   if(Object.keys(S.c.sort).length<SHIP.length){m.className='qmsg';m.textContent='아직 고르지 않은 설명이 있어요.';return}
-  m.className='qmsg'+(n===SHIP.length?' ok':'');m.textContent=n===SHIP.length?'모두 맞았어요! 거북선은 판옥선 위에 지붕을 씌운 배예요.':`${n} / ${SHIP.length} 맞았어요. 붉은 칸을 다시 골라 봐요.`;if(n===SHIP.length)cheer('role')};
+  m.className='qmsg'+(n===SHIP.length?' ok':'');m.textContent=n===SHIP.length?'모두 맞았어요! 거북선은 판옥선 위에 지붕을 씌운 배라서 둘이 닮은 점이 많아요.':`${n} / ${SHIP.length} 맞았어요. 붉은 칸을 다시 골라 봐요.`;if(n===SHIP.length)cheer('role')};
 
+/* ===== 둘째 날: 왜선이 갇힌 까닭 ===== */
+const OX=[['옥포 앞바다는 폭 약 1.8km의 좁은 바다였다.',1,'정찰 보고 ④를 떠올려 봐요.'],['옥포 앞바다는 배가 마음껏 움직일 수 있는 넓은 바다였다.',0,'보고 ④에서 좁은 바다라고 했어요.'],['양지암취가 바깥 바다로 빠져나가는 길을 가렸다.',1,'지도에서 양지암취의 위치를 떠올려 봐요.'],['조선 수군이 한쪽에서만 공격해 왜선이 반대쪽으로 달아났다.',0,'장계에는 ‘동서에서 마주 포위’했다고 적혀 있어요.'],['조선 수군이 동서에서 마주 포위했다.',1,'장계의 첫 구절이에요.']];
+function drawOX(){const box=$('#ox');S.c.ox=S.c.ox||{};box.innerHTML=OX.map(([t,a,h],i)=>{const v=S.c.ox[i];const chk=S.c.oxChk;const st=chk?((v?1:0)===a?' ok':' bad'):'';return `<button type="button" class="oxr${v?' on':''}${st}" data-i="${i}" aria-pressed="${!!v}"><span class="mk">${v?'○':''}</span><span>${esc(t)}${chk&&st===' bad'?`<small>${esc(h)}</small>`:''}</span></button>`}).join('');
+  $$('.oxr',box).forEach(b=>b.onclick=()=>{const i=+b.dataset.i;S.c.ox[i]=!S.c.ox[i];S.c.oxChk=0;save();drawOX();$('#oxMsg').textContent=''})}
+$('#oxGo').onclick=()=>{S.c.oxChk=1;const n=OX.filter(([t,a],i)=>(S.c.ox[i]?1:0)===a).length;S.c.oxN=n;S.c.trap=OX.filter((_,i)=>S.c.ox[i]).map(x=>x[0]);save();drawOX();const m=$('#oxMsg');
+  if(n===OX.length){m.className='qmsg ok';m.textContent='모두 맞았어요! 좁은 바다 + 양지암취 + 동서 포위, 왜선은 독 안에 든 쥐였어요.';cheer('siege')}else{m.className='qmsg';m.textContent=`${n} / ${OX.length} 맞았어요. 붉은 줄의 힌트를 읽고 다시 골라 봐요.`}};
 /* ===== 둘째 날: 정찰 보고 카드 ===== */
 const REPORT=[['탐후선','옥포에 왜선들이 정박해 있다!'],['원군 걱정','가덕도와 부산의 왜선에게 원군을 부르면 불리해진다.'],['지형','옥포 주변은 언덕이라 왜적이 높은 곳을 차지했다.'],['바다','옥포 앞바다는 폭 약 1.8km의 좁은 바다다.']];
 const REPORT_S=['왜선들이 옥포에 정박','원군을 부르면 불리','왜적이 언덕(고지)을 차지','폭 약 1.8km의 좁은 바다'];
@@ -1292,8 +1340,11 @@ const SHIP_EX=['가족','친구','내 꿈','운동','음악','반려동물','일
 function drawFleet(){const f=$('#fleet12');S.c.fleet=S.c.fleet||[];f.innerHTML=SHIP_EX.map((ex,i)=>`<div class="sh" style="color:var(--${i%3===0?'seal':'cover'})">${SHIPSVG}<input id="fl${i}" maxlength="8" placeholder="${ex}" value="${esc(S.c.fleet[i]||'')}" aria-label="${i+1}번째 배 이름"><span class="n">${i+1}호선</span></div>`).join('');
   $$('input',f).forEach((ip,i)=>ip.oninput=()=>{S.c.fleet[i]=ip.value;save()})}
 function drawHope(){const h=$('#hpFleet');if(h)h.innerHTML=Array(12).fill(SHIPSVG).join('')}
-function drawVoy(){const v=$('#voyships');const names=(S.c.fleet||[]).map((n,i)=>n||'').filter(Boolean);const list=names.length?names:['이름을 붙여 주세요'];
-  v.innerHTML=list.map((n,i)=>{const col=i%4,row=Math.floor(i/4);return `<span style="left:${6+col*23+(row%2)*8}%;top:${44+row*17}%;animation-delay:${-i*.7}s">${SHIPSVG.replace('<svg','<svg style="color:#fff"')}${esc(n)}</span>`}).join('')}
+function drawVoy(){const v=$('#voyships');const names=(S.c.fleet||[]).map((n,i)=>[n,i]).filter(x=>x[0]);const list=names.length?names:[['이름을 붙여 주세요',0]];
+  const N=list.length,rows=N>8?3:N>4?2:1,per=Math.ceil(N/rows);
+  v.innerHTML=list.map(([n,i],k)=>{const row=Math.floor(k/per),col=k%per,inRow=Math.min(per,N-row*per);const left=(100/(inRow+1))*(col+1)+(row%2?3:-3);const top=[66,77,88][rows===1?1:rows===2?row+1:row];
+    return `<span style="left:${left}%;top:${top}%;animation-delay:${-k*.7}s">${SHIPSVG.replace('<svg','<svg style="color:#fff"')}<em>${esc(n)}</em></span>`}).join('');
+  const r=$('#roster');if(r){const all=(S.c.fleet||[]);r.innerHTML=SHIP_EX.map((_,i)=>`<li${all[i]?'':' class="empty"'}><b>${i+1}호선</b>${esc(all[i]||'-')}</li>`).join('')}}
 $('#toFleet').onclick=()=>go(byKey('fleet'),1);
 $('#sail').onclick=()=>{drawVoy();go(byKey('voyage'),1)};
 
@@ -1314,7 +1365,7 @@ async function buildOut(){setPad();const T=S.t,C=S.c,L=[];const who=(me.team?me.
   L.push('\n■ 판옥선과 거북선 구조 비교: '+(C.sortN!=null?C.sortN+' / '+SHIP.length+' 맞음':'-'));if(T.pan)L.push('  판옥선의 역할: '+T.pan);if(T.gob)L.push('  거북선의 역할: '+T.gob);
   L.push('\n■ 옥포 해전 작전 회의');REPORT.forEach(([h,t],i)=>{const v=C.plan&&C.plan[i];L.push(`  ${'①②③④'[i]} ${t} → ${v!==undefined&&v!==''?PLAN2[+v][0]:'-'}`)});
   L.push('  진군 길: '+(C.route?(C.route==='B'?'양지암취 뒤로 숨어서':'넓은 바다로 곧장')+(C.routeOk?' (성공)':' (들킴)'):'-'));
-  L.push('\n■ 왜선이 도망가지 못한 까닭: '+((C.trap||[]).join(', ')||'-'));if(T.trap)L.push('  '+T.trap);
+  L.push('\n■ 왜선이 도망가지 못한 까닭: '+(C.oxN!=null?C.oxN+' / '+OX.length+' 맞음':'-'));if(T.trap)L.push('  '+T.trap);
   if(T.dream)L.push('\n■ 정유년 4월 11일, 장군이 마음을 진정할 수 없었던 까닭\n  '+T.dream);
   if(T.yp)L.push('\n■ 백의종군 중 장군의 점심(연포국)\n  장군의 마음: '+T.yp);if(T.yp2)L.push('  나의 점심 후기: '+T.yp2);
   L.push('\n■ 칠천량 해전 토의 · 확인한 단서: '+((C.clue7||[]).join(', ')||'-'));if(T.mis)L.push('  결정적 실수: '+T.mis);if(T.ifme)L.push('  내가 통제사였다면: '+T.ifme);
@@ -1328,12 +1379,15 @@ async function buildOut(){setPad();const T=S.t,C=S.c,L=[];const who=(me.team?me.
   const g=$('#gallery');g.innerHTML='';await dbReady;for(const k of Object.keys(STAMPS)){const d=await DB.get(me.id+':'+k);g.insertAdjacentHTML('beforeend',d?`<div><img alt="${esc(STAMPS[k].t)}" src="${d}"></div>`:`<div></div>`)}}
 $('#copy').onclick=()=>{const ta=$('#out'),t=$('#toast');navigator.clipboard.writeText(ta.value).then(()=>t.textContent='복사했어요. 패들렛을 열어 붙여 넣으세요.').catch(()=>{ta.focus();ta.select();t.textContent='기록을 선택해 두었어요. 길게 눌러 복사하세요.'})};
 
+/* ===== 가운데 팝업 ===== */
+function openPop(id){const t=document.getElementById(id);if(!t)return;$('#mbody').innerHTML='';$('#mbody').appendChild(t.content.cloneNode(true));$('#modal').hidden=false;$('#modal .mx').focus()}
+function closePop(){$('#modal').hidden=true}
+$$('[data-pop]').forEach(b=>b.onclick=()=>openPop(b.dataset.pop));
+$('#modal .mx').onclick=closePop;$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closePop()});addEventListener('keydown',e=>{if(e.key==='Escape')closePop()});
 /* ===== 시작 ===== */
 const want=(h=>pages.some(p=>p.dataset.key===h)?h:null)((location.hash||'').slice(1));
 fit();go(0);
-if(want){
-  // 현장 QR로 들어오면: 로그인 후 해당 장으로
-  const orig=loadMe;loadMe=function(p){orig(p);go(byKey(want),1)};}
+if(want)pendingKey=want;
 })();
 </script>
 
