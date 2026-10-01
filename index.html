@@ -1217,7 +1217,7 @@ async function clearGuest(btn){if(!gArm){gArm=1;btn.textContent='정말 지울�
   if(me&&me.guest){me=null;S=null}coverMode();const err=$('#lErr');err.style.color='var(--ok)';err.textContent='둘러보기 기록을 지웠어요.';setTimeout(()=>{err.style.color='';err.textContent=''},2500)}
 $('#gDel').onclick=()=>clearGuest($('#gDel'));$('#gDel2').onclick=()=>clearGuest($('#gDel2'));
 function go(i,dir){i=Math.max(0,Math.min(total,i));if(i>0&&!me)i=0;if(busy)return;const old=pages[cur],p=pages[i];
-  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff();narrStop()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'&&!S.c.rainSeen){S.c.rainSeen=1;save();setTimeout(()=>drawRain(true),400)}if(p.dataset.key==='toc'){drawBoard();drawBm()}if(i===0)coverMode();
+  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff();narrStop()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'){setTimeout(()=>{if(pages[cur]!==p)return;narrConsent(narrPlay,()=>{if(!S.c.rainSeen){S.c.rainSeen=1;save();drawRain(true)}})},dir?680:200)}if(p.dataset.key==='toc'){drawBoard();drawBm()}if(i===0)coverMode();
   p.scrollTop=0;const anim=dir&&old!==p&&!old.hidden;
   if(!anim){pages.forEach((q,k)=>q.hidden=k!==i)}
   else{busy=true;p.hidden=false;if(dir>0){old.style.zIndex=3;p.style.zIndex=2;p.classList.add('under');old.classList.add('flip-out')}else{p.style.zIndex=3;old.style.zIndex=2;p.classList.add('flip-in')}
@@ -1439,8 +1439,8 @@ function rainDraw(){const cv=$('#rainCv');if(!cv)return;const r=cv.getBoundingCl
 const NARR={src:'audio/narr-1014.mp3',reader:'신재민',club:'양주초 또路錄 동아리',times:null};
 let narrAudio=null,narrRAF=null;
 function narrStop(){if(narrAudio){narrAudio.pause()}if(narrRAF){cancelAnimationFrame(narrRAF);narrRAF=null}const b=$('#narrBtn');if(b){b.classList.remove('playing');b.querySelector('b').textContent='낭독 듣기'}}
-function narrConsent(then){$('#mbody').innerHTML=`<h3>🔊 낭독 · ${NARR.reader}</h3><p class="mclub">${NARR.club}</p><p class="mnote">이 목소리는 낭독자 본인과 보호자의 동의를 받아 이 일기장에서만 사용합니다. 녹음을 내려받거나 다른 곳에 옮겨 쓰지 말아 주세요.</p><button type="button" class="btn fill" id="narrAgree" style="width:100%">약속하고 듣기</button>`;
-  $('#modal').hidden=false;$('#narrAgree').focus();$('#narrAgree').onclick=()=>{S.c.narrOK=1;save();closePop();then()}}
+function narrConsent(then,skip){$('#mbody').innerHTML=`<h3>🔊 낭독 · ${NARR.reader}</h3><p class="mclub">${NARR.club}</p><p class="mnote">이 목소리는 낭독자 본인과 보호자의 동의를 받아 이 일기장에서만 사용합니다. 녹음을 내려받거나 다른 곳에 옮겨 쓰지 말아 주세요.</p><button type="button" class="btn fill" id="narrAgree" style="width:100%">약속하고 듣기</button>${skip?'<button type="button" class="linkbtn" id="narrSkip">혼자 읽을게요</button>':''}`;
+  popOnClose=skip||null;$('#modal').hidden=false;$('#narrAgree').focus();$('#narrAgree').onclick=()=>{S.c.narrOK=1;save();popOnClose=null;closePop();then()};if(skip)$('#narrSkip').onclick=()=>closePop()}
 async function narrPlay(){if(narrAudio&&!narrAudio.paused){narrStop();return}
   const b=$('#narrBtn');
   let ok=false;try{const r=await fetch(NARR.src,{method:'HEAD',cache:'no-store'});ok=r.ok}catch(e){}
@@ -1510,7 +1510,8 @@ $$('[data-save]').forEach(b=>b.onclick=()=>saveCard(+b.dataset.save));
 
 /* ===== 가운데 팝업 ===== */
 function openPop(id){const t=document.getElementById(id);if(!t)return;$('#mbody').innerHTML='';$('#mbody').appendChild(t.content.cloneNode(true));$('#modal').hidden=false;$('#modal .mx').focus()}
-function closePop(){$('#modal').hidden=true}
+let popOnClose=null;
+function closePop(){$('#modal').hidden=true;const f=popOnClose;popOnClose=null;if(f)f()}
 $$('[data-pop]').forEach(b=>b.onclick=()=>openPop(b.dataset.pop));
 $('#modal .mx').onclick=closePop;$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closePop()});addEventListener('keydown',e=>{if(e.key==='Escape')closePop()});
 /* ===== 시작 ===== */
