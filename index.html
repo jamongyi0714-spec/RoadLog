@@ -1456,7 +1456,7 @@ async function narrPlay(){if(narrAudio&&!narrAudio.paused){narrStop();return}
       const full=[...sp.dataset.full],k=Math.min(full.length,Math.ceil(full.length*Math.min(1,(now-st)/Math.max(.3,en-st))));const txt=full.slice(0,k).join('');sp.classList.add('on');if(sp.firstChild?.nodeValue!==txt){sp.textContent=txt}if(k<full.length)last=sp});
     if(last){last.appendChild(caret);const want=last.offsetTop+last.offsetHeight-t.clientHeight+24;if(want>t.scrollTop)t.scrollTop=want}else caret.remove();
     if(!narrAudio.paused)narrRAF=requestAnimationFrame(tick)};narrRAF=requestAnimationFrame(tick)}
-$('#narrBtn').onclick=()=>{if(narrAudio&&!narrAudio.paused){narrStop();return}if(!S.c.narrOK)narrConsent(narrPlay);else narrPlay()};
+$('#narrBtn').onclick=()=>{if(narrAudio&&!narrAudio.paused){narrStop();return}narrConsent(narrPlay)};
 /* ===== 나의 12척 ===== */
 const SHIPSVG='<svg viewBox="0 0 44 26" aria-hidden="true"><path d="M3 15h38l-5 8H8z" fill="currentColor"/><rect x="10" y="9" width="24" height="6" rx="1" fill="currentColor" opacity=".75"/><path d="M22 1v8M22 2l9 5h-9" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>';
 const SHIP_EX=['가족','친구','내 꿈','운동','음악','반려동물','일기 쓰기','선생님','웃음','책','잠','나 자신'];
