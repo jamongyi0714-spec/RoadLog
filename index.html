@@ -500,6 +500,11 @@ h2 .kicker{display:block;margin-bottom:2px}
 @keyframes bmdrop{from{height:20px}}
 .bmh{display:flex;align-items:center;gap:6px}.bmh svg{width:11px;height:18px;fill:var(--seal)}
 .bm-empty{font-size:.84rem;color:var(--ink-soft);padding:6px 2px}.bm-empty b{color:var(--seal)}
+.sidearr{position:fixed;top:50%;transform:translateY(-50%);z-index:20;width:52px;height:52px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font-size:2rem;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(20,30,60,.15);display:grid;place-items:center;padding:0 0 4px}
+.sidearr:hover{background:var(--cover);color:var(--cover-ink)}
+#sidePrev{left:calc(50% - var(--bw,200px) - 72px)}#sideNext{right:calc(50% - var(--bw,200px) - 72px)}
+html.m .sidearr{display:none!important}
+@media print{.sidearr{display:none!important}}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -1108,6 +1113,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 
 
 
+<button type="button" class="sidearr" id="sidePrev" aria-label="이전 장 (←)" hidden>‹</button><button type="button" class="sidearr" id="sideNext" aria-label="다음 장 (→)" hidden>›</button>
 <div class="modal" id="modal" hidden><div class="mbox" role="dialog" aria-modal="true"><button type="button" class="mx" aria-label="닫기">×</button><div class="mbody" id="mbody"></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
@@ -1138,7 +1144,7 @@ const MIYEOK=[
 const STAMPS={
  hansando:{t:'한산도가를 찾아라',p:'한산도 제승당 수루',h:'수루에 걸린 한산도가를 찾아 함께 찍어요.',s:['한산','수루'],page:'suru'},
  lunch:{t:'수군의 점심',p:'통영 시내 식당',h:'친구들과 함께 먹는 점심을 찍어요.',s:['통영','점심'],page:'lunch2'},
- dangpo:{t:'당포성지에서 본 섬',p:'당포성지',h:'바다와 섬이 함께 보이도록 찍어요.',s:['당포','성지'],page:'terrain'},
+ dangpo:{t:'당포성지',p:'당포성지',h:'바다와 섬이 함께 보이도록 찍어요.',s:['당포','성지'],page:'terrain'},
  cheonja:{t:'천자총통을 찾아라',p:'이순신 공원',h:'천자총통을 찾아 인증샷을 찍어요.',s:['천자','총통'],page:'park2'},
  gobuk:{t:'거북선을 찾아라',p:'통영 강구항',h:'거북선과 함께 찍어요.',s:['거북','선'],page:'role'},
  yangji:{t:'옥포해전',p:'옥포대첩기념공원',h:'첫 승의 바다, 옥포 앞바다가 보이게 찍어요.',s:['옥포','해전'],page:'yangji'},
@@ -1151,7 +1157,7 @@ const SIJIN=[['자시','23~1시'],['축시','1~3시'],['인시','3~5시'],['묘�
 let me=null, S=null;
 const profiles=()=>LS.get('rl.profiles',[]);
 function hash(s){let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)}
-function loadMe(p){me=p;S=LS.get('rl.data.'+p.id,{t:{},q:{},c:{},clock:{},sijo:[[],[],[]],box:[]});S.t=S.t||{};S.q=S.q||{};S.c=S.c||{};S.clock=S.clock||{};S.sijo=S.sijo||[[],[],[]];S.box=S.box||[];LS.set('rl.last',p.id);hydrate();const tk=pendingKey;pendingKey=null;go(tk&&byKey(tk)>0?byKey(tk):(S.lastPage>0?S.lastPage:1),1)}
+function loadMe(p){me=p;S=LS.get('rl.data.'+p.id,{t:{},q:{},c:{},clock:{},sijo:[[],[],[]],box:[]});S.t=S.t||{};S.q=S.q||{};S.c=S.c||{};S.clock=S.clock||{};S.sijo=S.sijo||[[],[],[]];S.box=S.box||[];LS.set('rl.last',p.id);hydrate();const tk=pendingKey;pendingKey=null;go(tk&&byKey(tk)>0?byKey(tk):1,1)}
 let pendingKey=null;
 function save(){if(me)LS.set('rl.data.'+me.id,S)}
 $$('.tabs2 button').forEach(b=>b.onclick=()=>{$$('.tabs2 button').forEach(x=>x.setAttribute('aria-selected',x===b));$('#lt-new').hidden=b.dataset.lt!=='new';$('#lt-old').hidden=b.dataset.lt!=='old';$('#lErr').textContent=''});
@@ -1182,7 +1188,7 @@ $('#logout').onclick=()=>{me=null;S=null;$('#nPin').value='';$('#oPin').value=''
 function fit(){const st=$('#stage'),bk=$('#book'),m=innerWidth<640;document.documentElement.classList.toggle('m',m);
   const cs=getComputedStyle(document.documentElement),pt=parseFloat(cs.paddingTop)||0,pb=parseFloat(cs.paddingBottom)||0;let W,H,sc;
   if(m){W=innerWidth;H=innerHeight-pt-pb;sc=1}else{W=400;H=760;sc=Math.max(.6,Math.min(1.25,(innerHeight-pt-pb-24)/H,(innerWidth-24)/W))}
-  bk.style.width=W+'px';bk.style.height=H+'px';bk.style.transform=sc===1?'none':`scale(${sc})`;st.style.width=W*sc+'px';st.style.height=H*sc+'px'}
+  bk.style.width=W+'px';bk.style.height=H+'px';bk.style.transform=sc===1?'none':`scale(${sc})`;st.style.width=W*sc+'px';st.style.height=H*sc+'px';document.documentElement.style.setProperty('--bw',W*sc/2+'px')}
 addEventListener('resize',fit);
 /* ===== 책장 넘기기 ===== */
 const pages=$$('.page');let cur=0,busy=false;const total=pages.length-1;
@@ -1196,7 +1202,7 @@ function go(i,dir){i=Math.max(0,Math.min(total,i));if(i>0&&!me)i=0;if(busy)retur
   if(!anim){pages.forEach((q,k)=>q.hidden=k!==i)}
   else{busy=true;p.hidden=false;if(dir>0){old.style.zIndex=3;p.style.zIndex=2;p.classList.add('under');old.classList.add('flip-out')}else{p.style.zIndex=3;old.style.zIndex=2;p.classList.add('flip-in')}
     setTimeout(()=>{old.hidden=true;old.classList.remove('flip-out');p.classList.remove('flip-in','under');old.style.zIndex='';p.style.zIndex='';busy=false},620)}
-  cur=i;if(S&&i>0){S.lastPage=i;save()}}
+  cur=i;if(S&&i>0){S.lastPage=i;save()}$('#sidePrev').hidden=i<=1;$('#sideNext').hidden=i>=total||(i===0&&!me)}
 const byKey=k=>pages.findIndex(p=>p.dataset.key===k);
 /* ===== 책갈피 ===== */
 function drawBm(){const bm=(S&&S.c.bm)||[];$$('.bmk').forEach(b=>{const on=bm.includes(b.dataset.key);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'책갈피 빼기':'책갈피 꽂기')});
@@ -1207,8 +1213,11 @@ $$('.bmk').forEach(b=>b.onclick=e=>{e.stopPropagation();if(!S)return;const bm=S.
 let px=null,py=0;$('#book').addEventListener('pointerdown',e=>{if(e.target.closest('input,textarea,select,#clock,#map,.carousel,.rainbox')){px=null;return}px=e.clientX;py=e.clientY});
 $('#book').addEventListener('pointerup',e=>{if(px==null||cur===0)return;const dx=e.clientX-px,dy=e.clientY-py;px=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(cur+(dx<0?1:-1),dx<0?1:-1)});
 $('#book').addEventListener('pointercancel',()=>{px=null});
-addEventListener('keydown',e=>{if(e.target.closest('input,textarea,select')||cur===0)return;if(e.key==='ArrowRight')go(cur+1,1);if(e.key==='ArrowLeft')go(cur-1,-1)});
-$('#meGo').onclick=()=>go(S&&S.lastPage>0?S.lastPage:1,1);
+addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,textarea,select,[contenteditable]'))return;if(!$('#modal').hidden||e.altKey||e.ctrlKey||e.metaKey)return;
+  const fwd=['ArrowRight','PageDown'].includes(e.key),back=['ArrowLeft','PageUp'].includes(e.key);if(!fwd&&!back)return;
+  if(cur===0){if(fwd&&me){e.preventDefault();go(1,1)}return}e.preventDefault();fwd?go(cur+1,1):go(cur-1,-1)});
+$('#sidePrev').onclick=()=>go(cur-1,-1);$('#sideNext').onclick=()=>{cur===0?(me&&go(1,1)):go(cur+1,1)};
+$('#meGo').onclick=()=>go(1,1);
 $('#meOut').onclick=()=>$('#logout').click();
 
 /* ===== 차례 ===== */
