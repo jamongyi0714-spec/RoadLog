@@ -278,7 +278,7 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
   .page[data-key="lunch"] .lead{display:none}
   .clue[hidden]{display:flex!important}
   .flip .in{transform:none!important}.flip .f{display:none!important}.flip .b{transform:none!important;position:static!important;height:100%}
-  #rainReset,#rainAll,#toFleet,.routes,#routeMsg,#sortGo,#planGo,.rctl,#sail,.rainbox canvas{display:none!important}
+  #narrBtn,#rainReset,#rainAll,#toFleet,.routes,#routeMsg,#sortGo,#planGo,.rctl,#sail,.rainbox canvas{display:none!important}
   .rainbox{height:auto!important;background:#fff!important}.rtext{position:static!important;color:var(--ink)!important;font-size:.82rem!important;line-height:1.6!important}.rtext .rs{opacity:1!important}.rtext .d{color:var(--tide)!important}
   .paper textarea.hand{min-height:300px}
   .print-only{display:block!important}
@@ -508,6 +508,13 @@ h2 .kicker{display:block;margin-bottom:2px}
 .guestrow{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
 #lt-me .linkbtn.danger{align-self:center}
 .cover .credit{position:relative;z-index:1;text-align:center;font-size:.66rem;color:var(--cover-ink);opacity:.6;margin-top:-4px}
+.narrbtn{font:inherit;display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1.5px solid var(--sun);background:color-mix(in srgb,var(--sun) 14%,var(--paper));color:var(--ink);border-radius:12px;padding:8px 12px;cursor:pointer}
+.narrbtn .nb-ic{font-size:1.3rem}
+.narrbtn b{display:block;font-family:var(--f-diary);font-size:.98rem}
+.narrbtn small{display:block;font-size:.72rem;color:var(--ink-soft)}
+.narrbtn.playing{background:var(--cover);border-color:var(--cover);color:var(--cover-ink)}.narrbtn.playing small{color:var(--cover-ink);opacity:.75}
+.mclub{font-size:.84rem;color:var(--ink-soft);margin-top:-6px}
+.mnote{font-size:.95rem;line-height:1.7;background:var(--seal-soft);border-radius:10px;padding:10px 12px}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -1028,6 +1035,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <div class="rtext" id="rtext"></div>
     <button type="button" class="rreset" id="rainReset" aria-label="처음부터 다시 읽기">↺ 처음부터</button>
   </div>
+  <button type="button" class="narrbtn" id="narrBtn"><span class="nb-ic">🔊</span><span><b>낭독 듣기</b><small>낭독 · 신재민 (양주초 또路錄 동아리)</small></span></button>
   <div class="rctl">
     <button type="button" class="btn" id="rainSnd" aria-pressed="false">빗소리 켜기</button>
     <button type="button" class="btn fill" id="rainNext">다음 줄 ›</button>
@@ -1209,7 +1217,7 @@ async function clearGuest(btn){if(!gArm){gArm=1;btn.textContent='정말 지울�
   if(me&&me.guest){me=null;S=null}coverMode();const err=$('#lErr');err.style.color='var(--ok)';err.textContent='둘러보기 기록을 지웠어요.';setTimeout(()=>{err.style.color='';err.textContent=''},2500)}
 $('#gDel').onclick=()=>clearGuest($('#gDel'));$('#gDel2').onclick=()=>clearGuest($('#gDel2'));
 function go(i,dir){i=Math.max(0,Math.min(total,i));if(i>0&&!me)i=0;if(busy)return;const old=pages[cur],p=pages[i];
-  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'&&!S.c.rainSeen){S.c.rainSeen=1;save();setTimeout(()=>drawRain(true),400)}if(p.dataset.key==='toc'){drawBoard();drawBm()}if(i===0)coverMode();
+  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff();narrStop()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'&&!S.c.rainSeen){S.c.rainSeen=1;save();setTimeout(()=>drawRain(true),400)}if(p.dataset.key==='toc'){drawBoard();drawBm()}if(i===0)coverMode();
   p.scrollTop=0;const anim=dir&&old!==p&&!old.hidden;
   if(!anim){pages.forEach((q,k)=>q.hidden=k!==i)}
   else{busy=true;p.hidden=false;if(dir>0){old.style.zIndex=3;p.style.zIndex=2;p.classList.add('under');old.classList.add('flip-out')}else{p.style.zIndex=3;old.style.zIndex=2;p.classList.add('flip-in')}
@@ -1412,9 +1420,9 @@ function drawRain(typeLast){if(typeT){clearTimeout(typeT);typeT=null}const t=$('
   const step=()=>{if(k>=chars.length){typeFin();return}const ch=chars[k];caret.before(ch);k++;if(k%4===0)follow();
     typeT=setTimeout(step,ch==='.'||ch==='?'?base+650:ch===','?base+320:ch===' '?base*0.6:base)};
   typeT=setTimeout(step,500)}
-$('#rainReset').onclick=()=>{if(typeT){clearTimeout(typeT);typeT=null}typeFin=null;S.c.rainN=1;save();$('#rtext').scrollTop=0;rainLevel(.3);drawRain(true)};
-$('#rainAll').onclick=()=>{if(typeT){clearTimeout(typeT);typeT=null}typeFin=null;S.c.rainN=RAIN.length;save();drawRain();rainLevel(.5)};
-$('#rainNext').onclick=()=>{if(typeFin){typeFin();return}S.c.rainN=Math.min(RAIN.length,(S.c.rainN||1)+1);save();drawRain(true);if(S.c.rainN===RAIN.length)rainLevel(.5)};
+$('#rainReset').onclick=()=>{narrStop();if(typeT){clearTimeout(typeT);typeT=null}typeFin=null;S.c.rainN=1;save();$('#rtext').scrollTop=0;rainLevel(.3);drawRain(true)};
+$('#rainAll').onclick=()=>{narrStop();if(typeT){clearTimeout(typeT);typeT=null}typeFin=null;S.c.rainN=RAIN.length;save();drawRain();rainLevel(.5)};
+$('#rainNext').onclick=()=>{narrStop();if(typeFin){typeFin();return}S.c.rainN=Math.min(RAIN.length,(S.c.rainN||1)+1);save();drawRain(true);if(S.c.rainN===RAIN.length)rainLevel(.5)};
 let actx=null,rainG=null,rainSrcs=[],rainRAF=null;
 function rainLevel(v){if(rainG&&actx)rainG.gain.linearRampToValueAtTime(v,actx.currentTime+2)}
 function rainOn(){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();actx.resume();const sr=actx.sampleRate,len=sr*3,buf=actx.createBuffer(1,len,sr),d=buf.getChannelData(0);let last=0;for(let i=0;i<len;i++){const w=Math.random()*2-1;last=(last+0.04*w)/1.04;d[i]=last*3+w*0.12+(Math.random()<0.0009?(Math.random()*2-1)*0.9:0)}
@@ -1427,6 +1435,28 @@ function rainDraw(){const cv=$('#rainCv');if(!cv)return;const r=cv.getBoundingCl
   const still=matchMedia('(prefers-reduced-motion: reduce)').matches;drops.forEach(p=>{if(!still){p.y+=p.v*.012;p.x-=.0008;if(p.y>1.05){p.y=-.05;p.x=Math.random()*1.1}}const x=p.x*r.width,y=p.y*r.height;c.moveTo(x,y);c.lineTo(x-2,y+p.l)});c.stroke();
   rainRAF=still?null:requestAnimationFrame(rainDraw)}
 
+/* ===== 낭독 듣기 (신재민) ===== */
+const NARR={src:'audio/narr-1014.mp3',reader:'신재민',club:'양주초 또路錄 동아리',times:null};
+let narrAudio=null,narrRAF=null;
+function narrStop(){if(narrAudio){narrAudio.pause()}if(narrRAF){cancelAnimationFrame(narrRAF);narrRAF=null}const b=$('#narrBtn');if(b){b.classList.remove('playing');b.querySelector('b').textContent='낭독 듣기'}}
+function narrConsent(then){$('#mbody').innerHTML=`<h3>🔊 낭독 · ${NARR.reader}</h3><p class="mclub">${NARR.club}</p><p class="mnote">이 목소리는 낭독자 본인과 보호자의 동의를 받아 이 일기장에서만 사용합니다. 녹음을 내려받거나 다른 곳에 옮겨 쓰지 말아 주세요.</p><button type="button" class="btn fill" id="narrAgree" style="width:100%">약속하고 듣기</button>`;
+  $('#modal').hidden=false;$('#narrAgree').focus();$('#narrAgree').onclick=()=>{S.c.narrOK=1;save();closePop();then()}}
+async function narrPlay(){if(narrAudio&&!narrAudio.paused){narrStop();return}
+  const b=$('#narrBtn');
+  let ok=false;try{const r=await fetch(NARR.src,{method:'HEAD',cache:'no-store'});ok=r.ok}catch(e){}
+  if(!ok){b.querySelector('b').textContent='낭독 녹음을 준비하고 있어요';setTimeout(()=>{if(!narrAudio||narrAudio.paused)b.querySelector('b').textContent='낭독 듣기'},2600);return}
+  if(typeT){clearTimeout(typeT);typeT=null}typeFin=null;
+  if(!narrAudio){narrAudio=new Audio(NARR.src);narrAudio.preload='auto';narrAudio.addEventListener('ended',()=>{narrStop();S.c.rainN=RAIN.length;save();drawRain();rainLevel(.5)})}
+  const t=$('#rtext');S.c.rainN=0;drawRain();const spans=$$('.rs',t);spans.forEach(sp=>{sp.dataset.full=sp.textContent;sp.textContent='';sp.classList.remove('on')});
+  await new Promise(r=>{if(narrAudio.readyState>=1)r();else narrAudio.addEventListener('loadedmetadata',r,{once:true})});
+  const dur=narrAudio.duration||60;let T=NARR.times;if(!T){const w=RAIN.map(x=>x==='(중략)'?4:[...x].length+12);const sum=w.reduce((a,c)=>a+c,0);let acc=0;T=w.map(v=>{const st=acc/sum*dur;acc+=v;return[st,acc/sum*dur-0.35]})}
+  narrAudio.currentTime=0;try{await narrAudio.play()}catch(e){return}if(!rainG)rainOn();rainLevel(.18);b.classList.add('playing');b.querySelector('b').textContent='⏸ 낭독 멈추기';
+  const caret=document.createElement('i');caret.className='caret';
+  const tick=()=>{const now=narrAudio.currentTime;let last=null;spans.forEach((sp,i)=>{const [st,en]=T[i]||[dur,dur];if(now<st){if(sp.textContent){sp.textContent='';sp.classList.remove('on')}return}
+      const full=[...sp.dataset.full],k=Math.min(full.length,Math.ceil(full.length*Math.min(1,(now-st)/Math.max(.3,en-st))));const txt=full.slice(0,k).join('');sp.classList.add('on');if(sp.firstChild?.nodeValue!==txt){sp.textContent=txt}if(k<full.length)last=sp});
+    if(last){last.appendChild(caret);const want=last.offsetTop+last.offsetHeight-t.clientHeight+24;if(want>t.scrollTop)t.scrollTop=want}else caret.remove();
+    if(!narrAudio.paused)narrRAF=requestAnimationFrame(tick)};narrRAF=requestAnimationFrame(tick)}
+$('#narrBtn').onclick=()=>{if(narrAudio&&!narrAudio.paused){narrStop();return}if(!S.c.narrOK)narrConsent(narrPlay);else narrPlay()};
 /* ===== 나의 12척 ===== */
 const SHIPSVG='<svg viewBox="0 0 44 26" aria-hidden="true"><path d="M3 15h38l-5 8H8z" fill="currentColor"/><rect x="10" y="9" width="24" height="6" rx="1" fill="currentColor" opacity=".75"/><path d="M22 1v8M22 2l9 5h-9" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>';
 const SHIP_EX=['가족','친구','내 꿈','운동','음악','반려동물','일기 쓰기','선생님','웃음','책','잠','나 자신'];
