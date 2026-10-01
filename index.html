@@ -500,11 +500,6 @@ h2 .kicker{display:block;margin-bottom:2px}
 @keyframes bmdrop{from{height:20px}}
 .bmh{display:flex;align-items:center;gap:6px}.bmh svg{width:11px;height:18px;fill:var(--seal)}
 .bm-empty{font-size:.84rem;color:var(--ink-soft);padding:6px 2px}.bm-empty b{color:var(--seal)}
-.sidearr{position:fixed;top:50%;transform:translateY(-50%);z-index:20;width:52px;height:52px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font-size:2rem;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(20,30,60,.15);display:grid;place-items:center;padding:0 0 4px}
-.sidearr:hover{background:var(--cover);color:var(--cover-ink)}
-#sidePrev{left:calc(50% - var(--bw,200px) - 72px)}#sideNext{right:calc(50% - var(--bw,200px) - 72px)}
-html.m .sidearr{display:none!important}
-@media print{.sidearr{display:none!important}}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -1113,7 +1108,6 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 
 
 
-<button type="button" class="sidearr" id="sidePrev" aria-label="이전 장 (←)" hidden>‹</button><button type="button" class="sidearr" id="sideNext" aria-label="다음 장 (→)" hidden>›</button>
 <div class="modal" id="modal" hidden><div class="mbox" role="dialog" aria-modal="true"><button type="button" class="mx" aria-label="닫기">×</button><div class="mbody" id="mbody"></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
@@ -1202,7 +1196,7 @@ function go(i,dir){i=Math.max(0,Math.min(total,i));if(i>0&&!me)i=0;if(busy)retur
   if(!anim){pages.forEach((q,k)=>q.hidden=k!==i)}
   else{busy=true;p.hidden=false;if(dir>0){old.style.zIndex=3;p.style.zIndex=2;p.classList.add('under');old.classList.add('flip-out')}else{p.style.zIndex=3;old.style.zIndex=2;p.classList.add('flip-in')}
     setTimeout(()=>{old.hidden=true;old.classList.remove('flip-out');p.classList.remove('flip-in','under');old.style.zIndex='';p.style.zIndex='';busy=false},620)}
-  cur=i;if(S&&i>0){S.lastPage=i;save()}$('#sidePrev').hidden=i<=1;$('#sideNext').hidden=i>=total||(i===0&&!me)}
+  cur=i;if(S&&i>0){S.lastPage=i;save()}}
 const byKey=k=>pages.findIndex(p=>p.dataset.key===k);
 /* ===== 책갈피 ===== */
 function drawBm(){const bm=(S&&S.c.bm)||[];$$('.bmk').forEach(b=>{const on=bm.includes(b.dataset.key);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'책갈피 빼기':'책갈피 꽂기')});
@@ -1216,7 +1210,6 @@ $('#book').addEventListener('pointercancel',()=>{px=null});
 addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,textarea,select,[contenteditable]'))return;if(!$('#modal').hidden||e.altKey||e.ctrlKey||e.metaKey)return;
   const fwd=['ArrowRight','PageDown'].includes(e.key),back=['ArrowLeft','PageUp'].includes(e.key);if(!fwd&&!back)return;
   if(cur===0){if(fwd&&me){e.preventDefault();go(1,1)}return}e.preventDefault();fwd?go(cur+1,1):go(cur-1,-1)});
-$('#sidePrev').onclick=()=>go(cur-1,-1);$('#sideNext').onclick=()=>{cur===0?(me&&go(1,1)):go(cur+1,1)};
 $('#meGo').onclick=()=>go(1,1);
 $('#meOut').onclick=()=>$('#logout').click();
 
