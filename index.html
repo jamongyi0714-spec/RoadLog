@@ -505,6 +505,8 @@ h2 .kicker{display:block;margin-bottom:2px}
 .page .carousel,.page .carousel *{touch-action:pan-x pan-y}
 .rreset{position:absolute;right:8px;top:8px;z-index:2;font:inherit;font-size:.74rem;border:1px solid rgba(255,255,255,.35);background:rgba(21,26,51,.7);color:#e9e6f5;border-radius:99px;padding:3px 10px;cursor:pointer}
 .rreset:hover{background:rgba(236,154,114,.35)}
+.guestrow{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+#lt-me .linkbtn.danger{align-self:center}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -562,9 +564,9 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
       <button class="btn fill" id="oGo" type="button">이어 쓰기</button>
       <button class="linkbtn danger" id="oDel" type="button">이 일기장 지우기</button>
     </div>
-    <div id="lt-me" class="who"><p class="meline"><b id="meName"></b>의 일기장</p><button class="btn fill" id="meGo" type="button">일기장 펼치기 ›</button><button class="linkbtn" id="meOut" type="button">다른 친구로 바꾸기</button></div>
+    <div id="lt-me" class="who"><p class="meline"><b id="meName"></b>의 일기장</p><button class="btn fill" id="meGo" type="button">일기장 펼치기 ›</button><button class="linkbtn danger" id="gDel" type="button" hidden>둘러보기 기록 지우기</button><button class="linkbtn" id="meOut" type="button">다른 친구로 바꾸기</button></div>
     <div class="err" id="lErr" role="status" style="min-height:0"></div>
-    <button class="linkbtn" id="guest" type="button">가입 없이 둘러보기 ›</button>
+    <div class="guestrow"><button class="linkbtn" id="guest" type="button">가입 없이 둘러보기 ›</button><button class="linkbtn danger" id="gDel2" type="button" hidden>둘러보기 기록 지우기</button></div>
   </div>
 </section>
 
@@ -1196,7 +1198,14 @@ const pages=$$('.page');let cur=0,busy=false;const total=pages.length-1;
 pages.forEach((pg,k)=>{const f=pg.querySelector(':scope>.pfoot');if(!f)return;f.querySelector('.pnum').textContent=k;const pv=f.querySelector('.pv'),nx=f.querySelector('.nx');pv.hidden=k<=1;nx.hidden=k>=total;
   pv.onclick=()=>go(cur-1,-1);nx.onclick=()=>go(cur+1,1);f.querySelector('.pnum').onclick=()=>go(1,-1);
   const hb=pg.querySelector('.homebtn');if(hb)hb.onclick=()=>go(0,-1)});
-function coverMode(){const L=$('#login');L.classList.toggle('in',!!me);if(me)$('#meName').textContent=(me.team?me.team+' ':'')+me.nick}
+function guestHas(){try{return !!localStorage.getItem('rl.data.guest')}catch(e){return false}}
+function coverMode(){const L=$('#login');L.classList.toggle('in',!!me);if(me)$('#meName').textContent=(me.team?me.team+' ':'')+me.nick;
+  $('#gDel').hidden=!(me&&me.guest);$('#gDel2').hidden=!!me||!guestHas();gArm=0;$('#gDel').textContent=$('#gDel2').textContent='둘러보기 기록 지우기'}
+let gArm=0;
+async function clearGuest(btn){if(!gArm){gArm=1;btn.textContent='정말 지울까요? 한 번 더 누르면 사라져요';return}gArm=0;
+  try{localStorage.removeItem('rl.data.guest')}catch(e){}await dbReady;if(DB.db){try{const st=DB.db.transaction('p','readwrite').objectStore('p');Object.keys(STAMPS).forEach(k=>st.delete('guest:'+k))}catch(e){}}Object.keys(DB.mem).forEach(k=>{if(k.startsWith('guest:'))delete DB.mem[k]});
+  if(me&&me.guest){me=null;S=null}coverMode();const err=$('#lErr');err.style.color='var(--ok)';err.textContent='둘러보기 기록을 지웠어요.';setTimeout(()=>{err.style.color='';err.textContent=''},2500)}
+$('#gDel').onclick=()=>clearGuest($('#gDel'));$('#gDel2').onclick=()=>clearGuest($('#gDel2'));
 function go(i,dir){i=Math.max(0,Math.min(total,i));if(i>0&&!me)i=0;if(busy)return;const old=pages[cur],p=pages[i];
   if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'&&!S.c.rainSeen){S.c.rainSeen=1;save();setTimeout(()=>drawRain(true),400)}if(p.dataset.key==='toc'){drawBoard();drawBm()}if(i===0)coverMode();
   p.scrollTop=0;const anim=dir&&old!==p&&!old.hidden;
