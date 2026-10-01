@@ -56,9 +56,9 @@ html.m .page{border-radius:0 6px 6px 0}
 .pc.hero>:last-child{margin-bottom:auto}
 .grow{flex:1 1 auto!important;display:flex;flex-direction:column;gap:4px}
 .grow textarea{flex:1 1 auto;min-height:110px!important}
-.pfoot{position:sticky;bottom:-18px;margin:0 -16px -18px -22px;height:40px;display:grid;grid-template-columns:44px 1fr 44px;align-items:end;z-index:4;pointer-events:none;flex-shrink:0}
+.pfoot{position:sticky;bottom:-18px;margin:0 -16px -18px -22px;height:46px;background:linear-gradient(to bottom,color-mix(in srgb,var(--paper) 0%,transparent),var(--paper) 62%);display:grid;grid-template-columns:44px 1fr 44px;align-items:end;z-index:4;pointer-events:none;flex-shrink:0}
 .pfoot>*{pointer-events:auto}
-.pnum{justify-self:center;margin-bottom:8px;font:inherit;font-size:.72rem;letter-spacing:.1em;color:var(--ink-soft);background:color-mix(in srgb,var(--paper) 85%,transparent);border:0;border-radius:99px;padding:2px 10px;cursor:pointer;font-variant-numeric:tabular-nums}
+.pnum{justify-self:center;margin-bottom:10px;font:inherit;font-size:.72rem;letter-spacing:.1em;color:var(--ink-soft);background:color-mix(in srgb,var(--paper) 85%,transparent);border:0;border-radius:99px;padding:2px 10px;cursor:pointer;font-variant-numeric:tabular-nums}
 .ear{width:44px;height:40px;border:0;padding:0;cursor:pointer;background:none;position:relative}
 .ear::before{content:"";position:absolute;bottom:0;width:30px;height:30px;transition:width .2s,height .2s}
 .ear.nx::before{right:0;background:linear-gradient(135deg,transparent 50%,color-mix(in srgb,var(--ink) 18%,var(--paper)) 50%);border-radius:0 0 6px 0;box-shadow:-2px -2px 4px rgba(0,0,0,.08)}
@@ -1309,7 +1309,7 @@ const NA=['권준','김완','진무성'],NB=['유몽인','이몽상','이충길'
 function drawPick(){[['a',NA],['b',NB]].forEach(([g,ns])=>{const box=$(`[data-pick="${g}"]`);box.innerHTML='';ns.forEach(n=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=n;b.setAttribute('aria-pressed',S.c['pick'+g]===n);b.onclick=()=>{S.c['pick'+g]=n;save();drawPick()};box.appendChild(b)})});
   $('#clue').hidden=!S.c.found;$('#reveal').hidden=!S.c.rank;
   const rp=$('#rankPick');rp.innerHTML='';['사도첨사','순천부사','낙안군수'].forEach(r=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=r;b.setAttribute('aria-pressed',S.c.rank?r==='순천부사':S.c.rankTry===r);
-    b.onclick=()=>{if(S.c.rank)return;S.c.rankTry=r;if(r==='순천부사'){S.c.rank=1;save();drawPick();cheer('gwonjun')}else{save();drawPick();const rm=$('#rankMsg');rm.className='qmsg';rm.textContent=r==='사도첨사'?'사도첨사는 왜장의 머리를 벤 김완의 벼슬이에요. 다시 골라 봐요.':'낙안군수는 일기에서 파면된 신호의 벼슬이에요. 다시 골라 봐요.'}};rp.appendChild(b)});
+    b.onclick=()=>{if(S.c.rank)return;S.c.rankTry=r;if(r==='순천부사'){S.c.rank=1;save();drawPick();cheer('gwonjun');setTimeout(()=>$('#reveal').scrollIntoView({behavior:'smooth',block:'center'}),60)}else{save();drawPick();const rm=$('#rankMsg');rm.className='qmsg';rm.textContent=r==='사도첨사'?'사도첨사는 왜장의 머리를 벤 김완의 벼슬이에요. 다시 골라 봐요.':'낙안군수는 일기에서 파면된 신호의 벼슬이에요. 다시 골라 봐요.'}};rp.appendChild(b)});
   $('#clue .gap').textContent=S.c.rank?'순천부사':'?';const rm=$('#rankMsg');if(S.c.rank){rm.className='qmsg ok';rm.textContent='확인 완료! 추리가 맞았어요.'}else if(!S.c.rankTry)rm.textContent=''}
 $('#pickGo').onclick=()=>{const a=S.c.picka,b=S.c.pickb,m=$('#pickMsg');if(!a||!b){m.className='qmsg';m.textContent='위아래에서 한 명씩 골라요.';return}
   if(!(a==='권준'&&b==='순천부사')){S.c.found=0;S.c.rank=0;S.c.rankTry=null;save();drawPick()}
