@@ -271,7 +271,7 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
   [data-key="lunch"] .common{gap:4px}
   .extra{background:#fff}
   .page.cover{background:var(--cover)}
-  .page[data-key="send"],.page[data-key="send"][hidden]{display:none!important}
+  .page[data-key="send"],.page[data-key="send"][hidden],.page[data-key="send1"],.page[data-key="send1"][hidden]{display:none!important}
   .carousel{flex-direction:column;overflow:visible;gap:6px}
   .carousel .entry{flex:none;padding:8px 10px;gap:4px}
   .carousel .entry .txt{font-size:.86rem;line-height:1.6}
@@ -465,6 +465,33 @@ h2 .kicker{display:block;margin-bottom:2px}
 .roster li{font-family:var(--f-hand);font-size:1.2rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .roster li b{font-family:var(--f-ui);font-weight:400;font-size:.66rem;color:var(--ink-soft);margin-right:4px}
 .roster li.empty{color:var(--rule)}
+/* send cards + typewriter */
+.rtext .rs.typing{opacity:1}
+.caret{display:inline-block;width:2px;height:1.1em;background:var(--sun);vertical-align:-3px;margin-left:1px;animation:blink .8s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.cardwrap{display:flex;justify-content:center}
+.rcard{width:100%;max-width:360px;background:#fdfbf7;color:#23264a;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(20,30,60,.18);border:1px solid #e4e2ec;font-family:var(--f-ui)}
+.rc-top{background:linear-gradient(to bottom,rgba(35,38,74,.25),rgba(35,38,74,.85)),url("img/sea.webp") 55% 65%/cover;color:#fff;padding:18px 16px 12px;display:flex;flex-direction:column;gap:2px}
+.rc-day{align-self:flex-start;font-size:.7rem;letter-spacing:.12em;background:#cf4637;border-radius:99px;padding:1px 9px}
+.rc-top b{font-family:var(--f-diary);font-size:1.12rem;line-height:1.35;margin-top:4px}
+.rc-top span:last-child{font-family:var(--f-diary);font-size:.8rem;color:#fbe7c0}
+.rc-who{display:flex;justify-content:space-between;padding:8px 16px;font-size:.82rem;border-bottom:1px dashed #e4e2ec}
+.rc-who span:first-child{font-family:var(--f-diary);font-weight:700}
+.rc-stamps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:10px 12px}
+.rc-st{position:relative;aspect-ratio:1;border-radius:8px;border:1.5px dashed #e4e2ec;overflow:hidden;display:grid;place-items:center;max-width:100%}
+.rc-st img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.rc-seal{position:relative;font-family:var(--f-diary);font-weight:700;font-size:.66rem;line-height:1.15;text-align:center;color:#d6d3e2;border:1.5px solid #d6d3e2;border-radius:5px;padding:3px}
+.rc-st.on .rc-seal{position:absolute;right:3px;bottom:3px;color:#cf4637;border-color:#cf4637;background:rgba(255,255,255,.75);transform:rotate(-8deg);font-size:.56rem}
+.rc-st small{position:absolute;left:0;right:0;bottom:2px;font-size:.5rem;text-align:center;color:#626588}
+.rc-st.on small{display:none}
+.rc-body{padding:4px 16px 10px;display:flex;flex-direction:column;gap:8px}
+.rc-sec span{display:block;font-size:.72rem;font-weight:700;color:#5b5f97;letter-spacing:.03em}
+.rc-sec p{font-family:var(--f-hand);font-size:1.25rem;line-height:1.3;color:#23264a}
+.rc-sec.poem p{font-size:1.4rem;color:#cf4637}
+.rc-sec.rcletter p{background:#fbf3ea;border-radius:8px;padding:6px 8px}
+.rc-empty{font-size:.86rem;color:#626588;text-align:center;padding:12px 0}
+.rc-foot{font-size:.66rem;color:#9a9cb5;text-align:center;padding:8px;border-top:1px dashed #e4e2ec}
+.toast.bad{color:var(--no)}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -750,6 +777,14 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 <div class="guide"><img src="img/ship.webp" alt="" width="44" height="66"><div class="bub">장군처럼 멋진 시조가 완성됐어! <b>제목</b>도 붙여 줘.</div></div>
   <div class="field"><label for="t-sijoT">제목</label><input class="hand" id="t-sijoT" data-k="sijoT" placeholder="통영 달 밝은 밤에"></div>
   <div class="entry"><div class="date" id="sijoHead">나의 시조</div><div class="poemout" id="sijoOut"></div></div>
+</section>
+<section class="page" data-name="첫째 날 탐후선 띄우기" data-key="send1">
+  <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>마무리 · 탐후선 띄우기</span></div>
+  <h2>첫째 날 Road Log, 탐후선에 실어 보내기</h2>
+  <p class="lead sm2">이 카드를 이미지로 저장해 패들렛에 올려요.</p>
+  <div class="cardwrap"><div class="rcard" id="rcard1"></div></div>
+  <div class="acts"><button class="btn seal" type="button" data-save="1">① 이미지로 저장</button><a class="btn padlink" target="_blank" rel="noopener">② 패들렛 열기</a></div>
+  <p class="toast" id="toast1" role="status"></p>
 </section>
 
 <section class="page day2" data-name="백의 Road 비망 Log" data-key="d2">
@@ -1046,20 +1081,15 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   </a>
 </section>
 
-<section class="page" data-name="탐후선 띄우기" data-key="send">
-  <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>마무리 · 탐후선 띄우기</span></div>
-  <h2>오늘의 Road Log, 탐후선에 실어 보내기</h2>
-  <p class="lead">기록을 복사해 패들렛에 붙여 넣고, 도장 사진도 올려요.</p>
-  <div class="gallery" id="gallery"></div>
-  <textarea class="out" id="out" readonly aria-label="패들렛에 올릴 오늘의 기록"></textarea>
-  <div class="acts">
-    <button class="btn seal" id="copy" type="button">① 기록 복사</button>
-    <a class="btn" id="pad" target="_blank" rel="noopener">② 패들렛 열기</a>
-  </div>
-  <div class="toast" id="toast" role="status"></div>
+<section class="page" data-name="둘째 날 탐후선 띄우기" data-key="send">
+  <div class="folio"><span><b>백의 Road(路) 비망 Log(錄)</b></span><span>마무리 · 탐후선 띄우기</span></div>
+  <h2>둘째 날 Road Log, 탐후선에 실어 보내기</h2>
+  <p class="lead sm2">이 카드를 이미지로 저장해 패들렛에 올려요.</p>
+  <div class="cardwrap"><div class="rcard" id="rcard2"></div></div>
+  <div class="acts"><button class="btn seal" type="button" data-save="2">① 이미지로 저장</button><a class="btn padlink" target="_blank" rel="noopener">② 패들렛 열기</a></div>
+  <p class="toast" id="toast2" role="status"></p>
   <details class="set"><summary>선생님 설정</summary>
     <label for="padUrl">패들렛 주소</label><input id="padUrl" inputmode="url">
-    <p style="margin-top:6px">현장 QR은 주소 끝에 #hansan, #suru, #lunch, #dangpo, #terrain, #park, #sijo 를 붙이면 그 장이 바로 펼쳐져요.</p>
   </details>
   <button class="btn" id="logout" type="button">일기장 덮기 (다른 친구로 로그인)</button>
 </section>
@@ -1069,6 +1099,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 
 
 <div class="modal" id="modal" hidden><div class="mbox" role="dialog" aria-modal="true"><button type="button" class="mx" aria-label="닫기">×</button><div class="mbody" id="mbody"></div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 (function(){
 const $=s=>document.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -1150,7 +1181,7 @@ pages.forEach((pg,k)=>{const f=pg.querySelector(':scope>.pfoot');if(!f)return;f.
   const hb=pg.querySelector('.homebtn');if(hb)hb.onclick=()=>go(0,-1)});
 function coverMode(){const L=$('#login');L.classList.toggle('in',!!me);if(me)$('#meName').textContent=(me.team?me.team+' ':'')+me.nick}
 function go(i,dir){i=Math.max(0,Math.min(total,i));if(i>0&&!me)i=0;if(busy)return;const old=pages[cur],p=pages[i];
-  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send')buildOut();if(p.dataset.key==='toc')drawBoard();if(i===0)coverMode();
+  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'&&!S.c.rainSeen){S.c.rainSeen=1;save();setTimeout(()=>drawRain(true),400)}if(p.dataset.key==='toc')drawBoard();if(i===0)coverMode();
   p.scrollTop=0;const anim=dir&&old!==p&&!old.hidden;
   if(!anim){pages.forEach((q,k)=>q.hidden=k!==i)}
   else{busy=true;p.hidden=false;if(dir>0){old.style.zIndex=3;p.style.zIndex=2;p.classList.add('under');old.classList.add('flip-out')}else{p.style.zIndex=3;old.style.zIndex=2;p.classList.add('flip-in')}
@@ -1324,10 +1355,17 @@ function restoreMap(){const r=S.c.route;$$('[data-route]').forEach(b=>b.setAttri
 
 /* ===== 정유년 10월 14일: 빗소리 읽기 ===== */
 const RAIN=['새벽 2시경에 꿈을 꾸었는데 내가 말을 타고 언덕 위로 가다가 말이 발을 헛디뎌 내 가운데 떨어졌으나 쓰러지지는 않고 막내아들 면이 끌어안고 있는 것 같은 형상을 하면서 깨었는데 이 무슨 징조인지 모르겠다.','(중략)','저녁에 어떤 사람이 천안으로부터 와서 집안 편지를 전했는데 개봉도 하기 전에 뼈와 살이 먼저 떨리고 심기가 혼란해졌다.','대강 겉봉을 뜯고 열의 편지를 보니 겉면에 통곡 두 자가 씌어 있어 면이 전사한 것을 알고 깨닫지 못하는 사이에 간담이 떨어져 목놓아 통곡했다.','하늘이 어질지 못함이 어찌 이와 같은가. 간담이 타고 찢어졌다.','내가 죽고 네가 사는 것이 이치에 떳떳함이거늘 네가 죽고 내가 사니 이런 어긋난 이치가 어디 있는가.','천지가 캄캄하고 백일이 빛이 변했다.','아아, 내 아들아. 나를 버리고 어디로 갔느냐.','영특한 기질이 범속하지 않기로 하늘이 세상에 머물러 있지 않게 하는가. 내가 지은 죄로 화가 너의 몸에 미쳤는가.','이제 내가 세상에 있은들 장차 누구에게 의지하란 말인가.','너를 따라 같이 죽어 지하에서 같이 지내고 같이 울고 싶건만 너의 형, 너의 누이, 너의 어미가 의지할 곳이 없으므로 아직은 참고 목숨을 이어 가기는 하지마는 마음은 죽고 형상만 남아서 소리쳐 울 따름이다.','하룻밤을 지내기가 1년 같았다.','이날 밤 10시경에 비가 내렸다.'];
-function drawRain(){const t=$('#rtext');const n=S.c.rainN||1;t.innerHTML='<span class="d">정유년 10월 14일 신미 · 난중일기</span>'+RAIN.map((x,i)=>`<span class="rs${i<n?' on':''}${i===RAIN.length-1?' last':''}${(S.c.rainMark||[]).includes(i)?' mark':''}" data-i="${i}">${esc(x)} </span>`).join('');
-  $$('.rs',t).forEach(sp=>sp.onclick=()=>{const i=+sp.dataset.i;if(!sp.classList.contains('on'))return;const m=S.c.rainMark=S.c.rainMark||[];const k=m.indexOf(i);k<0?m.push(i):m.splice(k,1);save();sp.classList.toggle('mark')});
-  const nb=$('#rainNext');nb.textContent=n>=RAIN.length?'마음에 남는 문장을 눌러 표시해요':'다음 줄 ›';nb.disabled=n>=RAIN.length}
-$('#rainNext').onclick=()=>{S.c.rainN=Math.min(RAIN.length,(S.c.rainN||1)+1);save();drawRain();const t=$('#rtext'),on=$$('.rs.on',t);const last=on[on.length-1];if(last)t.scrollTo({top:last.offsetTop-t.clientHeight/2,behavior:'smooth'});if(S.c.rainN===RAIN.length)rainLevel(.5)};
+let typeT=null,typeFin=null;
+function drawRain(typeLast){if(typeT){clearInterval(typeT);typeT=null}const t=$('#rtext');const n=S.c.rainN||1;const still=matchMedia('(prefers-reduced-motion: reduce)').matches;const ty=typeLast&&!still?n-1:-1;
+  t.innerHTML='<span class="d">정유년 10월 14일 신미 · 난중일기</span>'+RAIN.map((x,i)=>`<span class="rs${i<n?' on':''}${i===RAIN.length-1?' last':''}${(S.c.rainMark||[]).includes(i)?' mark':''}${i===ty?' typing':''}" data-i="${i}">${i===ty?'':esc(x)+' '}</span>`).join('');
+  $$('.rs',t).forEach(sp=>sp.onclick=()=>{if(sp.classList.contains('typing')){typeFin&&typeFin();return}const i=+sp.dataset.i;if(!sp.classList.contains('on'))return;const m=S.c.rainMark=S.c.rainMark||[];const k=m.indexOf(i);k<0?m.push(i):m.splice(k,1);save();sp.classList.toggle('mark')});
+  const nb=$('#rainNext');const done=()=>{nb.textContent=n>=RAIN.length?'마음에 남는 문장을 눌러 표시해요':'다음 줄 ›';nb.disabled=n>=RAIN.length};
+  if(ty<0){done();return}
+  const sp=t.querySelector('.rs.typing'),full=RAIN[ty]+' ',chars=[...full];let k=0;const caret=document.createElement('i');caret.className='caret';sp.appendChild(caret);nb.textContent='쓰는 중…';
+  const follow=()=>{const want=sp.offsetTop+sp.offsetHeight-t.clientHeight+24;if(want>t.scrollTop)t.scrollTop=want};
+  typeFin=()=>{if(typeT){clearInterval(typeT);typeT=null}sp.textContent=full;sp.classList.remove('typing');follow();typeFin=null;done()};
+  typeT=setInterval(()=>{if(k>=chars.length){typeFin();return}caret.before(chars[k]);k++;if(k%6===0)follow()},ty===RAIN.length-1?110:55)}
+$('#rainNext').onclick=()=>{if(typeFin){typeFin();return}S.c.rainN=Math.min(RAIN.length,(S.c.rainN||1)+1);save();drawRain(true);if(S.c.rainN===RAIN.length)rainLevel(.5)};
 let actx=null,rainG=null,rainSrcs=[],rainRAF=null;
 function rainLevel(v){if(rainG&&actx)rainG.gain.linearRampToValueAtTime(v,actx.currentTime+2)}
 function rainOn(){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();actx.resume();const sr=actx.sampleRate,len=sr*3,buf=actx.createBuffer(1,len,sr),d=buf.getChannelData(0);let last=0;for(let i=0;i<len;i++){const w=Math.random()*2-1;last=(last+0.04*w)/1.04;d[i]=last*3+w*0.12+(Math.random()<0.0009?(Math.random()*2-1)*0.9:0)}
@@ -1335,7 +1373,7 @@ function rainOn(){try{actx=actx||new (window.AudioContext||window.webkitAudioCon
 function rainOff(){if(rainG&&actx){rainG.gain.cancelScheduledValues(actx.currentTime);rainG.gain.setValueAtTime(rainG.gain.value,actx.currentTime);rainG.gain.linearRampToValueAtTime(0,actx.currentTime+.6);const ss=rainSrcs;setTimeout(()=>ss.forEach(x=>{try{x.stop()}catch(e){}}),700);rainSrcs=[];rainG=null}const b=$('#rainSnd');if(b){b.setAttribute('aria-pressed','false');b.textContent='빗소리 켜기'}}
 $('#rainSnd').onclick=()=>rainG?rainOff():rainOn();
 const drops=[...Array(70)].map(()=>({x:Math.random(),y:Math.random(),v:.5+Math.random()*.8,l:6+Math.random()*10}));
-function rainDraw(){const cv=$('#rainCv');if(!cv)return;const r=cv.getBoundingClientRect();if(!r.width){rainRAF=null;return}const dpr=devicePixelRatio||1;if(cv.width!==Math.round(r.width*dpr)){cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr)}
+function rainDraw(){const cv=$('#rainCv');if(!cv)return;const r=cv.getBoundingClientRect();if(!r.width){rainRAF=null;return}const dpr=devicePixelRatio||1;if(cv.width!==Math.round(r.width*dpr)||cv.height!==Math.round(r.height*dpr)){cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr)}
   const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,r.width,r.height);c.strokeStyle='rgba(185,189,232,.28)';c.lineWidth=1;c.beginPath();
   const still=matchMedia('(prefers-reduced-motion: reduce)').matches;drops.forEach(p=>{if(!still){p.y+=p.v*.012;p.x-=.0008;if(p.y>1.05){p.y=-.05;p.x=Math.random()*1.1}}const x=p.x*r.width,y=p.y*r.height;c.moveTo(x,y);c.lineTo(x-2,y+p.l)});c.stroke();
   rainRAF=still?null:requestAnimationFrame(rainDraw)}
@@ -1356,34 +1394,40 @@ $('#sail').onclick=()=>{drawVoy();go(byKey('voyage'),1)};
 
 /* ===== 탐후선 ===== */
 $('#padUrl').addEventListener('input',e=>{LS.set('rl.pad',e.target.value.trim());setPad()});
-function setPad(){const u=($('#padUrl').value||'').trim();$('#pad').href=/^https?:\/\//.test(u)?u:PAD_DEFAULT}
-async function buildOut(){setPad();const T=S.t,C=S.c,L=[];const who=(me.team?me.team+' ':'')+me.nick;
-  L.push(`[삼도수군통제사의 일터를 걷고 기록하다. _ 출근 Road(路) 업무 Log(錄)] ${who}`);
-  const cl=SIJIN.map(([n,t],i)=>S.clock[i]?`  ${n}(${t}) ${S.clock[i]}`:null).filter(Boolean);
-  L.push('\n■ 통제사의 하루 일과표',cl.length?cl.join('\n'):'  (비어 있음)');if(T.job)L.push('  오늘날 닮은 직업: '+T.job);
-  L.push('\n■ 수군의 점심: 일기 속 공통 낱말 '+((S.q.common&&S.q.common.ok)?'미역 (정답)':'-'));if(T.lunch)L.push('  후기: '+T.lunch);
-  L.push('\n■ 당포의 지형: '+((C.terrain||[]).join(', ')||'-'));if(T.terrain)L.push('  '+T.terrain);if(T.win)L.push('  불리한 곳에서 이긴 까닭: '+T.win);
-  L.push('\n■ 같은 인물, 다른 해석 (권준)'+(C.rank?' · 순천부사 권준 확인 완료':'')+'\n  나의 판단: '+(C.side||'-'));if(T.debate)L.push('  '+T.debate);
-  L.push('\n■ 한산 대첩의 승리 전략은 '+(T.strat||'____')+' 이다!');if(T.hansan)L.push('  '+T.hansan);
-  if(T.ae)L.push('\n■ 애를 끊는다\n  '+T.ae);
-  L.push('\n■ 나의 시조'+(T.sijoT?` 〈${T.sijoT}〉`:''),sijoText()||'  (아직 쓰지 않음)');
-  L.push('\n\n[첫 승의 바다에서 모든 것을 잃고, 그래도 다시! _ 백의 Road(路) 비망 Log(錄)]');
-  L.push('\n■ 판옥선과 거북선 구조 비교: '+(C.sortN!=null?C.sortN+' / '+SHIP.length+' 맞음':'-'));if(T.pan)L.push('  판옥선의 역할: '+T.pan);if(T.gob)L.push('  거북선의 역할: '+T.gob);
-  L.push('\n■ 옥포 해전 작전 회의');REPORT.forEach(([h,t],i)=>{const v=C.plan&&C.plan[i];L.push(`  ${'①②③④'[i]} ${t} → ${v!==undefined&&v!==''?PLAN2[+v][0]:'-'}`)});
-  L.push('  진군 길: '+(C.route?(C.route==='B'?'양지암취 뒤로 숨어서':'넓은 바다로 곧장')+(C.routeOk?' (성공)':' (들킴)'):'-'));
-  L.push('\n■ 왜선이 도망가지 못한 까닭: '+(C.oxN!=null?C.oxN+' / '+OX.length+' 맞음':'-'));if(T.trap)L.push('  '+T.trap);
-  if(T.dream)L.push('\n■ 정유년 4월 11일, 장군이 마음을 진정할 수 없었던 까닭\n  '+T.dream);
-  if(T.yp)L.push('\n■ 백의종군 중 장군의 점심(연포국)\n  장군의 마음: '+T.yp);if(T.yp2)L.push('  나의 점심 후기: '+T.yp2);
-  L.push('\n■ 칠천량 해전 토의 · 확인한 단서: '+((C.clue7||[]).join(', ')||'-'));if(T.mis)L.push('  결정적 실수: '+T.mis);if(T.ifme)L.push('  내가 통제사였다면: '+T.ifme);
-  if(T.sea)L.push('\n■ 칠천량 바다 앞에서 떠오른 한 줄\n  '+T.sea);
-  if(T.gs)L.push('\n■ 기복수직교서를 받은 장군의 마음\n  '+T.gs);
-  if((C.rainMark||[]).length)L.push('\n■ 정유년 10월 14일, 마음에 남은 문장\n'+C.rainMark.sort((a,b)=>a-b).map(i=>'  “'+RAIN[i]+'”').join('\n'));
-  if(T.letter)L.push('\n■ 정유년의 장군께 보내는 위로 편지\n  '+T.letter);
-  const fl=(C.fleet||[]).filter(Boolean);L.push('\n■ 나를 다시 일으킬 12척의 배: '+(fl.join(', ')||'-'));
-  const n=Object.keys(STAMPS).filter(k=>C['st_'+k]).length;L.push(`\n도장 ${n} / ${Object.keys(STAMPS).length}`);
-  $('#out').value=L.join('\n');
-  const g=$('#gallery');g.innerHTML='';await dbReady;for(const k of Object.keys(STAMPS)){const d=await DB.get(me.id+':'+k);g.insertAdjacentHTML('beforeend',d?`<div><img alt="${esc(STAMPS[k].t)}" src="${d}"></div>`:`<div></div>`)}}
-$('#copy').onclick=()=>{const ta=$('#out'),t=$('#toast');navigator.clipboard.writeText(ta.value).then(()=>t.textContent='복사했어요. 패들렛을 열어 붙여 넣으세요.').catch(()=>{ta.focus();ta.select();t.textContent='기록을 선택해 두었어요. 길게 눌러 복사하세요.'})};
+function setPad(){const u=($('#padUrl').value||'').trim();$$('.padlink').forEach(x=>x.href=/^https?:\/\//.test(u)?u:PAD_DEFAULT)}
+const DAYSTAMP={1:['hansando','lunch','dangpo','cheonja'],2:['gobuk','yangji','baeklunch','chil']};
+function cardItems(d){const T=S.t,C=S.c,I=[];const add=(h,v,cls)=>{if(v&&String(v).trim())I.push([h,String(v).trim(),cls||''])};
+  if(d===1){const cl=SIJIN.map(([n],i)=>S.clock[i]?`${n} ${S.clock[i]}`:null).filter(Boolean);add('통제사의 하루 일과표',cl.join('\n'));add('통제사는 오늘날 어떤 직업?',T.job);
+    add('수군의 점심',[(S.q.common&&S.q.common.ok)?'난중일기 속 낱말 ‘미역’ 찾기 성공':'',T.lunch].filter(Boolean).join('\n'));
+    add('당포의 지형',[(C.terrain||[]).join(', '),T.terrain].filter(Boolean).join('\n'));add('불리한 지형에서 이긴 까닭',T.win);
+    add('같은 인물, 다른 해석 · 권준',[C.side?'나의 판단: '+C.side:'',T.debate].filter(Boolean).join('\n'));
+    add('한산 대첩의 승리 전략',[T.strat?T.strat+' 이다!':'',T.hansan].filter(Boolean).join('\n'));add('장군이 ‘애를 끊는다’고 한 까닭',T.ae);
+    const sj=sijoText();if(sj)add('나의 시조'+(T.sijoT?` 〈${T.sijoT}〉`:''),sj,'poem')}
+  else{add('군선 구조 비교',C.sortN!=null?`판옥선·거북선 구별 ${C.sortN} / ${SHIP.length}`:'');add('판옥선과 거북선의 역할',[T.pan?'판옥선: '+T.pan:'',T.gob?'거북선: '+T.gob:''].filter(Boolean).join('\n'));
+    const pn=REPORT.filter((_,i)=>C.plan&&C.plan[i]!==undefined&&C.plan[i]!==''&&+C.plan[i]===i).length;add('옥포 해전 작전 회의',C.plan&&Object.keys(C.plan).length?`작전 ${pn} / 4 성공`+(C.route?` · 진군: ${C.route==='B'?'양지암취 뒤로 숨어서':'넓은 바다로 곧장'}${C.routeOk?' (성공)':''}`:''):'');
+    add('왜선이 갇힌 까닭',[C.oxN!=null?`O/X ${C.oxN} / ${OX.length}`:'',T.trap].filter(Boolean).join('\n'));add('불길한 꿈을 꾼 날의 장군',T.dream);add('장군은 어떤 마음으로 국을 드셨을까',T.yp);add('나의 점심',T.yp2);
+    add('칠천량 · 박물관에서 확인한 단서',(C.clue7||[]).join(', '));add('칠천량의 결정적 실수',T.mis);add('내가 통제사였다면',T.ifme);add('칠천량 바다 앞에서',T.sea);add('기복수직교서를 받은 장군의 마음',T.gs);
+    if((C.rainMark||[]).length)add('정유년 10월 14일, 마음에 남은 문장',[...C.rainMark].sort((a,b)=>a-b).map(i=>'“'+RAIN[i]+'”').join('\n'));
+    add('정유년의 장군께',T.letter,'rcletter');const fl=(C.fleet||[]).filter(Boolean);add('나를 다시 일으킬 12척의 배',fl.join(' · '),'rcfleet')}
+  return I}
+async function buildCard(d){setPad();const el=$('#rcard'+d);const who=(me.team?me.team+' · ':'')+me.nick;const now=new Date();
+  const head=d===1?['첫째 날','삼도수군통제사의 일터를 걷고 기록하다.','출근 Road(路) 업무 Log(錄)']:['둘째 날','첫 승의 바다에서 모든 것을 잃고, 그래도 다시!','백의 Road(路) 비망 Log(錄)'];
+  await dbReady;const ph=[];for(const k of DAYSTAMP[d]){ph.push([k,await DB.get(me.id+':'+k)])}
+  const items=cardItems(d);
+  el.innerHTML=`<div class="rc-top"><span class="rc-day">${head[0]}</span><b>${head[1]}</b><span>_ ${head[2]}</span></div>
+   <div class="rc-who"><span>${esc(who)}</span><span>${now.getFullYear()}. ${now.getMonth()+1}. ${now.getDate()}.</span></div>
+   <div class="rc-stamps">${ph.map(([k,src])=>`<div class="rc-st${src?' on':''}">${src?`<img src="${src}" alt="">`:''}<span class="rc-seal">${STAMPS[k].s[0]}<br>${STAMPS[k].s[1]}</span><small>${esc(STAMPS[k].t)}</small></div>`).join('')}</div>
+   <div class="rc-body">${items.length?items.map(([h,v,c])=>`<div class="rc-sec ${c}"><span>${esc(h)}</span><p>${esc(v).replace(/\n/g,'<br>')}</p></div>`).join(''):'<p class="rc-empty">아직 적은 기록이 없어요. 앞 장으로 돌아가 채워 보세요.</p>'}</div>
+   <div class="rc-foot">2026 | Road(路) Log(錄) 난중일기 · 또路錄</div>`}
+async function saveCard(d){const t=$('#toast'+d);t.className='toast';t.textContent='이미지를 만들고 있어요…';
+  try{if(!window.html2canvas)throw new Error('lib');await buildCard(d);const src=$('#rcard'+d);const box=document.createElement('div');box.style.cssText='position:fixed;left:-10000px;top:0;width:360px;background:#fff';const cl=src.cloneNode(true);cl.id='';box.appendChild(cl);document.body.appendChild(box);
+    await document.fonts.ready;const cv=await html2canvas(cl,{scale:2,backgroundColor:'#fdfbf7',useCORS:true,logging:false});box.remove();
+    const blob=await new Promise(r=>cv.toBlob(r,'image/png'));const name=`RoadLog_${d}일차_${(me.team?me.team+'_':'')+me.nick}.png`.replace(/\s+/g,'');const file=new File([blob],name,{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'Road Log 난중일기'});t.textContent='공유 창에서 ‘이미지 저장’ 또는 패들렛을 고르세요.';return}catch(e){if(e&&e.name==='AbortError'){t.textContent='';return}}}
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
+    t.textContent='저장했어요! 패들렛을 열어 이미지를 올려 주세요.'}
+  catch(e){console.warn('card',e);t.className='toast bad';t.textContent='이미지를 만들지 못했어요. 이 화면을 캡처해서 올려 주세요.'}}
+$$('[data-save]').forEach(b=>b.onclick=()=>saveCard(+b.dataset.save));
 
 /* ===== 가운데 팝업 ===== */
 function openPop(id){const t=document.getElementById(id);if(!t)return;$('#mbody').innerHTML='';$('#mbody').appendChild(t.content.cloneNode(true));$('#modal').hidden=false;$('#modal .mx').focus()}
