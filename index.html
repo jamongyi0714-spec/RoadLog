@@ -278,7 +278,7 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
   .page[data-key="lunch"] .lead{display:none}
   .clue[hidden]{display:flex!important}
   .flip .in{transform:none!important}.flip .f{display:none!important}.flip .b{transform:none!important;position:static!important;height:100%}
-  #rainAll,#toFleet,.routes,#routeMsg,#sortGo,#planGo,.rctl,#sail,.rainbox canvas{display:none!important}
+  #rainReset,#rainAll,#toFleet,.routes,#routeMsg,#sortGo,#planGo,.rctl,#sail,.rainbox canvas{display:none!important}
   .rainbox{height:auto!important;background:#fff!important}.rtext{position:static!important;color:var(--ink)!important;font-size:.82rem!important;line-height:1.6!important}.rtext .rs{opacity:1!important}.rtext .d{color:var(--tide)!important}
   .paper textarea.hand{min-height:300px}
   .print-only{display:block!important}
@@ -503,6 +503,8 @@ h2 .kicker{display:block;margin-bottom:2px}
 .bm-empty{font-size:.84rem;color:var(--ink-soft);padding:6px 2px}.bm-empty b{color:var(--seal)}
 .page,.page *{touch-action:pan-y}
 .page .carousel,.page .carousel *{touch-action:pan-x pan-y}
+.rreset{position:absolute;right:8px;top:8px;z-index:2;font:inherit;font-size:.74rem;border:1px solid rgba(255,255,255,.35);background:rgba(21,26,51,.7);color:#e9e6f5;border-radius:99px;padding:3px 10px;cursor:pointer}
+.rreset:hover{background:rgba(236,154,114,.35)}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -1020,6 +1022,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <div class="rainbox" id="rainbox">
     <canvas id="rainCv" aria-hidden="true"></canvas>
     <div class="rtext" id="rtext"></div>
+    <button type="button" class="rreset" id="rainReset" aria-label="처음부터 다시 읽기">↺ 처음부터</button>
   </div>
   <div class="rctl">
     <button type="button" class="btn" id="rainSnd" aria-pressed="false">빗소리 켜기</button>
@@ -1398,6 +1401,7 @@ function drawRain(typeLast){if(typeT){clearTimeout(typeT);typeT=null}const t=$('
   const step=()=>{if(k>=chars.length){typeFin();return}const ch=chars[k];caret.before(ch);k++;if(k%4===0)follow();
     typeT=setTimeout(step,ch==='.'||ch==='?'?base+650:ch===','?base+320:ch===' '?base*0.6:base)};
   typeT=setTimeout(step,500)}
+$('#rainReset').onclick=()=>{if(typeT){clearTimeout(typeT);typeT=null}typeFin=null;S.c.rainN=1;save();$('#rtext').scrollTop=0;rainLevel(.3);drawRain(true)};
 $('#rainAll').onclick=()=>{if(typeT){clearTimeout(typeT);typeT=null}typeFin=null;S.c.rainN=RAIN.length;save();drawRain();rainLevel(.5)};
 $('#rainNext').onclick=()=>{if(typeFin){typeFin();return}S.c.rainN=Math.min(RAIN.length,(S.c.rainN||1)+1);save();drawRain(true);if(S.c.rainN===RAIN.length)rainLevel(.5)};
 let actx=null,rainG=null,rainSrcs=[],rainRAF=null;
