@@ -8,7 +8,7 @@
 </head>
 <body>
 <title>Road Log 난중일기</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Nanum+Pen+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Nanum+Pen+Script&family=Nanum+Brush+Script&display=swap">
 <style>
 /* Layout: one diary page per screen, turned like a book; indigo cloth cover, ruled paper, vermilion seal stamps */
 /* Layout: one diary page per screen, turned like a book. Palette and art from the contest poster: dusk over the Tongyeong sea */
@@ -520,6 +520,19 @@ h2 .kicker{display:block;margin-bottom:2px}
 .mbox{max-height:92vh;overflow-y:auto}
 .savedimg{width:100%;max-height:52vh;object-fit:contain;border-radius:10px;border:1px solid var(--rule);background:#fff;-webkit-touch-callout:default;user-select:auto}
 .mrow{display:flex;gap:8px;flex-wrap:wrap}.mrow .btn{flex:1 1 120px}
+.hanji{position:relative;flex:1 1 auto;min-height:320px;border-radius:4px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .3 0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='g'><feTurbulence type='turbulence' baseFrequency='.012 .09' numOctaves='2' seed='9'/><feColorMatrix values='0 0 0 0 .6 0 0 0 0 .5 0 0 0 0 .35 0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>"),linear-gradient(180deg,#f3ead6,#efe3c8);box-shadow:0 1px 0 #e3d5b5,0 8px 18px -10px rgba(80,60,20,.45),inset 0 0 40px rgba(170,140,80,.18);padding:22px 18px;display:flex;overflow:hidden}
+.hanji::before,.hanji::after{content:"";position:absolute;left:0;right:0;height:14px;background:linear-gradient(#6b4a2b,#4a3220);box-shadow:0 2px 3px rgba(0,0,0,.25)}
+.hanji::before{top:0}.hanji::after{bottom:0}
+.hj-in{writing-mode:vertical-rl;text-orientation:upright;position:absolute;top:30px;bottom:26px;right:22px;left:22px;color:#1b1712;overflow:hidden}
+.hj-in>p{margin:0 0 0 14px}
+.hj-title{font-family:"Nanum Brush Script",var(--f-hand);font-size:1.9rem;line-height:1.2;color:#7a1f14;letter-spacing:.04em;padding-top:2px}
+.hj-poem{font-family:"Nanum Brush Script",var(--f-hand);font-size:1.5rem;line-height:1.75;white-space:pre-line;letter-spacing:0;word-spacing:-.35em;padding-top:20px}
+.hj-by{font-family:"Nanum Brush Script",var(--f-hand);font-size:1.1rem;color:#5a4a36;text-align:end;line-height:1.6;padding-bottom:62px}
+.hj-poem.empty,.hj-title.empty{color:rgba(60,45,30,.35)}
+.hj-seal{position:absolute;left:18px;bottom:26px;width:46px;height:46px;border:2.5px solid #b3261e;border-radius:6px;color:#b3261e;font-family:var(--f-diary);font-weight:700;font-size:.95rem;line-height:1.05;writing-mode:vertical-rl;display:grid;place-items:center;transform:rotate(-4deg);background:rgba(179,38,30,.05);opacity:.9;padding:2px}
+.hj-seal[hidden]{display:none}
+input.hand.brush{font-family:"Nanum Brush Script",var(--f-hand);font-size:1.6rem}
+@media print{.hanji{min-height:330px}}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -806,8 +819,8 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 <section class="page" data-name="별지 · 나의 시조" data-key="sijo3">
   <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>별지 · 오늘의 Road Log</span></div>
 <div class="guide"><img src="img/ship.webp" alt="" width="44" height="66"><div class="bub">장군처럼 멋진 시조가 완성됐어! <b>제목</b>도 붙여 줘.</div></div>
-  <div class="field"><label for="t-sijoT">제목</label><input class="hand" id="t-sijoT" data-k="sijoT" placeholder="통영 달 밝은 밤에"></div>
-  <div class="entry"><div class="date" id="sijoHead">나의 시조</div><div class="poemout" id="sijoOut"></div></div>
+  <div class="field"><label for="t-sijoT">제목</label><input class="hand brush" id="t-sijoT" data-k="sijoT" placeholder="통영 달 밝은 밤에"></div>
+  <div class="hanji"><div class="hj-in"><p class="hj-title" id="sijoHead"></p><p class="hj-poem" id="sijoOut"></p><p class="hj-by" id="sijoBy"></p></div><span class="hj-seal" id="sijoSeal"></span></div>
 </section>
 <section class="page" data-name="첫째 날 탐후선 띄우기" data-key="send1">
   <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>마무리 · 탐후선 띄우기</span></div>
@@ -1341,7 +1354,11 @@ function drawSijo(){const jb=$('#jangs');jb.innerHTML='';PLAN.forEach(([nm,tg],j
 const sijoText=()=>PLAN.map((p,j)=>p[1].map((_,k)=>S.sijo[j][k]||'').join(' ').trim()).filter(Boolean).join('\n');
 function countSijo(){PLAN.forEach(([n,tg],j)=>tg.forEach((t,k)=>{const v=S.sijo[j][k]||'',c=syl(v),el=$(`#c${j}${k}`),fx=j===2&&k===0;el.className='cnt'+(fx?' fix':'');
   if(!v){el.textContent=fx?'꼭 3자':`${t}자 안팎`;return}const ok=fx?c===3:Math.abs(c-t)<=1;el.classList.add(ok?'ok':'off');el.textContent=`${c}자${ok?' ✓':''}`}));
-  $('#sijoOut').textContent=sijoText()||'음보 칸을 채우면 여기에 시조가 모여요.';$('#sijoHead').textContent=S.t.sijoT?`〈${S.t.sijoT}〉`:'나의 시조'}
+  const sj=sijoText();$('#sijoOut').textContent=sj||'음보 칸을 채우면 여기에 시조가 모여요';$('#sijoOut').classList.toggle('empty',!sj);$('#sijoHead').textContent=S.t.sijoT||'제목';$('#sijoHead').classList.toggle('empty',!S.t.sijoT);
+  const nm=me?(me.nick||''):'';$('#sijoBy').textContent=nm?`2026년 통영에서, ${nm}`:'';const sl=[...nm.replace(/\s/g,'')].slice(-2).join('');$('#sijoSeal').textContent=sl;$('#sijoSeal').hidden=!sl;fitHanji()}
+function fitHanji(){const h=$('.hj-in');if(!h||!h.clientHeight)return;const av=h.clientHeight-22,po=$('#sijoOut'),by=$('#sijoBy');const L=(po.textContent||'').split('\n');const mx=Math.max(8,...L.map(l=>[...l].length));let fs=Math.max(13,Math.min(24,Math.floor(av/(mx*.92))));po.style.fontSize=fs+'px';while(fs>12&&po.offsetWidth>L.length*fs*1.75+4){fs--;po.style.fontSize=fs+'px'}let bf=Math.max(11,Math.min(18,fs-2));by.style.fontSize=bf+'px';while(bf>10&&by.offsetWidth>bf*1.8+4){bf--;by.style.fontSize=bf+'px'}}
+if(window.ResizeObserver){const _hj=document.querySelector('.hanji');if(_hj)new ResizeObserver(()=>fitHanji()).observe(_hj)}
+try{document.fonts.ready.then(()=>fitHanji())}catch(e){}
 
 /* ===== 글쓰기 · 칩 바인딩 ===== */
 function bindTexts(){$$('[data-k]').forEach(el=>{el.value=S.t[el.dataset.k]||'';el.oninput=()=>{S.t[el.dataset.k]=el.value;save();if(el.dataset.k==='sijoT')countSijo()}})}
