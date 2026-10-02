@@ -256,6 +256,7 @@ details.set input{font:inherit;width:100%;margin-top:6px;border:1px solid var(--
   .oxr{padding:4px 8px!important;font-size:.8rem!important}.oxr .mk{width:20px;height:20px}
   .page[data-key="siege"] .grow textarea{min-height:44px!important}
   .page .pc{gap:8px}
+  .page[data-key="yangji"] .shot{aspect-ratio:3/1!important}.page[data-key="yangji"] .extra{font-size:.8rem;padding:6px 10px;gap:3px}.page[data-key="yangji"] h2{display:none}
   .page[data-key="siege"] .entry .date{display:none}.oxr{line-height:1.3!important;gap:6px!important}.ox{gap:4px!important}
   .page[data-key="siege"] .entry .txt{font-size:.85rem!important;line-height:1.6!important}
   .pc.center>:first-child{margin-top:0}.pc.center>:last-child,.pc.hero>*{margin-bottom:0}
@@ -515,6 +516,10 @@ h2 .kicker{display:block;margin-bottom:2px}
 .narrbtn.playing{background:var(--cover);border-color:var(--cover);color:var(--cover-ink)}.narrbtn.playing small{color:var(--cover-ink);opacity:.75}
 .mclub{font-size:.84rem;color:var(--ink-soft);margin-top:-6px}
 .mnote{font-size:.95rem;line-height:1.7;background:var(--seal-soft);border-radius:10px;padding:10px 12px}
+.src-note{font-size:.72rem!important;margin-top:-4px}.src-note b{color:var(--tide)}
+.mbox{max-height:92vh;overflow-y:auto}
+.savedimg{width:100%;max-height:52vh;object-fit:contain;border-radius:10px;border:1px solid var(--rule);background:#fff;-webkit-touch-callout:default;user-select:auto}
+.mrow{display:flex;gap:8px;flex-wrap:wrap}.mrow .btn{flex:1 1 120px}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -878,6 +883,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
       <button type="button" class="btn" data-route="B">② 양지암취 뒤로 숨어서</button>
     </div>
     <p class="qmsg" id="routeMsg" role="status"></p>
+    <p class="gloss src-note">※ 진군 길은 안방준 『은봉전서』의 기록을 따른 <b>남로설</b>을 바탕으로 했어요.</p>
   </div>
   <button type="button" class="popbtn" data-pop="tpl-guide">길잡이 장수의 조언 보기</button>
   <template id="tpl-guide"><h3>길잡이 장수의 조언</h3><p class="poem">어영담은 바닷가에서 자라나 뱃길에 매우 익숙하고 영남과 호남의 물길 사정과 섬들의 형세를 또렷하고 상세히 알고 있습니다.</p><p class="gloss">『임진장초』, 어영담을 조방장으로 임명해 주시기를 청하는 장계 중</p><p class="mtip">물길을 잘 아는 장수가 있다면, 적의 눈에 띄지 않는 길도 찾을 수 있겠죠?</p></template>
@@ -902,6 +908,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <h2>첫 승의 바다, 옥포</h2>
   <div class="stamp" data-stamp="yangji"></div>
   <div class="info"><b>옥포 해전</b><span>임진년 5월 7일, 조선 수군은 옥포에서 왜선 26척을 깨뜨리며 첫 승리를 거두었어요.</span><span>‘취(嘴)’는 새의 부리처럼 바다로 뾰족하게 튀어나온 땅을 말해요.</span></div>
+  <div class="extra"><span class="ex-k">더 알아보기 · 옥포로 간 길, 두 가지 주장</span><p><b>남로설</b> 안방준의 『은봉전서』에 따르면, 조선 수군은 거제 남쪽 송미포에서 밤을 보낸 뒤 지세포·조라포·양지암을 거쳐 옥포에 이르렀어요. 이 일기장은 남로설을 따랐어요.</p><p><b>북로설</b> 견내량을 지나 거제도 북쪽 바다로 돌아 옥포로 갔다는 주장이에요.</p></div>
 </section>
 
 <section class="page day2" data-name="백의종군의 길" data-key="baek">
@@ -920,7 +927,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <li><b>정유년 초</b><span>바다를 건너오는 왜장을 막으라는 조정의 명령. 적의 속임수일 수 있다고 본 이순신은 섣불리 나가지 않았어요.</span></li>
     <li><b>2월</b><span>명령을 어겼다는 죄로 통제사에서 물러나 한양의 옥에 갇혔어요. 새 통제사는 원균.</span></li>
     <li><b>4월 1일</b><span>옥에서 풀려나 백의종군 길에 올랐어요.</span></li>
-    <li class="low"><b>4월 13일</b><span>아들을 보러 오시던 어머니가 배 위에서 세상을 떠나셨어요.</span></li>
+    <li class="low"><b>4월 13일</b><span>아들을 보러 배를 타고 오시던 어머니가 배 위에서 세상을 떠나셨다는 소식을 들었어요.</span></li>
   </ol>
 </section>
 
@@ -1500,12 +1507,15 @@ async function buildCard(d){setPad();const el=$('#rcard'+d);const who=(me.team?m
    <div class="rc-foot">2026 | Road(路) Log(錄) 난중일기 · 또路錄 · 일러스트: Canva</div>`}
 async function saveCard(d){const t=$('#toast'+d);t.className='toast';t.textContent='이미지를 만들고 있어요…';
   try{if(!window.html2canvas)throw new Error('lib');await buildCard(d);const src=$('#rcard'+d);const box=document.createElement('div');box.style.cssText='position:fixed;left:-10000px;top:0;width:360px;background:#fff';const cl=src.cloneNode(true);cl.id='';box.appendChild(cl);document.body.appendChild(box);
-    await document.fonts.ready;const cv=await html2canvas(cl,{scale:2,backgroundColor:'#fdfbf7',useCORS:true,logging:false});box.remove();
-    const blob=await new Promise(r=>cv.toBlob(r,'image/png'));const name=`RoadLog_${d}일차_${(me.team?me.team+'_':'')+me.nick}.png`.replace(/\s+/g,'');const file=new File([blob],name,{type:'image/png'});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:'Road Log 난중일기'});t.textContent='공유 창에서 ‘이미지 저장’ 또는 패들렛을 고르세요.';return}catch(e){if(e&&e.name==='AbortError'){t.textContent='';return}}}
-    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
-    t.textContent='저장했어요! 패들렛을 열어 이미지를 올려 주세요.'}
+    try{await document.fonts.ready}catch(e){}const cv=await html2canvas(cl,{scale:2,backgroundColor:'#fdfbf7',useCORS:true,logging:false});box.remove();
+    const url=cv.toDataURL('image/png');const blob=await new Promise(r=>cv.toBlob(r,'image/png'));const now=new Date();const name=`RoadLog_day${d}_${now.getMonth()+1}${String(now.getDate()).padStart(2,'0')}.png`;
+    t.textContent='';showSaved(url,blob,name)}
   catch(e){console.warn('card',e);t.className='toast bad';t.textContent='이미지를 만들지 못했어요. 이 화면을 캡처해서 올려 주세요.'}}
+function showSaved(url,blob,name){const file=blob?new File([blob],name,{type:'image/png'}):null;const canShare=!!(file&&navigator.canShare&&navigator.canShare({files:[file]}));
+  $('#mbody').innerHTML=`<h3>기록 카드가 만들어졌어요</h3><img class="savedimg" src="${url}" alt="나의 Road Log 기록 카드"><p class="mtip">사진을 <b>꾹 눌러</b> ‘이미지 저장’(아이폰은 ‘사진에 저장’)을 고르세요. 저장한 사진을 패들렛에 올리면 돼요.</p><div class="mrow">${canShare?'<button type="button" class="btn fill" id="svShare">공유하기</button>':''}<button type="button" class="btn" id="svDown">파일로 내려받기</button></div>`;
+  popOnClose=null;$('#modal').hidden=false;
+  if(canShare)$('#svShare').onclick=async()=>{try{await navigator.share({files:[file]})}catch(e){}};
+  $('#svDown').onclick=()=>{try{const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;a.type='image/png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),8000)}catch(e){}}}
 $$('[data-save]').forEach(b=>b.onclick=()=>saveCard(+b.dataset.save));
 
 /* ===== 가운데 팝업 ===== */
