@@ -516,6 +516,7 @@ h2 .kicker{display:block;margin-bottom:2px}
 .narrbtn.playing{background:var(--cover);border-color:var(--cover);color:var(--cover-ink)}.narrbtn.playing small{color:var(--cover-ink);opacity:.75}
 .mclub{font-size:.84rem;color:var(--ink-soft);margin-top:-6px}
 .mnote{font-size:.95rem;line-height:1.7;background:var(--seal-soft);border-radius:10px;padding:10px 12px}
+.flaglbl{display:flex;align-items:center;gap:6px}.flaglbl img{width:34px;height:auto;flex:none}
 .src-note{font-size:.72rem!important;margin-top:-4px}.src-note b{color:var(--tide)}
 .mbox{max-height:92vh;overflow-y:auto}
 .savedimg{width:100%;max-height:52vh;object-fit:contain;border-radius:10px;border:1px solid var(--rule);background:#fff;-webkit-touch-callout:default;user-select:auto}
@@ -889,7 +890,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <div class="plan" id="plan"></div>
   <div class="qrow tight"><button type="button" class="btn sm" id="planGo">작전 확정</button><span class="qmsg" id="planMsg" role="status"></span></div>
   <div class="mapwrap">
-    <span class="lbl">숨어서 가자! 어느 길로 갈까?</span>
+    <span class="lbl flaglbl"><img src="img/sujagi.webp" alt="" aria-hidden="true">숨어서 가자! 어느 길로 갈까?</span>
     <svg id="map" viewBox="0 0 320 230" role="img" aria-label="옥포 앞바다 작전 지도"></svg>
     <div class="routes">
       <button type="button" class="btn" data-route="A">① 넓은 바다로 곧장</button>
@@ -1414,8 +1415,8 @@ function drawMap(fleet,enc){const svg=$('#map');
   <path class="path" d="${pth('A')}"/><path class="path" d="${pth('B')}"/>
   <text x="292" y="22">①</text><text x="300" y="214">②</text>
   ${[[118,132],[132,140],[146,132]].map(([x,y])=>`<path d="M${x} ${y-6}l6 10h-12z" fill="#cf4637"/>`).join('')}
-  ${enc?[[104,120],[176,112],[166,96],[188,122]].map(([x,y])=>`<path d="M${x} ${y+6}l6 -10h-12z" fill="#2d3561" transform="rotate(180 ${x} ${y})"/>`).join(''):''}
-  ${fleet?`<g id="fleet" transform="translate(${fleet[0]},${fleet[1]})"><circle r="7" fill="#2d3561"/><text x="0" y="3.5" text-anchor="middle" style="fill:#fbe7c0;font-size:9px">帥</text></g>`:''}`}
+  ${enc?[[108,110],[124,100],[142,96],[188,98]].map(([x,y])=>`<path d="M${x} ${y+5}l6 -10h-12z" fill="#2d3561"/>`).join(''):''}
+  ${fleet?`<g id="fleet" transform="translate(${fleet[0]},${fleet[1]})"><circle r="5" fill="#2d3561"/><line x1="0" y1="2" x2="0" y2="-24" stroke="#5a3a1e" stroke-width="1.6" stroke-linecap="round"/><image href="img/sujagi.webp" x="-1" y="-25" width="26" height="19"/></g>`:''}`}
 let anim=null;
 function runRoute(r){if(anim)cancelAnimationFrame(anim);$$('[data-route]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.route===r));const pts=MAP_ROUTES[r],msg=$('#routeMsg');msg.className='qmsg';msg.textContent='진군 중…';
   const seg=[];let L=0;for(let i=1;i<pts.length;i++){const l=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(l);L+=l}
