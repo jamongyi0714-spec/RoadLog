@@ -516,6 +516,9 @@ h2 .kicker{display:block;margin-bottom:2px}
 .narrbtn.playing{background:var(--cover);border-color:var(--cover);color:var(--cover-ink)}.narrbtn.playing small{color:var(--cover-ink);opacity:.75}
 .mclub{font-size:.84rem;color:var(--ink-soft);margin-top:-6px}
 .mnote{font-size:.95rem;line-height:1.7;background:var(--seal-soft);border-radius:10px;padding:10px 12px}
+.flagwave{transform-box:fill-box;transform-origin:0 50%;animation:flagwave 2.4s ease-in-out infinite}.flaglbl img{transform-origin:0 50%;animation:flagwave 3s ease-in-out infinite}
+@keyframes flagwave{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(-6deg) scaleX(.94)}}
+@media (prefers-reduced-motion:reduce){.flagwave,.flaglbl img{animation:none}}
 .flaglbl{display:flex;align-items:center;gap:6px}.flaglbl img{width:34px;height:auto;flex:none}
 .src-note{font-size:.72rem!important;margin-top:-4px}.src-note b{color:var(--tide)}
 .mbox{max-height:92vh;overflow-y:auto}
@@ -1416,7 +1419,7 @@ function drawMap(fleet,enc){const svg=$('#map');
   <text x="292" y="22">①</text><text x="300" y="214">②</text>
   ${[[118,132],[132,140],[146,132]].map(([x,y])=>`<path d="M${x} ${y-6}l6 10h-12z" fill="#cf4637"/>`).join('')}
   ${enc?[[108,110],[124,100],[142,96],[188,98]].map(([x,y])=>`<path d="M${x} ${y+5}l6 -10h-12z" fill="#2d3561"/>`).join(''):''}
-  ${fleet?`<g id="fleet" transform="translate(${fleet[0]},${fleet[1]})"><circle r="5" fill="#2d3561"/><line x1="0" y1="2" x2="0" y2="-24" stroke="#5a3a1e" stroke-width="1.6" stroke-linecap="round"/><image href="img/sujagi.webp" x="-1" y="-25" width="26" height="19"/></g>`:''}`}
+  ${fleet?`<g id="fleet" transform="translate(${fleet[0]},${fleet[1]})"><circle r="5" fill="#2d3561"/><line x1="0" y1="2" x2="0" y2="-24" stroke="#5a3a1e" stroke-width="1.6" stroke-linecap="round"/><image class="flagwave" href="img/sujagi.webp" x="-1" y="-25" width="26" height="19"/></g>`:''}`}
 let anim=null;
 function runRoute(r){if(anim)cancelAnimationFrame(anim);$$('[data-route]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.route===r));const pts=MAP_ROUTES[r],msg=$('#routeMsg');msg.className='qmsg';msg.textContent='진군 중…';
   const seg=[];let L=0;for(let i=1;i<pts.length;i++){const l=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(l);L+=l}
@@ -1424,7 +1427,7 @@ function runRoute(r){if(anim)cancelAnimationFrame(anim);$$('[data-route]').forEa
   const end=ok=>{S.c.route=r;S.c.routeOk=ok?1:0;save();if(ok){drawMap(pts[pts.length-1],true);msg.className='qmsg ok';msg.textContent='성공! 왜적은 눈치채지 못했어요. 양지암취를 돌아 들어가 동서에서 포위했어요.';cheer('plan')}else{msg.className='qmsg';msg.innerHTML='<b style="color:var(--no)">들켰다!</b> 왜적이 가덕도·부산에 원군을 요청해요. 다른 길을 골라 봐요.'}};
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce){const hit=[...Array(40)].some((_,i)=>{const p=at(i/40);return i<34&&inCone(p[0],p[1])});drawMap(hit?at(.5):pts[pts.length-1],false);return end(!hit)}
-  const t0=performance.now(),D=2600;const step=now=>{const t=Math.min(1,(now-t0)/D),p=at(t);drawMap(p,false);if(t<.85&&inCone(p[0],p[1])){anim=null;return end(false)}if(t<1)anim=requestAnimationFrame(step);else{anim=null;end(true)}};anim=requestAnimationFrame(step)}
+  const t0=performance.now(),D=7500,ez=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;drawMap(at(0),false);const step=now=>{const t=Math.min(1,(now-t0)/D),p=at(ez(t));const f=$('#fleet');if(f)f.setAttribute('transform',`translate(${p[0]},${p[1]})`);if(ez(t)>.35&&ez(t)<.85&&inCone(p[0],p[1])){anim=null;return end(false)}if(t<1)anim=requestAnimationFrame(step);else{anim=null;end(true)}};anim=requestAnimationFrame(step)}
 $$('[data-route]').forEach(b=>b.onclick=()=>runRoute(b.dataset.route));
 function restoreMap(){const r=S.c.route;$$('[data-route]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.route===r));const m=$('#routeMsg');
   if(S.c.routeOk){drawMap(MAP_ROUTES.B[MAP_ROUTES.B.length-1],true);m.className='qmsg ok';m.textContent='성공! 왜적은 눈치채지 못했어요. 양지암취를 돌아 들어가 동서에서 포위했어요.'}else{drawMap(null,false);m.className='qmsg';m.textContent='길을 골라 진군해 보세요.'}}
