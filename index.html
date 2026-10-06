@@ -126,6 +126,8 @@ textarea.hand::placeholder,input.hand::placeholder{color:var(--ink-soft);opacity
 .stamp .top span{font-size:.8rem;color:var(--ink-soft)}
 .shot{position:relative;border-radius:8px;overflow:hidden;background:var(--paper);aspect-ratio:16/9;max-width:100%;display:grid;place-items:center;text-align:center;color:var(--ink-soft);font-size:.9rem;cursor:pointer}
 .shot img{width:100%;height:100%;object-fit:cover;display:block}
+.shot.has{aspect-ratio:auto;background:#1d1f33}.shot.has img{height:auto;max-height:72vh;object-fit:contain}
+.mnote.pn{display:flex;flex-direction:column;gap:8px;text-align:left}.mnote.pn span{display:block;padding-left:1.4em;text-indent:-1.4em}
 .shot input{position:absolute;inset:0;opacity:0;cursor:pointer}
 .shot .cam{display:flex;flex-direction:column;gap:6px;align-items:center;padding:12px}
 .shot .cam svg{width:40px;height:40px;stroke:var(--seal)}
@@ -537,7 +539,7 @@ h2 .kicker{display:block;margin-bottom:2px}
 .hj-seal{position:absolute;left:18px;bottom:26px;width:46px;height:46px;border:2.5px solid #b3261e;border-radius:6px;color:#b3261e;font-family:var(--f-diary);font-weight:700;font-size:.95rem;line-height:1.05;writing-mode:vertical-rl;display:grid;place-items:center;transform:rotate(-4deg);background:rgba(179,38,30,.05);opacity:.9;padding:2px}
 .hj-seal[hidden]{display:none}
 input.hand.brush{font-family:"Nanum Brush Script",var(--f-hand);font-size:1.6rem}
-@media print{.hanji{min-height:330px}}
+@media print{.hanji{min-height:330px}.shot.has{aspect-ratio:16/9!important;background:none}.shot.has img{height:100%!important;max-height:none}}
 /* 거북선 귀선이 */
 .guide{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:end}
 .guide img{width:44px;height:auto;display:block}
@@ -1313,15 +1315,19 @@ const DB={db:null,mem:{},open(){return new Promise(r=>{try{const q=indexedDB.ope
  get(k){return new Promise(r=>{if(this.mem[k])return r(this.mem[k]);if(!this.db)return r(null);try{const q=this.db.transaction('p').objectStore('p').get(k);q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}})}};
 const dbReady=DB.open();
 const CAM='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg>';
-function shrink(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const m=1000,sc=Math.min(1,m/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.78))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(file)})}
+function shrink(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const m=1600,sc=Math.min(1,m/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.82))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(file)})}
 async function drawStamp(el,pop){const k=el.dataset.stamp,v=STAMPS[k];const src=me?await (dbReady.then(()=>DB.get(me.id+':'+k))):null;
   el.innerHTML=`<div class="top"><h3>${esc(v.t)}</h3><span>${esc(v.p)}</span></div>
-   <label class="shot">${src?`<img alt="${esc(v.t)} 인증샷" src="${src}"><span class="inkseal${pop?' pop':''}"><span>${v.s[0][0]}</span><span>${v.s[0][1]}</span><span>${v.s[1][0]}</span><span>${v.s[1][1]}</span></span>`:`<span class="cam">${CAM}<b class="screen-only">사진 찍고 도장 받기</b><b class="print-only">사진 붙이는 곳</b><span>${esc(v.h)}</span></span>`}
+   <label class="shot${src?' has':''}">${src?`<img alt="${esc(v.t)} 인증샷" src="${src}"><span class="inkseal${pop?' pop':''}"><span>${v.s[0][0]}</span><span>${v.s[0][1]}</span><span>${v.s[1][0]}</span><span>${v.s[1][1]}</span></span>`:`<span class="cam">${CAM}<b class="screen-only">사진 찍고 도장 받기</b><b class="print-only">사진 붙이는 곳</b><span>${esc(v.h)}</span></span>`}
    <input type="file" accept="image/*" aria-label="${esc(v.t)} 사진 올리기"></label>
    <div class="shotbtns screen-only"><button type="button" class="redo" data-src="cam">${src?'다시 찍기':'카메라로 찍기'}</button><button type="button" class="redo" data-src="gal">갤러리에서 고르기</button><input type="file" accept="image/*" capture="environment" hidden tabindex="-1" aria-hidden="true"></div>`;
   const inp=el.querySelector('.shot input'),cam=el.querySelector('.shotbtns input');const onPick=async(i)=>{const f=i.files&&i.files[0];if(!f)return;try{const d=await shrink(f);await dbReady;DB.put(me.id+':'+k,d);S.c['st_'+k]=1;save();drawStamp(el,true);cheer(el.closest('.page').dataset.key)}catch(e){el.querySelector('.shot').insertAdjacentHTML('beforeend','<span class="lbl" style="position:absolute;bottom:6px;left:0;right:0">사진을 열 수 없어요. 다른 사진으로 다시 해 보세요.</span>')}};
   inp.onchange=()=>onPick(inp);cam.onchange=()=>onPick(cam);
-  el.querySelector('[data-src="cam"]').onclick=()=>cam.click();el.querySelector('[data-src="gal"]').onclick=()=>inp.click()}
+  const go=i=>S.c.photoOK?i.click():photoNotice(()=>i.click());
+  el.querySelector('[data-src="cam"]').onclick=()=>go(cam);el.querySelector('[data-src="gal"]').onclick=()=>go(inp);
+  inp.addEventListener('click',e=>{if(!S.c.photoOK){e.preventDefault();photoNotice(()=>inp.click())}})}
+function photoNotice(then){$('#mbody').innerHTML=`<h3>📷 사진 올리기 전에 꼭 읽어요</h3><p class="mnote pn"><span>① 사진은 <b>이 휴대폰 안에만</b> 저장되고, 어디로도 자동으로 보내지지 않아요.</span><span>② 친구 얼굴이 나오게 찍을 때는 <b>먼저 친구에게 물어봐요.</b></span><span>③ 패들렛 같은 곳에는 <b>내가 직접 올릴 때만</b> 올라가요. 올리기 전에 한 번 더 살펴봐요.</span></p><button type="button" class="btn fill" id="photoAgree" style="width:100%">알겠어요</button>`;
+  popOnClose=null;$('#modal').hidden=false;$('#photoAgree').focus();$('#photoAgree').onclick=()=>{S.c.photoOK=1;save();closePop();then()}}
 
 /* ===== 시계 일과표 ===== */
 let selS=null;const svg=$('#clock');
