@@ -65,8 +65,9 @@ html.m .page{border-radius:0 6px 6px 0}
 .ear.pv::before{left:0;background:linear-gradient(225deg,transparent 50%,color-mix(in srgb,var(--ink) 12%,var(--paper)) 50%);border-radius:0 0 0 3px}
 .ear:hover::before,.ear:focus-visible::before{width:38px;height:38px}
 .ear[hidden]{display:block!important;visibility:hidden}
-.homebtn{width:26px;height:26px;margin-right:6px;border-radius:7px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;display:inline-grid;place-items:center;cursor:pointer;vertical-align:-6px;padding:0}
-.homebtn svg{width:15px;height:15px}
+.homebtn{height:28px;margin-right:8px;border-radius:99px;border:1.5px solid rgba(255,255,255,.85);background:rgba(255,255,255,.95);color:var(--cover);display:inline-flex;align-items:center;gap:4px;cursor:pointer;vertical-align:-7px;padding:0 10px 0 8px;font:inherit;font-size:.74rem;font-weight:700;letter-spacing:0;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.homebtn svg{width:15px;height:15px;flex:none}
+.homebtn:active{transform:scale(.96)}
 .extra{border:1.5px solid var(--tide);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;font-size:.92rem;line-height:1.6;background:var(--tide-soft)}
 .ex-k{font-size:.78rem;font-weight:700;color:var(--tide);letter-spacing:.04em}
 #login .meline{font-family:var(--f-diary);font-size:1.15rem;text-align:center}
@@ -174,6 +175,22 @@ textarea.hand::placeholder,input.hand::placeholder{color:var(--ink-soft);opacity
 .slot.done .mini{border-color:var(--seal);color:var(--seal);transform:rotate(-6deg)}
 .slot b{color:var(--ink);font-weight:400}
 .slot>span:last-child{display:none}
+.road{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start}
+.rm-h{margin-bottom:0}.rm-tip{font-size:.84rem;color:var(--ink-soft);margin:-4px 0 2px}
+.rday{border-radius:12px;overflow:hidden;border:1px solid var(--rule)}
+.rday-h{width:100%;font:inherit;text-align:left;border:0;cursor:pointer;color:#fff;padding:8px 10px;display:flex;flex-direction:column;gap:1px;background:linear-gradient(to bottom,rgba(35,38,74,.25),rgba(35,38,74,.8)),url("img/sea.webp") 30% 60%/cover}
+.rday-h small{font-size:.68rem;letter-spacing:.06em;opacity:.95}.rday-h b{font-family:var(--f-diary);font-size:.8rem;line-height:1.35}
+.rstops{list-style:none;margin:0;padding:4px 4px 6px;position:relative}
+.rstops::before{content:"";position:absolute;left:17px;top:16px;bottom:20px;border-left:2px dashed var(--tide);opacity:.45}
+.rstop{width:100%;font:inherit;display:grid;grid-template-columns:26px 1fr;gap:6px;align-items:start;text-align:left;background:none;border:0;border-radius:8px;padding:4px 2px;color:var(--ink);cursor:pointer;position:relative}
+.rstop:active{background:var(--tide-soft)}@media (hover:hover){.rstop:hover{background:var(--tide-soft)}}
+.rnum{width:24px;height:24px;font-size:.72rem!important;border-radius:50%;display:grid;place-items:center;background:var(--paper);border:2px solid var(--tide);color:var(--tide);font-weight:700;font-size:.82rem;font-variant-numeric:tabular-nums;justify-self:center}
+.rstop b{display:block;font-family:var(--f-diary);font-size:.84rem;line-height:1.3;margin-top:3px}
+.rstop small{display:block;font-size:.66rem;color:var(--ink-soft);line-height:1.35;word-break:keep-all}
+.rst{display:inline-block;vertical-align:1px;font-family:var(--f-ui);font-weight:400;font-size:.62rem;border:1.5px dashed var(--rule);color:var(--ink-soft);border-radius:5px;padding:0 4px;white-space:nowrap}
+.rst.on{border:1.5px solid var(--seal);color:var(--seal);font-weight:700;transform:rotate(-6deg);background:var(--seal-soft)}
+.rstop.here .rnum{background:var(--seal);border-color:var(--seal);color:#fff}
+.rm-more{font:inherit;font-size:.86rem;align-self:stretch;border:1.5px dashed var(--tide);border-radius:10px;background:var(--tide-soft);color:var(--tide);padding:9px;cursor:pointer;font-weight:700}
 .toc{display:flex;flex-direction:column}
 .toc button{font:inherit;display:grid;grid-template-columns:1fr auto;gap:10px;text-align:left;background:none;border:0;border-bottom:1px dotted var(--rule);padding:12px 2px;color:var(--ink);cursor:pointer}
 .toc button b{display:block;font-family:var(--f-diary);font-weight:700;font-size:1rem}
@@ -610,9 +627,17 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <p class="credit">일러스트: Canva</p>
 </section>
 
+<section class="page" data-name="전체 로드맵" data-key="roadmap">
+  <div class="folio"><span><b>전체 로드맵</b></span><span>1박 2일 · 통영 → 거제</span></div>
+  <h2 class="rm-h">우리가 걸을 길</h2>
+  <p class="rm-tip">가고 싶은 곳을 누르면 그 쪽으로 바로 넘어가요.</p>
+  <div class="road" id="road"></div>
+  <button type="button" class="rm-more" id="rmToc">나의 도장판 · 차례 · 책갈피 보기 →</button>
+</section>
+
 <section class="page" data-name="차례" data-key="toc">
   <div class="folio"><span><b>나의 일기장</b></span><span id="whoLine"></span></div>
-  <div class="guide"><img src="img/ship.webp" alt="" width="44" height="66"><div class="bub">책장 <b>모서리</b>를 누르거나 <b>옆으로 밀면</b> 다음 장으로 넘어가. 왼쪽 위 책 단추는 <b>표지</b>로, 오른쪽 위 <b>리본</b>은 책갈피!</div></div>
+  <div class="guide"><img src="img/ship.webp" alt="" width="44" height="66"><div class="bub">책장 <b>모서리</b>를 누르거나 <b>옆으로 밀면</b> 다음 장으로 넘어가. 왼쪽 위 <b>로드맵</b> 단추는 전체 길 안내로, 오른쪽 위 <b>리본</b>은 책갈피!</div></div>
   <h2>나의 도장판</h2>
   <div class="board" id="board"></div>
   <h3>차례</h3>
@@ -1167,15 +1192,16 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 function hintPop(t){$('#mbody').innerHTML=`<h3>💡 예시 답안</h3><p class="poem hintex"></p><p class="mtip">예시는 참고만 해요. 내 생각과 내 말로 써 봐요!</p>`;$('#mbody .hintex').textContent=t;popOnClose=null;$('#modal').hidden=false}
 function addHints(){$$('[data-ex]').forEach(el=>{if(el.dataset.hinted)return;el.dataset.hinted=1;const b=document.createElement('button');b.type='button';b.className='hintbtn';b.textContent='💡 힌트';b.onclick=e=>{e.stopPropagation();hintPop(el.dataset.ex)};
   const f=el.closest('.field');if(f&&f.querySelector('label')){f.classList.add('hashint');f.querySelector('label').after(b)}else{b.classList.add('solo');el.before(b)}})}
-const BUILD='202610071852';
+const BUILD='202610072223';
 (function(){if(location.protocol!=='https:'&&location.protocol!=='http:')return;try{fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():'').then(t=>{const m=t.match(/const BUILD='(\d+)'/);if(m&&m[1]!==BUILD){const k='rl.reload.'+m[1];if(!sessionStorage.getItem(k)){sessionStorage.setItem(k,1);location.reload()}}}).catch(()=>{})}catch(e){}})();
 const $=s=>document.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 /* ===== 쪽 구조: 본문 묶기 · 쪽 번호 · 표지 버튼 ===== */
+const MAPI='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M1.5 3.5l4-1.5 5 2 4-1.5v10l-4 1.5-5-2-4 1.5z"/><path d="M5.5 2v10M10.5 4v10"/></svg>';
 const HOME='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3.5c2-1 4-1 6 .5v10c-2-1.5-4-1.5-6-.5zM14 3.5c-2-1-4-1-6 .5v10c2-1.5 4-1.5 6-.5z"/></svg>';
 $$('.page').forEach((pg,idx)=>{if(pg.classList.contains('cover'))return;const fo=pg.querySelector(':scope>.folio');const pc=document.createElement('div');pc.className='pc';
   [...pg.children].forEach(c=>{if(c!==fo)pc.appendChild(c)});pg.appendChild(pc);
-  if(fo){const b=document.createElement('button');b.type='button';b.className='homebtn';b.setAttribute('aria-label','표지로 가기');b.title='표지로';b.innerHTML=HOME;fo.firstElementChild.prepend(b);const r=document.createElement('button');r.type='button';r.className='bmk';r.dataset.key=pg.dataset.key;r.setAttribute('aria-label','책갈피 꽂기');r.title='책갈피';r.innerHTML='<svg viewBox="0 0 18 30"><path d="M1 0h16v28l-8-6-8 6z"/></svg>';fo.appendChild(r)}
+  if(fo){const b=document.createElement('button');b.type='button';const isRm=pg.dataset.key==='roadmap';b.className='homebtn';b.setAttribute('aria-label',isRm?'표지로 가기':'전체 로드맵으로 가기');b.title=isRm?'표지로':'전체 로드맵';b.innerHTML=isRm?HOME+'<span>표지</span>':MAPI+'<span>로드맵</span>';fo.firstElementChild.prepend(b);const r=document.createElement('button');r.type='button';r.className='bmk';r.dataset.key=pg.dataset.key;r.setAttribute('aria-label','책갈피 꽂기');r.title='책갈피';r.innerHTML='<svg viewBox="0 0 18 30"><path d="M1 0h16v28l-8-6-8 6z"/></svg>';fo.appendChild(r)}
   const tas=pc.querySelectorAll('textarea.hand');const first=pc.firstElementChild;
   if(first&&first.matches('.baekhero,.hope,.voy'))pc.classList.add('hero');
   else if(tas.length){const box=tas[tas.length-1].closest('.field,.paper');if(box&&box.parentElement===pc&&box===pc.lastElementChild){box.classList.add('grow')}else pc.classList.add('center')}
@@ -1245,7 +1271,7 @@ addEventListener('resize',fit);
 const pages=$$('.page');let cur=0,busy=false;const total=pages.length-1;
 pages.forEach((pg,k)=>{const f=pg.querySelector(':scope>.pfoot');if(!f)return;f.querySelector('.pnum').textContent=k;const pv=f.querySelector('.pv'),nx=f.querySelector('.nx');pv.hidden=k<=1;nx.hidden=k>=total;
   pv.onclick=()=>go(cur-1,-1);nx.onclick=()=>go(cur+1,1);f.querySelector('.pnum').onclick=()=>go(1,-1);
-  const hb=pg.querySelector('.homebtn');if(hb)hb.onclick=()=>go(0,-1)});
+  const hb=pg.querySelector('.homebtn');if(hb)hb.onclick=()=>pg.dataset.key==='roadmap'?go(0,-1):go(byKey('roadmap'),-1)});
 function guestHas(){try{return !!localStorage.getItem('rl.data.guest')}catch(e){return false}}
 function coverMode(){const L=$('#login');L.classList.toggle('in',!!me);if(me)$('#meName').textContent=(me.team?me.team+' ':'')+me.nick;
   $('#gDel').hidden=!(me&&me.guest);$('#gDel2').hidden=!!me||!guestHas();gArm=0;$('#gDel').textContent=$('#gDel2').textContent='둘러보기 기록 지우기'}
@@ -1255,7 +1281,7 @@ async function clearGuest(btn){if(!gArm){gArm=1;btn.textContent='정말 지울�
   if(me&&me.guest){me=null;S=null}coverMode();const err=$('#lErr');err.style.color='var(--ok)';err.textContent='둘러보기 기록을 지웠어요.';setTimeout(()=>{err.style.color='';err.textContent=''},2500)}
 $('#gDel').onclick=()=>clearGuest($('#gDel'));$('#gDel2').onclick=()=>clearGuest($('#gDel2'));
 function go(i,dir){i=Math.max(0,Math.min(total,i));if(i>0&&!me)i=0;if(busy)return;const old=pages[cur],p=pages[i];
-  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff();narrStop()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'){setTimeout(()=>{if(pages[cur]!==p)return;narrConsent(narrPlay,()=>{if(!S.c.rainSeen){S.c.rainSeen=1;save();drawRain(true)}})},dir?680:200)}if(p.dataset.key==='toc'){drawBoard();drawBm()}if(i===0)coverMode();
+  if(p.dataset.key==='rain'){if(!rainRAF)setTimeout(rainDraw,50)}else{rainOff();narrStop()}if(p.dataset.key==='voyage')drawVoy();if(p.dataset.key==='roadmap')drawRoad();if(p.dataset.key==='send1')buildCard(1);if(p.dataset.key==='send')buildCard(2);if(p.dataset.key==='rain'){setTimeout(()=>{if(pages[cur]!==p)return;narrConsent(narrPlay,()=>{if(!S.c.rainSeen){S.c.rainSeen=1;save();drawRain(true)}})},dir?680:200)}if(p.dataset.key==='toc'){drawBoard();drawBm()}if(i===0)coverMode();
   p.scrollTop=0;const anim=dir&&old!==p&&!old.hidden;
   if(!anim){pages.forEach((q,k)=>q.hidden=k!==i)}
   else{busy=true;p.hidden=false;if(dir>0){old.style.zIndex=3;p.style.zIndex=2;p.classList.add('under');old.classList.add('flip-out')}else{p.style.zIndex=3;old.style.zIndex=2;p.classList.add('flip-in')}
@@ -1288,6 +1314,31 @@ $('#meOut').onclick=()=>$('#logout').click();
 /* ===== 차례 ===== */
 const toc=$('#toc');[['삼도수군통제사의 일터를 걷고 기록하다.','출근 Road(路) 업무 Log(錄)','day1'],['첫 승의 바다에서 모든 것을 잃고, 그래도 다시!','백의 Road(路) 비망 Log(錄)','d2']].forEach(([t,sub,k])=>{const b=document.createElement('button');b.type='button';b.className='ch';if(!k)b.disabled=true;
   b.innerHTML=`<span><b>${t}</b><small>_ ${sub}</small></span><span>${k?byKey(k):'준비 중'}</span>`;if(k)b.onclick=()=>go(byKey(k),1);toc.appendChild(b)});
+const ROAD=[['day1','첫째 날','출근 Road(路) 업무 Log(錄) · 통영·한산도',[
+ ['hansan','한산도 제승당','일기 퀴즈 · 한산도가 · 하루 일과표','hansando'],
+ ['lunch','수군의 점심','미역 일기 · 점심 인증','lunch'],
+ ['dangpo','당포성지','장계·일기 퀴즈 · 섬 찾기 · 승리의 비결','dangpo'],
+ ['gwonjun','같은 인물, 두 기록','권준 기록 비교 · 토론',null],
+ ['park','이순신 공원','승리 전략 · 천자총통','cheonja'],
+ ['sijo','별지 · 나의 시조','한산도가 · 시조 쓰기',null],
+ ['send1','첫째 날 탐후선','오늘의 기록 보내기',null]]],
+ ['d2','둘째 날','백의 Road(路) 비망 Log(錄) · 거제',[
+ ['d2q','통영 강구항','전쟁 전날 일기 · 판옥선과 거북선','gobuk'],
+ ['okpo','옥포대첩기념공원','정찰 보고 · 작전 회의 · 옥포해전','yangji'],
+ ['baek','백의종군의 길','어머니를 마중 가던 날 · 장군의 점심','baeklunch'],
+ ['chil','칠천량해전공원','일기 · 토의 · 기복수직교서','chil'],
+ ['rain','정유년 10월 14일','아버지 이순신 · 위로 편지',null],
+ ['end12','출정을 마치고!','나의 12척 · 다시, 길 위에서',null],
+ ['epi','에필로그 · 명량','실로 천행이었다',null],
+ ['send','둘째 날 탐후선','오늘의 기록 보내기',null]]]];
+function drawRoad(){const r=$('#road');if(!r)return;r.innerHTML='';let n=0;
+  ROAD.forEach(([dk,dl,dt,stops])=>{const d=document.createElement('div');d.className='rday';
+    d.innerHTML=`<button type="button" class="rday-h"><small>${dl}</small><b>${esc(dt)}</b></button><ol class="rstops"></ol>`;d.querySelector('.rday-h').onclick=()=>go(byKey(dk),1);
+    const ol=d.querySelector('ol');stops.forEach(([k,nm,sub,st])=>{n++;const li=document.createElement('li');const b=document.createElement('button');b.type='button';b.className='rstop';
+      const done=st&&S&&S.c&&S.c['st_'+st];b.innerHTML=`<span class="rnum">${n}</span><span><b>${esc(nm)}${st?` <span class="rst${done?' on':''}">${done?'도장✓':'도장'}</span>`:''}</b><small>${esc(sub)}</small></span>`;
+      b.setAttribute('aria-label',`${n}. ${nm}으로 가기`);b.onclick=()=>go(byKey(k),1);li.appendChild(b);ol.appendChild(li)});
+    r.appendChild(d)})}
+$('#rmToc').onclick=()=>go(byKey('toc'),1);
 function drawBoard(){const bd=$('#board');bd.innerHTML='';Object.entries(STAMPS).forEach(([k,v])=>{const done=!!(S&&S.c['st_'+k]);const b=document.createElement('button');b.type='button';b.className='slot'+(done?' done':'');
   b.innerHTML=`<span class="mini">${v.s[0]}<br>${v.s[1]}</span><b>${esc(v.t)}</b><span>${esc(v.p)}</span>`;b.onclick=()=>go(byKey(v.page),1);bd.appendChild(b)});
   $('#whoLine').textContent=me?(me.team?me.team+' · ':'')+me.nick:''}
