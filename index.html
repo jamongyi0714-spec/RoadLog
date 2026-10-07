@@ -104,6 +104,11 @@ p{margin:0}
 button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible,label:focus-within{outline:2px solid var(--seal);outline-offset:2px}
 /* handwriting fields */
 .field{display:flex;flex-direction:column;gap:4px}
+.field.hashint{position:relative}.field.hashint>label{padding-right:72px}
+.hintbtn{font:inherit;font-size:.78rem;border:1px solid var(--rule);background:var(--paper);color:var(--ink-soft);border-radius:99px;padding:2px 10px;cursor:pointer;line-height:1.5}
+.field.hashint>.hintbtn{position:absolute;right:0;top:-3px}.hintbtn.solo{align-self:flex-end;display:block;margin:0 0 4px auto}
+.hintex{white-space:pre-line}
+@media print{.hintbtn{display:none!important}}
 .field label,.lbl{font-size:.84rem;color:var(--ink-soft)}
 textarea.hand,input.hand{font-family:var(--f-hand);font-size:1.45rem;line-height:32px;color:var(--ink);border:0;border-radius:0;width:100%;min-width:0;padding:0 4px;
   background:repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--rule) 31px,var(--rule) 32px);resize:vertical}
@@ -671,7 +676,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <h2>통제사는 오늘날 어떤 직업일까?</h2>
   <div class="info"><b>삼도수군통제사</b><span>경상·전라·충청 세 도의 수군을 모두 거느린 최고 지휘관이에요. 이순신이 첫 통제사였어요.</span></div>
   <div class="field"><label for="t-job">오늘날 닮은 직업과 그 까닭</label>
-    <textarea class="hand" id="t-job" data-k="job" placeholder="해군 사령관 같아요. 전투 준비뿐 아니라 군량까지 챙겼기 때문이에요."></textarea></div>
+    <textarea class="hand" id="t-job" data-k="job" data-ex="해군 사령관 같아요. 전투 준비뿐 아니라 군량까지 챙겼기 때문이에요."></textarea></div>
 </section>
 
 <section class="page" data-name="수군의 점심 · 퀴즈" data-key="lunch">
@@ -690,7 +695,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>통영 시내 · 점심 시간</span></div>
   <div class="stamp" data-stamp="lunch"></div>
   <div class="field"><label for="t-lunch">점심 한 줄 후기</label>
-    <textarea class="hand" id="t-lunch" data-k="lunch" placeholder="장군이 어머니께 보낸 미역을 나도 먹었다."></textarea></div>
+    <textarea class="hand" id="t-lunch" data-k="lunch" data-ex="장군이 어머니께 보낸 미역을 나도 먹었다."></textarea></div>
   <p class="gloss"><b>알아 두기</b> ‘동’은 미역처럼 묶어서 파는 물건을 세던 옛 단위예요. 견내량에서 트릿대로 돌미역을 따는 전통 방식은 2020년 국가중요어업유산 제8호가 되었어요.</p>
 </section>
 
@@ -724,7 +729,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <button type="button" class="chip" data-v="바닷길이 좁음">바닷길이 좁음</button>
     <button type="button" class="chip" data-v="해안선이 구불구불">해안선이 구불구불</button>
   </div>
-  <div class="field"><label for="t-terrain">더 발견한 것</label><input class="hand" id="t-terrain" data-k="terrain" placeholder="포구가 한눈에 내려다보인다."></div>
+  <div class="field"><label for="t-terrain">더 발견한 것</label><input class="hand" id="t-terrain" data-k="terrain" data-ex="포구가 한눈에 내려다보인다."></div>
 </section>
 
 <section class="page" data-name="당포 · 승리의 비결" data-key="win">
@@ -821,13 +826,13 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>별지 · 오늘의 Road Log</span></div>
   <p class="lead">430년이 지난 오늘, 우리도 통영의 달 밝은 밤을 맞았어요. 오늘 여정을 시조로 남겨요.</p>
   <span class="lbl">한 칸이 한 음보. 종장 첫 음보는 꼭 3글자!</span>
-  <div id="jangs" class="names"></div>
+  <div id="jangs" class="names" data-ex="초장: 통영 앞 / 바다 건너 / 제승당에 / 올라서니&#10;중장: 장군의 / 고단한 하루 / 내 하루와 / 닮았구나&#10;종장: 오늘도 / 버텨 낸 마음 / 한 줄 적어 / 남기리라"></div>
 </section>
 
 <section class="page" data-name="별지 · 나의 시조" data-key="sijo3">
   <div class="folio"><span><b>출근 Road(路) 업무 Log(錄)</b></span><span>별지 · 오늘의 Road Log</span></div>
 <div class="guide"><img src="img/ship.webp" alt="" width="44" height="66"><div class="bub">장군처럼 멋진 시조가 완성됐어! <b>제목</b>도 붙여 줘.</div></div>
-  <div class="field"><label for="t-sijoT">제목</label><input class="hand brush" id="t-sijoT" data-k="sijoT" placeholder="통영 달 밝은 밤에"></div>
+  <div class="field"><label for="t-sijoT">제목</label><input class="hand brush" id="t-sijoT" data-k="sijoT" data-ex="통영 달 밝은 밤에"></div>
   <div class="hanji"><div class="hj-in"><p class="hj-title" id="sijoHead"></p><p class="hj-poem" id="sijoOut"></p><p class="hj-by" id="sijoBy"></p></div><span class="hj-seal" id="sijoSeal"></span></div>
 </section>
 <section class="page" data-name="첫째 날 탐후선 띄우기" data-key="send1">
@@ -875,8 +880,8 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 <section class="page day2" data-name="배의 구조와 역할" data-key="role">
   <div class="folio"><span><b>백의 Road(路) 비망 Log(錄)</b></span><span>통영 강구항 · 역할 추론</span></div>
   <h2>구조로 추론하는 수군의 역할</h2>
-  <div class="field"><label for="t-pan">판옥선은 어떤 역할을 했을까?</label><input class="hand" id="t-pan" data-k="pan" placeholder="많은 군사와 총통을 싣고 싸운 주력선"></div>
-  <div class="field"><label for="t-gob">거북선은 어떤 역할을 했을까?</label><input class="hand" id="t-gob" data-k="gob"></div>
+  <div class="field"><label for="t-pan">판옥선은 어떤 역할을 했을까?</label><input class="hand" id="t-pan" data-k="pan" data-ex="많은 군사와 총통을 싣고 싸운 주력선"></div>
+  <div class="field"><label for="t-gob">거북선은 어떤 역할을 했을까?</label><input class="hand" id="t-gob" data-k="gob" data-ex="적진에 먼저 뛰어들어 왜선의 진형을 흐트러뜨린 돌격선"></div>
   <div class="stamp" data-stamp="gobuk"></div>
 </section>
 
@@ -983,7 +988,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <h2>오늘 나의 점심</h2>
   <div class="stamp" data-stamp="baeklunch"></div>
   <div class="field"><label for="t-yp2">짧은 후기</label>
-    <textarea class="hand" id="t-yp2" data-k="yp2" placeholder="따뜻한 국을 먹으며 장군의 정유년을 떠올렸다."></textarea></div>
+    <textarea class="hand" id="t-yp2" data-k="yp2" data-ex="따뜻한 국을 먹으며 장군의 정유년을 떠올렸다."></textarea></div>
 </section>
 
 <section class="page day2" data-name="칠천량 · 일기 1" data-key="chil">
@@ -1019,7 +1024,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
     <button type="button" class="chip" data-v="적의 야간 기습">적의 야간 기습</button>
   </div>
   <div class="field"><label for="t-mis">가장 결정적인 실수는? 그 까닭은?</label><textarea class="hand" id="t-mis" data-k="mis"></textarea></div>
-  <div class="field"><label for="t-ifme">내가 통제사였다면?</label><input class="hand" id="t-ifme" data-k="ifme" placeholder="물러나 군사들을 먼저 쉬게 했을 것이다."></div>
+  <div class="field"><label for="t-ifme">내가 통제사였다면?</label><input class="hand" id="t-ifme" data-k="ifme" data-ex="물러나 군사들을 먼저 쉬게 했을 것이다."></div>
 </section>
 
 <section class="page day2" data-name="칠천량 · 결과 정리" data-key="result">
@@ -1078,7 +1083,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <h2>정유년의 장군께 보내는 위로 편지</h2>
   <div class="paper">
     <p class="poem">정유년의 이순신 장군께</p>
-    <textarea class="hand" id="t-letter" data-k="letter" placeholder="장군님, 어머니와 아드님을 한 해에 잃으시고도…"></textarea>
+    <textarea class="hand" id="t-letter" data-k="letter" data-ex="장군님, 어머니와 아드님을 한 해에 잃으시고도…"></textarea>
     <p class="poem from">2026년, <span id="fromName">또路錄</span> 올림</p>
   </div>
 </section>
@@ -1103,7 +1108,7 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
   <div class="folio"><span><b>백의 Road(路) 비망 Log(錄)</b></span><span>출정을 마치고! · 나의 12척</span></div>
   <h2>나를 다시 일으킬 12척의 배</h2>
   <p class="lead sm2">힘들 때 나를 일으켜 줄 사람, 물건, 마음, 습관에 이름을 붙여요.</p>
-  <div class="fleet" id="fleet12"></div>
+  <div class="fleet" id="fleet12" data-ex="가족 · 친구 · 내 꿈 · 운동 · 음악 · 반려동물 · 일기 쓰기 · 선생님 · 웃음 · 책 · 잠 · 나 자신"></div>
   <button type="button" class="btn seal" id="sail">12척, 출항!</button>
 </section>
 
@@ -1159,7 +1164,10 @@ nav.pager .pg b{display:block;color:var(--ink);font-family:var(--f-diary);font-s
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 (function(){
-const BUILD='202610061942';
+function hintPop(t){$('#mbody').innerHTML=`<h3>💡 예시 답안</h3><p class="poem hintex"></p><p class="mtip">예시는 참고만 해요. 내 생각과 내 말로 써 봐요!</p>`;$('#mbody .hintex').textContent=t;popOnClose=null;$('#modal').hidden=false}
+function addHints(){$$('[data-ex]').forEach(el=>{if(el.dataset.hinted)return;el.dataset.hinted=1;const b=document.createElement('button');b.type='button';b.className='hintbtn';b.textContent='💡 힌트';b.onclick=e=>{e.stopPropagation();hintPop(el.dataset.ex)};
+  const f=el.closest('.field');if(f&&f.querySelector('label')){f.classList.add('hashint');f.querySelector('label').after(b)}else{b.classList.add('solo');el.before(b)}})}
+const BUILD='202610071852';
 (function(){if(location.protocol!=='https:'&&location.protocol!=='http:')return;try{fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():'').then(t=>{const m=t.match(/const BUILD='(\d+)'/);if(m&&m[1]!==BUILD){const k='rl.reload.'+m[1];if(!sessionStorage.getItem(k)){sessionStorage.setItem(k,1);location.reload()}}}).catch(()=>{})}catch(e){}})();
 const $=s=>document.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -1364,7 +1372,7 @@ const PLAN=[['초장',[3,4,3,4]],['중장',[3,4,3,4]],['종장',[3,5,4,3]]];
 const EXS=[['통영 앞','바다 건너','제승당에','올라서니'],['장군의','고단한 하루','내 하루와','닮았구나'],['오늘도','버텨 낸 마음','한 줄 적어','남기리라']];
 const syl=s=>(s.match(/[가-힣]/g)||[]).length;
 function drawSijo(){const jb=$('#jangs');jb.innerHTML='';PLAN.forEach(([nm,tg],j)=>{const w=document.createElement('div');w.className='jang';
-  w.innerHTML=`<div class="jang-h"><span>${nm}</span><span>${tg.join(' · ')}</span></div><div class="eum">${tg.map((n,k)=>`<div><input id="s${j}${k}" aria-label="${nm} ${k+1}음보" placeholder="${EXS[j][k]}" value="${esc(S.sijo[j][k]||'')}"><span class="cnt" id="c${j}${k}"></span></div>`).join('')}</div>`;jb.appendChild(w);
+  w.innerHTML=`<div class="jang-h"><span>${nm}</span><span>${tg.join(' · ')}</span></div><div class="eum">${tg.map((n,k)=>`<div><input id="s${j}${k}" aria-label="${nm} ${k+1}음보" value="${esc(S.sijo[j][k]||'')}"><span class="cnt" id="c${j}${k}"></span></div>`).join('')}</div>`;jb.appendChild(w);
   tg.forEach((n,k)=>{const el=w.querySelector(`#s${j}${k}`);el.addEventListener('input',()=>{S.sijo[j][k]=el.value;save();countSijo()})})});countSijo()}
 const sijoText=()=>PLAN.map((p,j)=>p[1].map((_,k)=>S.sijo[j][k]||'').join(' ').trim()).filter(Boolean).join('\n');
 function countSijo(){PLAN.forEach(([n,tg],j)=>tg.forEach((t,k)=>{const v=S.sijo[j][k]||'',c=syl(v),el=$(`#c${j}${k}`),fx=j===2&&k===0;el.className='cnt'+(fx?' fix':'');
@@ -1499,7 +1507,7 @@ $('#narrBtn').onclick=()=>{if(narrAudio&&!narrAudio.paused){narrStop();return}na
 /* ===== 나의 12척 ===== */
 const SHIPSVG='<svg viewBox="0 0 44 26" aria-hidden="true"><path d="M3 15h38l-5 8H8z" fill="currentColor"/><rect x="10" y="9" width="24" height="6" rx="1" fill="currentColor" opacity=".75"/><path d="M22 1v8M22 2l9 5h-9" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>';
 const SHIP_EX=['가족','친구','내 꿈','운동','음악','반려동물','일기 쓰기','선생님','웃음','책','잠','나 자신'];
-function drawFleet(){const f=$('#fleet12');S.c.fleet=S.c.fleet||[];f.innerHTML=SHIP_EX.map((ex,i)=>`<div class="sh" style="color:var(--${i%3===0?'seal':'cover'})">${SHIPSVG}<input id="fl${i}" maxlength="8" placeholder="${ex}" value="${esc(S.c.fleet[i]||'')}" aria-label="${i+1}번째 배 이름"><span class="n">${i+1}호선</span></div>`).join('');
+function drawFleet(){const f=$('#fleet12');S.c.fleet=S.c.fleet||[];f.innerHTML=SHIP_EX.map((ex,i)=>`<div class="sh" style="color:var(--${i%3===0?'seal':'cover'})">${SHIPSVG}<input id="fl${i}" maxlength="8" value="${esc(S.c.fleet[i]||'')}" aria-label="${i+1}번째 배 이름"><span class="n">${i+1}호선</span></div>`).join('');
   $$('input',f).forEach((ip,i)=>ip.oninput=()=>{S.c.fleet[i]=ip.value;save()})}
 function drawHope(){const h=$('#hpFleet');if(h)h.innerHTML=Array(12).fill(SHIPSVG).join('')}
 function drawVoy(){const v=$('#voyships');const names=(S.c.fleet||[]).map((n,i)=>[n,i]).filter(x=>x[0]);const list=names.length?names:[['이름을 붙여 주세요',0]];
@@ -1558,7 +1566,7 @@ $$('[data-pop]').forEach(b=>b.onclick=()=>openPop(b.dataset.pop));
 $('#modal .mx').onclick=closePop;$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closePop()});addEventListener('keydown',e=>{if(e.key==='Escape')closePop()});
 /* ===== 시작 ===== */
 const want=(h=>pages.some(p=>p.dataset.key===h)?h:null)((location.hash||'').slice(1));
-fit();go(0);
+addHints();fit();go(0);
 if(want)pendingKey=want;
 })();
 </script>
